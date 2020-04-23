@@ -2,11 +2,10 @@ package com.ruoyi.common.utils.security;
 
 import com.ruoyi.common.constant.PermissionConstants;
 import com.ruoyi.common.utils.MessageUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.beans.BeanInfo;
 import java.beans.Introspector;
@@ -17,34 +16,28 @@ import java.beans.PropertyDescriptor;
  *
  * @author ruoyi
  */
+@Slf4j
 public class PermissionUtils {
-  private static final Logger log = LoggerFactory.getLogger(PermissionUtils.class);
-
   /**
    * 查看数据的权限
    */
   public static final String VIEW_PERMISSION = "no.view.permission";
-
   /**
    * 创建数据的权限
    */
   public static final String CREATE_PERMISSION = "no.create.permission";
-
   /**
    * 修改数据的权限
    */
   public static final String UPDATE_PERMISSION = "no.update.permission";
-
   /**
    * 删除数据的权限
    */
   public static final String DELETE_PERMISSION = "no.delete.permission";
-
   /**
    * 导出数据的权限
    */
   public static final String EXPORT_PERMISSION = "no.export.permission";
-
   /**
    * 其他数据的权限
    */

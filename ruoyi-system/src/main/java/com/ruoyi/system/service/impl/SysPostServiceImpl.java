@@ -20,9 +20,9 @@ import java.util.List;
  */
 @Service
 public class SysPostServiceImpl implements ISysPostService {
+
   @Autowired
   private SysPostMapper postMapper;
-
   @Autowired
   private SysUserPostMapper userPostMapper;
 

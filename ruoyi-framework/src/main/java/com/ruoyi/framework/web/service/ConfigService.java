@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
  */
 @Service("config")
 public class ConfigService {
+
   @Autowired
   private ISysConfigService configService;
 

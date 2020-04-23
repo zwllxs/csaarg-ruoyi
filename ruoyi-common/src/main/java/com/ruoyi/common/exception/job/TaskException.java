@@ -6,6 +6,7 @@ package com.ruoyi.common.exception.job;
  * @author ruoyi
  */
 public class TaskException extends Exception {
+
   private static final long serialVersionUID = 1L;
 
   private Code code;
@@ -24,6 +25,29 @@ public class TaskException extends Exception {
   }
 
   public enum Code {
-    TASK_EXISTS, NO_TASK_EXISTS, TASK_ALREADY_STARTED, UNKNOWN, CONFIG_ERROR, TASK_NODE_NOT_AVAILABLE
+    /**
+     * 计划已存在
+     */
+    TASK_EXISTS,
+    /**
+     * 计划不存在
+     */
+    NO_TASK_EXISTS,
+    /**
+     * 计划已开始
+     */
+    TASK_ALREADY_STARTED,
+    /**
+     * 未知
+     */
+    UNKNOWN,
+    /**
+     * 配置错误
+     */
+    CONFIG_ERROR,
+    /**
+     * 计划节点不可用
+     */
+    TASK_NODE_NOT_AVAILABLE
   }
 }

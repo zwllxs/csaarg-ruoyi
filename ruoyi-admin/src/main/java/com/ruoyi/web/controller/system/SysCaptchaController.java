@@ -22,12 +22,12 @@ import java.io.IOException;
  *
  * @author ruoyi
  */
-@Controller
 @RequestMapping("/captcha")
+@Controller
 public class SysCaptchaController extends BaseController {
+
   @Resource(name = "captchaProducer")
   private Producer captchaProducer;
-
   @Resource(name = "captchaProducerMath")
   private Producer captchaProducerMath;
 

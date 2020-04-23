@@ -12,6 +12,7 @@ import java.util.Map.Entry;
  * @author ruoyi
  */
 public class MapDataUtil {
+
   public static Map<String, Object> convertDataMap(HttpServletRequest request) {
     Map<String, String[]> properties = request.getParameterMap();
     Map<String, Object> returnMap = new HashMap<String, Object>();

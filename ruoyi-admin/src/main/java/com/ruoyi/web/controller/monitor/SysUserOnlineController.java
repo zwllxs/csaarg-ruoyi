@@ -23,36 +23,36 @@ import java.util.List;
  *
  * @author ruoyi
  */
-@Controller
 @RequestMapping("/monitor/online")
+@Controller
 public class SysUserOnlineController extends BaseController {
+
   private String prefix = "monitor/online";
 
   @Autowired
   private ISysUserOnlineService userOnlineService;
-
   @Autowired
   private OnlineSessionDAO onlineSessionDAO;
 
   @RequiresPermissions("monitor:online:view")
-  @GetMapping()
+  @GetMapping
   public String online() {
     return prefix + "/online";
   }
 
   @RequiresPermissions("monitor:online:list")
-  @PostMapping("/list")
   @ResponseBody
+  @PostMapping("/list")
   public TableDataInfo list(SysUserOnline userOnline) {
     startPage();
     List<SysUserOnline> list = userOnlineService.selectUserOnlineList(userOnline);
     return getDataTable(list);
   }
 
-  @RequiresPermissions("monitor:online:batchForceLogout")
   @Log(title = "在线用户", businessType = BusinessType.FORCE)
-  @PostMapping("/batchForceLogout")
+  @RequiresPermissions("monitor:online:batchForceLogout")
   @ResponseBody
+  @PostMapping("/batchForceLogout")
   public AjaxResult batchForceLogout(@RequestParam("ids[]") String[] ids) {
     for (String sessionId : ids) {
       SysUserOnline online = userOnlineService.selectOnlineById(sessionId);
@@ -74,10 +74,10 @@ public class SysUserOnlineController extends BaseController {
     return success();
   }
 
-  @RequiresPermissions("monitor:online:forceLogout")
   @Log(title = "在线用户", businessType = BusinessType.FORCE)
-  @PostMapping("/forceLogout")
+  @RequiresPermissions("monitor:online:forceLogout")
   @ResponseBody
+  @PostMapping("/forceLogout")
   public AjaxResult forceLogout(String sessionId) {
     SysUserOnline online = userOnlineService.selectOnlineById(sessionId);
     if (sessionId.equals(ShiroUtils.getSessionId())) {

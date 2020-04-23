@@ -23,6 +23,7 @@ import java.util.List;
  */
 @Service
 public class SysDeptServiceImpl implements ISysDeptService {
+
   @Autowired
   private SysDeptMapper deptMapper;
 
@@ -32,8 +33,8 @@ public class SysDeptServiceImpl implements ISysDeptService {
    * @param dept 部门信息
    * @return 部门信息集合
    */
-  @Override
   @DataScope(deptAlias = "d")
+  @Override
   public List<SysDept> selectDeptList(SysDept dept) {
     return deptMapper.selectDeptList(dept);
   }
@@ -97,7 +98,7 @@ public class SysDeptServiceImpl implements ISysDeptService {
       if (UserConstants.DEPT_NORMAL.equals(dept.getStatus())) {
         Ztree ztree = new Ztree();
         ztree.setId(dept.getDeptId());
-        ztree.setpId(dept.getParentId());
+        ztree.setPId(dept.getParentId());
         ztree.setName(dept.getDeptName());
         ztree.setTitle(dept.getDeptName());
         if (isCheck) {
@@ -168,8 +169,8 @@ public class SysDeptServiceImpl implements ISysDeptService {
    * @param dept 部门信息
    * @return 结果
    */
-  @Override
   @Transactional
+  @Override
   public int updateDept(SysDept dept) {
     SysDept newParentDept = deptMapper.selectDeptById(dept.getParentId());
     SysDept oldDept = selectDeptById(dept.getDeptId());

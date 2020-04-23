@@ -31,22 +31,18 @@ public class Server {
    * CPU相关信息
    */
   private Cpu cpu = new Cpu();
-
   /**
    * 內存相关信息
    */
   private Mem mem = new Mem();
-
   /**
    * JVM相关信息
    */
   private Jvm jvm = new Jvm();
-
   /**
    * 服务器相关信息
    */
   private Sys sys = new Sys();
-
   /**
    * 磁盘相关信息
    */

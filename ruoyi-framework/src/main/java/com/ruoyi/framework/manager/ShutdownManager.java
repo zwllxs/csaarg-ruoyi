@@ -17,11 +17,11 @@ import javax.annotation.PreDestroy;
  */
 @Component
 public class ShutdownManager {
-  private static final Logger logger = LoggerFactory.getLogger("sys-user");
+
+  private static final Logger SYS_USER_LOGGER = LoggerFactory.getLogger("sys-user");
 
   @Autowired(required = false)
   private SpringSessionValidationScheduler springSessionValidationScheduler;
-
   @Autowired(required = false)
   private EhCacheManager ehCacheManager;
 
@@ -38,10 +38,10 @@ public class ShutdownManager {
   private void shutdownSpringSessionValidationScheduler() {
     if (springSessionValidationScheduler != null && springSessionValidationScheduler.isEnabled()) {
       try {
-        logger.info("====关闭会话验证任务====");
+        SYS_USER_LOGGER.info("====关闭会话验证任务====");
         springSessionValidationScheduler.disableSessionValidation();
       } catch (Exception e) {
-        logger.error(e.getMessage(), e);
+        SYS_USER_LOGGER.error(e.getMessage(), e);
       }
     }
   }
@@ -51,22 +51,22 @@ public class ShutdownManager {
    */
   private void shutdownAsyncManager() {
     try {
-      logger.info("====关闭后台任务任务线程池====");
+      SYS_USER_LOGGER.info("====关闭后台任务任务线程池====");
       AsyncManager.me().shutdown();
     } catch (Exception e) {
-      logger.error(e.getMessage(), e);
+      SYS_USER_LOGGER.error(e.getMessage(), e);
     }
   }
 
   private void shutdownEhCacheManager() {
     try {
-      logger.info("====关闭缓存====");
+      SYS_USER_LOGGER.info("====关闭缓存====");
       if (ehCacheManager != null) {
         CacheManager cacheManager = ehCacheManager.getCacheManager();
         cacheManager.shutdown();
       }
     } catch (Exception e) {
-      logger.error(e.getMessage(), e);
+      SYS_USER_LOGGER.error(e.getMessage(), e);
     }
   }
 }

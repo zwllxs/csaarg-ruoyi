@@ -9,9 +9,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
  *
  * @author ruoyi
  */
-@Controller
 @RequestMapping("/demo/modal")
+@Controller
 public class DemoDialogController {
+
   private String prefix = "demo/modal";
 
   /**

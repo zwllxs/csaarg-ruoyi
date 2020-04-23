@@ -24,23 +24,24 @@ import java.util.List;
  *
  * @author ruoyi
  */
-@Controller
 @RequestMapping("/system/post")
+@Controller
 public class SysPostController extends BaseController {
+
   private String prefix = "system/post";
 
   @Autowired
   private ISysPostService postService;
 
   @RequiresPermissions("system:post:view")
-  @GetMapping()
+  @GetMapping
   public String operlog() {
     return prefix + "/post";
   }
 
   @RequiresPermissions("system:post:list")
-  @PostMapping("/list")
   @ResponseBody
+  @PostMapping("/list")
   public TableDataInfo list(SysPost post) {
     startPage();
     List<SysPost> list = postService.selectPostList(post);
@@ -49,18 +50,18 @@ public class SysPostController extends BaseController {
 
   @Log(title = "岗位管理", businessType = BusinessType.EXPORT)
   @RequiresPermissions("system:post:export")
-  @PostMapping("/export")
   @ResponseBody
+  @PostMapping("/export")
   public AjaxResult export(SysPost post) {
     List<SysPost> list = postService.selectPostList(post);
     ExcelUtil<SysPost> util = new ExcelUtil<SysPost>(SysPost.class);
     return util.exportExcel(list, "岗位数据");
   }
 
-  @RequiresPermissions("system:post:remove")
   @Log(title = "岗位管理", businessType = BusinessType.DELETE)
-  @PostMapping("/remove")
+  @RequiresPermissions("system:post:remove")
   @ResponseBody
+  @PostMapping("/remove")
   public AjaxResult remove(String ids) {
     try {
       return toAjax(postService.deletePostByIds(ids));
@@ -80,10 +81,10 @@ public class SysPostController extends BaseController {
   /**
    * 新增保存岗位
    */
-  @RequiresPermissions("system:post:add")
   @Log(title = "岗位管理", businessType = BusinessType.INSERT)
-  @PostMapping("/add")
+  @RequiresPermissions("system:post:add")
   @ResponseBody
+  @PostMapping("/add")
   public AjaxResult addSave(@Validated SysPost post) {
     if (UserConstants.POST_NAME_NOT_UNIQUE.equals(postService.checkPostNameUnique(post))) {
       return error("新增岗位'" + post.getPostName() + "'失败，岗位名称已存在");
@@ -106,10 +107,10 @@ public class SysPostController extends BaseController {
   /**
    * 修改保存岗位
    */
-  @RequiresPermissions("system:post:edit")
   @Log(title = "岗位管理", businessType = BusinessType.UPDATE)
-  @PostMapping("/edit")
+  @RequiresPermissions("system:post:edit")
   @ResponseBody
+  @PostMapping("/edit")
   public AjaxResult editSave(@Validated SysPost post) {
     if (UserConstants.POST_NAME_NOT_UNIQUE.equals(postService.checkPostNameUnique(post))) {
       return error("修改岗位'" + post.getPostName() + "'失败，岗位名称已存在");
@@ -123,8 +124,8 @@ public class SysPostController extends BaseController {
   /**
    * 校验岗位名称
    */
-  @PostMapping("/checkPostNameUnique")
   @ResponseBody
+  @PostMapping("/checkPostNameUnique")
   public String checkPostNameUnique(SysPost post) {
     return postService.checkPostNameUnique(post);
   }
@@ -132,8 +133,8 @@ public class SysPostController extends BaseController {
   /**
    * 校验岗位编码
    */
-  @PostMapping("/checkPostCodeUnique")
   @ResponseBody
+  @PostMapping("/checkPostCodeUnique")
   public String checkPostCodeUnique(SysPost post) {
     return postService.checkPostCodeUnique(post);
   }

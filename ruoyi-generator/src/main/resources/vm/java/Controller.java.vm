@@ -40,7 +40,7 @@ public class ${ClassName}Controller extends BaseController {
   private I${ClassName}Service ${className}Service;
 
   @RequiresPermissions("${permissionPrefix}:view")
-  @GetMapping()
+  @GetMapping
   public String ${businessName}() {
     return prefix + "/${businessName}";
   }

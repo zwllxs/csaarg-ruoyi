@@ -4,6 +4,9 @@ import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.utils.StringUtils;
 import io.swagger.annotations.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -17,9 +20,10 @@ import java.util.Map;
  * @author ruoyi
  */
 @Api("用户信息管理")
-@RestController
 @RequestMapping("/test/user")
+@RestController
 public class TestController extends BaseController {
+
   private final static Map<Integer, UserEntity> users = new LinkedHashMap<Integer, UserEntity>();
 
   {
@@ -34,8 +38,8 @@ public class TestController extends BaseController {
     return AjaxResult.success(userList);
   }
 
-  @ApiOperation("获取用户详细")
   @ApiImplicitParam(name = "userId", value = "用户ID", required = true, dataType = "int", paramType = "path")
+  @ApiOperation("获取用户详细")
   @GetMapping("/{userId}")
   public AjaxResult getUser(@PathVariable Integer userId) {
     if (!users.isEmpty() && users.containsKey(userId)) {
@@ -45,8 +49,8 @@ public class TestController extends BaseController {
     }
   }
 
-  @ApiOperation("新增用户")
   @ApiImplicitParam(name = "userEntity", value = "新增用户信息", dataType = "UserEntity")
+  @ApiOperation("新增用户")
   @PostMapping("/save")
   public AjaxResult save(UserEntity user) {
     if (StringUtils.isNull(user) || StringUtils.isNull(user.getUserId())) {
@@ -55,8 +59,8 @@ public class TestController extends BaseController {
     return AjaxResult.success(users.put(user.getUserId(), user));
   }
 
-  @ApiOperation("更新用户")
   @ApiImplicitParam(name = "userEntity", value = "新增用户信息", dataType = "UserEntity")
+  @ApiOperation("更新用户")
   @PutMapping("/update")
   public AjaxResult update(UserEntity user) {
     if (StringUtils.isNull(user) || StringUtils.isNull(user.getUserId())) {
@@ -69,8 +73,8 @@ public class TestController extends BaseController {
     return AjaxResult.success(users.put(user.getUserId(), user));
   }
 
-  @ApiOperation("删除用户信息")
   @ApiImplicitParam(name = "userId", value = "用户ID", required = true, dataType = "int", paramType = "path")
+  @ApiOperation("删除用户信息")
   @DeleteMapping("/{userId}")
   public AjaxResult delete(@PathVariable Integer userId) {
     if (!users.isEmpty() && users.containsKey(userId)) {
@@ -83,6 +87,9 @@ public class TestController extends BaseController {
 }
 
 @ApiModel("用户实体")
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 class UserEntity {
   @ApiModelProperty("用户ID")
   private Integer userId;
@@ -95,47 +102,4 @@ class UserEntity {
 
   @ApiModelProperty("用户手机")
   private String mobile;
-
-  public UserEntity() {
-
-  }
-
-  public UserEntity(Integer userId, String username, String password, String mobile) {
-    this.userId = userId;
-    this.username = username;
-    this.password = password;
-    this.mobile = mobile;
-  }
-
-  public Integer getUserId() {
-    return userId;
-  }
-
-  public void setUserId(Integer userId) {
-    this.userId = userId;
-  }
-
-  public String getUsername() {
-    return username;
-  }
-
-  public void setUsername(String username) {
-    this.username = username;
-  }
-
-  public String getPassword() {
-    return password;
-  }
-
-  public void setPassword(String password) {
-    this.password = password;
-  }
-
-  public String getMobile() {
-    return mobile;
-  }
-
-  public void setMobile(String mobile) {
-    this.mobile = mobile;
-  }
 }

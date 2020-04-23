@@ -11,13 +11,12 @@ import com.ruoyi.common.exception.BusinessException;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.reflect.ReflectUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddressList;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFDataValidation;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.lang.reflect.Field;
@@ -31,49 +30,40 @@ import java.util.*;
  *
  * @author ruoyi
  */
+@Slf4j
 public class ExcelUtil<T> {
-  private static final Logger log = LoggerFactory.getLogger(ExcelUtil.class);
-
   /**
    * Excel sheet最大行数，默认65536
    */
   public static final int sheetSize = 65536;
-
   /**
    * 工作表名称
    */
   private String sheetName;
-
   /**
    * 导出类型（EXPORT:导出数据；IMPORT：导入模板）
    */
   private Type type;
-
   /**
    * 工作薄对象
    */
   private Workbook wb;
-
   /**
    * 工作表对象
    */
   private Sheet sheet;
-
   /**
    * 样式列表
    */
   private Map<String, CellStyle> styles;
-
   /**
    * 导入导出数据列表
    */
   private List<T> list;
-
   /**
    * 注解列表
    */
   private List<Object[]> fields;
-
   /**
    * 实体对象
    */

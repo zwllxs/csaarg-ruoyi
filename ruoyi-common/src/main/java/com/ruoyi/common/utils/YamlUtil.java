@@ -16,6 +16,7 @@ import java.util.Map;
  * @author yml
  */
 public class YamlUtil {
+
   public static Map<?, ?> loadYaml(String fileName) throws FileNotFoundException {
     InputStream in = YamlUtil.class.getClassLoader().getResourceAsStream(fileName);
     return StringUtils.isNotEmpty(fileName) ? (LinkedHashMap<?, ?>) new Yaml().load(in) : null;

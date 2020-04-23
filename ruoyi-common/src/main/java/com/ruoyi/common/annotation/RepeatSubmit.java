@@ -7,9 +7,9 @@ import java.lang.annotation.*;
  *
  * @author ruoyi
  */
-@Target(ElementType.METHOD)
-@Retention(RetentionPolicy.RUNTIME)
 @Documented
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
 public @interface RepeatSubmit {
 
 }

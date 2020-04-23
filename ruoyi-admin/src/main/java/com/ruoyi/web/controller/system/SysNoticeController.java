@@ -21,16 +21,17 @@ import java.util.List;
  *
  * @author ruoyi
  */
-@Controller
 @RequestMapping("/system/notice")
+@Controller
 public class SysNoticeController extends BaseController {
+
   private String prefix = "system/notice";
 
   @Autowired
   private ISysNoticeService noticeService;
 
   @RequiresPermissions("system:notice:view")
-  @GetMapping()
+  @GetMapping
   public String notice() {
     return prefix + "/notice";
   }
@@ -39,8 +40,8 @@ public class SysNoticeController extends BaseController {
    * 查询公告列表
    */
   @RequiresPermissions("system:notice:list")
-  @PostMapping("/list")
   @ResponseBody
+  @PostMapping("/list")
   public TableDataInfo list(SysNotice notice) {
     startPage();
     List<SysNotice> list = noticeService.selectNoticeList(notice);
@@ -58,10 +59,10 @@ public class SysNoticeController extends BaseController {
   /**
    * 新增保存公告
    */
-  @RequiresPermissions("system:notice:add")
   @Log(title = "通知公告", businessType = BusinessType.INSERT)
-  @PostMapping("/add")
+  @RequiresPermissions("system:notice:add")
   @ResponseBody
+  @PostMapping("/add")
   public AjaxResult addSave(SysNotice notice) {
     notice.setCreateBy(ShiroUtils.getLoginName());
     return toAjax(noticeService.insertNotice(notice));
@@ -79,10 +80,10 @@ public class SysNoticeController extends BaseController {
   /**
    * 修改保存公告
    */
-  @RequiresPermissions("system:notice:edit")
   @Log(title = "通知公告", businessType = BusinessType.UPDATE)
-  @PostMapping("/edit")
+  @RequiresPermissions("system:notice:edit")
   @ResponseBody
+  @PostMapping("/edit")
   public AjaxResult editSave(SysNotice notice) {
     notice.setUpdateBy(ShiroUtils.getLoginName());
     return toAjax(noticeService.updateNotice(notice));
@@ -91,10 +92,10 @@ public class SysNoticeController extends BaseController {
   /**
    * 删除公告
    */
-  @RequiresPermissions("system:notice:remove")
   @Log(title = "通知公告", businessType = BusinessType.DELETE)
-  @PostMapping("/remove")
+  @RequiresPermissions("system:notice:remove")
   @ResponseBody
+  @PostMapping("/remove")
   public AjaxResult remove(String ids) {
     return toAjax(noticeService.deleteNoticeByIds(ids));
   }

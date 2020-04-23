@@ -15,6 +15,7 @@ import javax.servlet.ServletResponse;
  * @author ruoyi
  */
 public class SyncOnlineSessionFilter extends PathMatchingFilter {
+
   @Autowired
   private OnlineSessionDAO onlineSessionDAO;
 

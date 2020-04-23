@@ -30,23 +30,21 @@ import java.util.Deque;
  * @author ruoyi
  */
 public class KickoutSessionFilter extends AccessControlFilter {
+
   private final static ObjectMapper objectMapper = new ObjectMapper();
 
   /**
    * 同一个用户最大会话数
    **/
   private int maxSession = -1;
-
   /**
    * 踢出之前登录的/之后登录的用户 默认false踢出之前登录的用户
    **/
   private Boolean kickoutAfter = false;
-
   /**
    * 踢出后到的地址
    **/
   private String kickoutUrl;
-
   private SessionManager sessionManager;
   private Cache<String, Deque<Serializable>> cache;
 

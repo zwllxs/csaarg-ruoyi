@@ -15,12 +15,11 @@ import com.ruoyi.generator.service.IGenTableService;
 import com.ruoyi.generator.util.GenUtils;
 import com.ruoyi.generator.util.VelocityInitializer;
 import com.ruoyi.generator.util.VelocityUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,13 +38,12 @@ import java.util.zip.ZipOutputStream;
  *
  * @author ruoyi
  */
+@Slf4j
 @Service
 public class GenTableServiceImpl implements IGenTableService {
-  private static final Logger log = LoggerFactory.getLogger(GenTableServiceImpl.class);
 
   @Autowired
   private GenTableMapper genTableMapper;
-
   @Autowired
   private GenTableColumnMapper genTableColumnMapper;
 
@@ -101,8 +99,8 @@ public class GenTableServiceImpl implements IGenTableService {
    * @param genTable 业务信息
    * @return 结果
    */
-  @Override
   @Transactional
+  @Override
   public void updateGenTable(GenTable genTable) {
     String options = JSON.toJSONString(genTable.getParams());
     genTable.setOptions(options);
@@ -120,8 +118,8 @@ public class GenTableServiceImpl implements IGenTableService {
    * @param ids 需要删除的数据ID
    * @return 结果
    */
-  @Override
   @Transactional
+  @Override
   public void deleteGenTableByIds(String ids) {
     genTableMapper.deleteGenTableByIds(Convert.toLongArray(ids));
     genTableColumnMapper.deleteGenTableColumnByIds(Convert.toLongArray(ids));
@@ -133,8 +131,8 @@ public class GenTableServiceImpl implements IGenTableService {
    * @param tableList 导入表列表
    * @param operName  操作人员
    */
-  @Override
   @Transactional
+  @Override
   public void importGenTable(List<GenTable> tableList, String operName) {
     for (GenTable table : tableList) {
       try {

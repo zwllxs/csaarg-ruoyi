@@ -10,8 +10,9 @@ import java.lang.annotation.Target;
  *
  * @author ruoyi
  */
-@Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.FIELD)
 public @interface Excels {
+
   Excel[] value();
 }

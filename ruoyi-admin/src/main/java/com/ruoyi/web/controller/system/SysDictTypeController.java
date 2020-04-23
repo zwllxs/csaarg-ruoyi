@@ -25,23 +25,24 @@ import java.util.List;
  *
  * @author ruoyi
  */
-@Controller
 @RequestMapping("/system/dict")
+@Controller
 public class SysDictTypeController extends BaseController {
+
   private String prefix = "system/dict/type";
 
   @Autowired
   private ISysDictTypeService dictTypeService;
 
   @RequiresPermissions("system:dict:view")
-  @GetMapping()
+  @GetMapping
   public String dictType() {
     return prefix + "/type";
   }
 
-  @PostMapping("/list")
   @RequiresPermissions("system:dict:list")
   @ResponseBody
+  @PostMapping("/list")
   public TableDataInfo list(SysDictType dictType) {
     startPage();
     List<SysDictType> list = dictTypeService.selectDictTypeList(dictType);
@@ -50,8 +51,8 @@ public class SysDictTypeController extends BaseController {
 
   @Log(title = "字典类型", businessType = BusinessType.EXPORT)
   @RequiresPermissions("system:dict:export")
-  @PostMapping("/export")
   @ResponseBody
+  @PostMapping("/export")
   public AjaxResult export(SysDictType dictType) {
 
     List<SysDictType> list = dictTypeService.selectDictTypeList(dictType);
@@ -72,8 +73,8 @@ public class SysDictTypeController extends BaseController {
    */
   @Log(title = "字典类型", businessType = BusinessType.INSERT)
   @RequiresPermissions("system:dict:add")
-  @PostMapping("/add")
   @ResponseBody
+  @PostMapping("/add")
   public AjaxResult addSave(@Validated SysDictType dict) {
     if (UserConstants.DICT_TYPE_NOT_UNIQUE.equals(dictTypeService.checkDictTypeUnique(dict))) {
       return error("新增字典'" + dict.getDictName() + "'失败，字典类型已存在");
@@ -96,8 +97,8 @@ public class SysDictTypeController extends BaseController {
    */
   @Log(title = "字典类型", businessType = BusinessType.UPDATE)
   @RequiresPermissions("system:dict:edit")
-  @PostMapping("/edit")
   @ResponseBody
+  @PostMapping("/edit")
   public AjaxResult editSave(@Validated SysDictType dict) {
     if (UserConstants.DICT_TYPE_NOT_UNIQUE.equals(dictTypeService.checkDictTypeUnique(dict))) {
       return error("修改字典'" + dict.getDictName() + "'失败，字典类型已存在");
@@ -108,8 +109,8 @@ public class SysDictTypeController extends BaseController {
 
   @Log(title = "字典类型", businessType = BusinessType.DELETE)
   @RequiresPermissions("system:dict:remove")
-  @PostMapping("/remove")
   @ResponseBody
+  @PostMapping("/remove")
   public AjaxResult remove(String ids) {
     return toAjax(dictTypeService.deleteDictTypeByIds(ids));
   }
@@ -117,10 +118,10 @@ public class SysDictTypeController extends BaseController {
   /**
    * 清空缓存
    */
-  @RequiresPermissions("system:dict:remove")
   @Log(title = "字典类型", businessType = BusinessType.CLEAN)
-  @GetMapping("/clearCache")
+  @RequiresPermissions("system:dict:remove")
   @ResponseBody
+  @GetMapping("/clearCache")
   public AjaxResult clearCache() {
     dictTypeService.clearCache();
     return success();
@@ -160,8 +161,8 @@ public class SysDictTypeController extends BaseController {
   /**
    * 加载字典列表树
    */
-  @GetMapping("/treeData")
   @ResponseBody
+  @GetMapping("/treeData")
   public List<Ztree> treeData() {
     List<Ztree> ztrees = dictTypeService.selectDictTree(new SysDictType());
     return ztrees;

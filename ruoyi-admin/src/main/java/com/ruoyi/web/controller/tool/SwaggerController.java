@@ -11,11 +11,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
  *
  * @author ruoyi
  */
-@Controller
 @RequestMapping("/tool/swagger")
+@Controller
 public class SwaggerController extends BaseController {
+
   @RequiresPermissions("tool:swagger:view")
-  @GetMapping()
+  @GetMapping
   public String index() {
     return redirect("/swagger-ui.html");
   }

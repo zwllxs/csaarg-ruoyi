@@ -22,11 +22,11 @@ import java.util.*;
  */
 @Service
 public class SysMenuServiceImpl implements ISysMenuService {
+
   public static final String PREMISSION_STRING = "perms[\"{0}\"]";
 
   @Autowired
   private SysMenuMapper menuMapper;
-
   @Autowired
   private SysRoleMenuMapper roleMenuMapper;
 
@@ -172,7 +172,7 @@ public class SysMenuServiceImpl implements ISysMenuService {
     for (SysMenu menu : menuList) {
       Ztree ztree = new Ztree();
       ztree.setId(menu.getMenuId());
-      ztree.setpId(menu.getParentId());
+      ztree.setPId(menu.getParentId());
       ztree.setName(transMenuName(menu, permsFlag));
       ztree.setTitle(menu.getMenuName());
       if (isCheck) {

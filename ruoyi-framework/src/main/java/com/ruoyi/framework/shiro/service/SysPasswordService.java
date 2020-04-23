@@ -25,6 +25,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 @Component
 public class SysPasswordService {
+
   @Autowired
   private CacheManager cacheManager;
 

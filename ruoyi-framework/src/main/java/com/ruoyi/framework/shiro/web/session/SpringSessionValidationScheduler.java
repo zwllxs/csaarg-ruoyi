@@ -1,11 +1,10 @@
 package com.ruoyi.framework.shiro.web.session;
 
 import com.ruoyi.common.utils.Threads;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.session.mgt.DefaultSessionManager;
 import org.apache.shiro.session.mgt.SessionValidationScheduler;
 import org.apache.shiro.session.mgt.ValidatingSessionManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,17 +19,17 @@ import java.util.concurrent.TimeUnit;
  *
  * @author ruoyi
  */
+@Slf4j
 @Component
 public class SpringSessionValidationScheduler implements SessionValidationScheduler {
-  private static final Logger log = LoggerFactory.getLogger(SpringSessionValidationScheduler.class);
 
   public static final long DEFAULT_SESSION_VALIDATION_INTERVAL = DefaultSessionManager.DEFAULT_SESSION_VALIDATION_INTERVAL;
 
   /**
    * 定时器，用于处理超时的挂起请求，也用于连接断开时的重连。
    */
-  @Autowired
   @Qualifier("scheduledExecutorService")
+  @Autowired
   private ScheduledExecutorService executorService;
 
   private volatile boolean enabled = false;
@@ -38,9 +37,9 @@ public class SpringSessionValidationScheduler implements SessionValidationSchedu
   /**
    * 会话验证管理器
    */
-  @Autowired
-  @Qualifier("sessionManager")
   @Lazy
+  @Qualifier("sessionManager")
+  @Autowired
   private ValidatingSessionManager sessionManager;
 
   // 相隔多久检查一次session的有效性，单位毫秒，默认就是10分钟

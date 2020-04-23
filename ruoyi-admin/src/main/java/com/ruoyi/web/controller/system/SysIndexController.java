@@ -21,9 +21,9 @@ import java.util.List;
  */
 @Controller
 public class SysIndexController extends BaseController {
+
   @Autowired
   private ISysMenuService menuService;
-
   @Autowired
   private ISysConfigService configService;
 

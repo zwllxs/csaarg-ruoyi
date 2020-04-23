@@ -25,9 +25,10 @@ import java.util.Map;
  *
  * @author ruoyi
  */
-@Controller
 @RequestMapping("/demo/operate")
+@Controller
 public class DemoOperateController extends BaseController {
+
   private String prefix = "demo/operate";
 
   private final static Map<Integer, UserOperateModel> users = new LinkedHashMap<Integer, UserOperateModel>();
@@ -80,8 +81,8 @@ public class DemoOperateController extends BaseController {
   /**
    * 查询数据
    */
-  @PostMapping("/list")
   @ResponseBody
+  @PostMapping("/list")
   public TableDataInfo list(UserOperateModel userModel) {
     TableDataInfo rspData = new TableDataInfo();
     List<UserOperateModel> userList = new ArrayList<UserOperateModel>(users.values());
@@ -128,8 +129,8 @@ public class DemoOperateController extends BaseController {
   /**
    * 新增保存用户
    */
-  @PostMapping("/add")
   @ResponseBody
+  @PostMapping("/add")
   public AjaxResult addSave(UserOperateModel user) {
     Integer userId = users.size() + 1;
     user.setUserId(userId);
@@ -148,8 +149,8 @@ public class DemoOperateController extends BaseController {
   /**
    * 修改保存用户
    */
-  @PostMapping("/edit")
   @ResponseBody
+  @PostMapping("/edit")
   public AjaxResult editSave(UserOperateModel user) {
     return AjaxResult.success(users.put(user.getUserId(), user));
   }
@@ -157,8 +158,8 @@ public class DemoOperateController extends BaseController {
   /**
    * 导出
    */
-  @PostMapping("/export")
   @ResponseBody
+  @PostMapping("/export")
   public AjaxResult export(UserOperateModel user) {
     List<UserOperateModel> list = new ArrayList<UserOperateModel>(users.values());
     ExcelUtil<UserOperateModel> util = new ExcelUtil<UserOperateModel>(UserOperateModel.class);
@@ -168,8 +169,8 @@ public class DemoOperateController extends BaseController {
   /**
    * 下载模板
    */
-  @GetMapping("/importTemplate")
   @ResponseBody
+  @GetMapping("/importTemplate")
   public AjaxResult importTemplate() {
     ExcelUtil<UserOperateModel> util = new ExcelUtil<UserOperateModel>(UserOperateModel.class);
     return util.importTemplateExcel("用户数据");
@@ -178,8 +179,8 @@ public class DemoOperateController extends BaseController {
   /**
    * 导入数据
    */
-  @PostMapping("/importData")
   @ResponseBody
+  @PostMapping("/importData")
   public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
     ExcelUtil<UserOperateModel> util = new ExcelUtil<UserOperateModel>(UserOperateModel.class);
     List<UserOperateModel> userList = util.importExcel(file.getInputStream());
@@ -190,8 +191,8 @@ public class DemoOperateController extends BaseController {
   /**
    * 删除用户
    */
-  @PostMapping("/remove")
   @ResponseBody
+  @PostMapping("/remove")
   public AjaxResult remove(String ids) {
     Integer[] userIds = Convert.toIntArray(ids);
     for (Integer userId : userIds) {
@@ -209,8 +210,8 @@ public class DemoOperateController extends BaseController {
     return prefix + "/detail";
   }
 
-  @PostMapping("/clean")
   @ResponseBody
+  @PostMapping("/clean")
   public AjaxResult clean() {
     users.clear();
     return success();

@@ -11,8 +11,7 @@ import com.ruoyi.framework.shiro.service.SysPasswordService;
 import com.ruoyi.framework.util.ShiroUtils;
 import com.ruoyi.system.domain.SysUser;
 import com.ruoyi.system.service.ISysUserService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -24,23 +23,22 @@ import org.springframework.web.multipart.MultipartFile;
  *
  * @author ruoyi
  */
-@Controller
+@Slf4j
 @RequestMapping("/system/user/profile")
+@Controller
 public class SysProfileController extends BaseController {
-  private static final Logger log = LoggerFactory.getLogger(SysProfileController.class);
 
   private String prefix = "system/user/profile";
 
   @Autowired
   private ISysUserService userService;
-
   @Autowired
   private SysPasswordService passwordService;
 
   /**
    * 个人信息
    */
-  @GetMapping()
+  @GetMapping
   public String profile(ModelMap mmap) {
     SysUser user = ShiroUtils.getSysUser();
     mmap.put("user", user);
@@ -49,8 +47,8 @@ public class SysProfileController extends BaseController {
     return prefix + "/profile";
   }
 
-  @GetMapping("/checkPassword")
   @ResponseBody
+  @GetMapping("/checkPassword")
   public boolean checkPassword(String password) {
     SysUser user = ShiroUtils.getSysUser();
     if (passwordService.matches(user, password)) {
@@ -67,8 +65,8 @@ public class SysProfileController extends BaseController {
   }
 
   @Log(title = "重置密码", businessType = BusinessType.UPDATE)
-  @PostMapping("/resetPwd")
   @ResponseBody
+  @PostMapping("/resetPwd")
   public AjaxResult resetPwd(String oldPassword, String newPassword) {
     SysUser user = ShiroUtils.getSysUser();
     if (StringUtils.isNotEmpty(newPassword) && passwordService.matches(user, oldPassword)) {
@@ -108,8 +106,8 @@ public class SysProfileController extends BaseController {
    * 修改用户
    */
   @Log(title = "个人信息", businessType = BusinessType.UPDATE)
-  @PostMapping("/update")
   @ResponseBody
+  @PostMapping("/update")
   public AjaxResult update(SysUser user) {
     SysUser currentUser = ShiroUtils.getSysUser();
     currentUser.setUserName(user.getUserName());
@@ -127,8 +125,8 @@ public class SysProfileController extends BaseController {
    * 保存头像
    */
   @Log(title = "个人信息", businessType = BusinessType.UPDATE)
-  @PostMapping("/updateAvatar")
   @ResponseBody
+  @PostMapping("/updateAvatar")
   public AjaxResult updateAvatar(@RequestParam("avatarfile") MultipartFile file) {
     SysUser currentUser = ShiroUtils.getSysUser();
     try {

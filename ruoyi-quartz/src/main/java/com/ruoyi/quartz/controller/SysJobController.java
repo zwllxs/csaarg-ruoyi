@@ -27,13 +27,14 @@ import java.util.List;
 @Controller
 @RequestMapping("/monitor/job")
 public class SysJobController extends BaseController {
+
   private String prefix = "monitor/job";
 
   @Autowired
   private ISysJobService jobService;
 
   @RequiresPermissions("monitor:job:view")
-  @GetMapping()
+  @GetMapping
   public String job() {
     return prefix + "/job";
   }

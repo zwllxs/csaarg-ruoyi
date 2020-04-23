@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Component
 public class OnlineSessionFactory implements SessionFactory {
+
   @Override
   public Session createSession(SessionContext initData) {
     OnlineSession session = new OnlineSession();

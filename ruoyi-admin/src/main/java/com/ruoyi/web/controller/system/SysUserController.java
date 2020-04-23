@@ -29,42 +29,40 @@ import java.util.List;
  *
  * @author ruoyi
  */
-@Controller
 @RequestMapping("/system/user")
+@Controller
 public class SysUserController extends BaseController {
+
   private String prefix = "system/user";
 
   @Autowired
   private ISysUserService userService;
-
   @Autowired
   private ISysRoleService roleService;
-
   @Autowired
   private ISysPostService postService;
-
   @Autowired
   private SysPasswordService passwordService;
 
   @RequiresPermissions("system:user:view")
-  @GetMapping()
+  @GetMapping
   public String user() {
     return prefix + "/user";
   }
 
   @RequiresPermissions("system:user:list")
-  @PostMapping("/list")
   @ResponseBody
+  @PostMapping("/list")
   public TableDataInfo list(SysUser user) {
     startPage();
     List<SysUser> list = userService.selectUserList(user);
     return getDataTable(list);
   }
 
-  @Log(title = "用户管理", businessType = BusinessType.EXPORT)
   @RequiresPermissions("system:user:export")
-  @PostMapping("/export")
+  @Log(title = "用户管理", businessType = BusinessType.EXPORT)
   @ResponseBody
+  @PostMapping("/export")
   public AjaxResult export(SysUser user) {
     List<SysUser> list = userService.selectUserList(user);
     ExcelUtil<SysUser> util = new ExcelUtil<SysUser>(SysUser.class);
@@ -73,8 +71,8 @@ public class SysUserController extends BaseController {
 
   @Log(title = "用户管理", businessType = BusinessType.IMPORT)
   @RequiresPermissions("system:user:import")
-  @PostMapping("/importData")
   @ResponseBody
+  @PostMapping("/importData")
   public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
     ExcelUtil<SysUser> util = new ExcelUtil<SysUser>(SysUser.class);
     List<SysUser> userList = util.importExcel(file.getInputStream());
@@ -84,8 +82,8 @@ public class SysUserController extends BaseController {
   }
 
   @RequiresPermissions("system:user:view")
-  @GetMapping("/importTemplate")
   @ResponseBody
+  @GetMapping("/importTemplate")
   public AjaxResult importTemplate() {
     ExcelUtil<SysUser> util = new ExcelUtil<SysUser>(SysUser.class);
     return util.importTemplateExcel("用户数据");
@@ -104,10 +102,10 @@ public class SysUserController extends BaseController {
   /**
    * 新增保存用户
    */
-  @RequiresPermissions("system:user:add")
   @Log(title = "用户管理", businessType = BusinessType.INSERT)
-  @PostMapping("/add")
+  @RequiresPermissions("system:user:add")
   @ResponseBody
+  @PostMapping("/add")
   public AjaxResult addSave(@Validated SysUser user) {
     if (UserConstants.USER_NAME_NOT_UNIQUE.equals(userService.checkLoginNameUnique(user.getLoginName()))) {
       return error("新增用户'" + user.getLoginName() + "'失败，登录账号已存在");
@@ -136,10 +134,10 @@ public class SysUserController extends BaseController {
   /**
    * 修改保存用户
    */
-  @RequiresPermissions("system:user:edit")
   @Log(title = "用户管理", businessType = BusinessType.UPDATE)
-  @PostMapping("/edit")
+  @RequiresPermissions("system:user:edit")
   @ResponseBody
+  @PostMapping("/edit")
   public AjaxResult editSave(@Validated SysUser user) {
     userService.checkUserAllowed(user);
     if (UserConstants.USER_PHONE_NOT_UNIQUE.equals(userService.checkPhoneUnique(user))) {
@@ -151,18 +149,18 @@ public class SysUserController extends BaseController {
     return toAjax(userService.updateUser(user));
   }
 
-  @RequiresPermissions("system:user:resetPwd")
   @Log(title = "重置密码", businessType = BusinessType.UPDATE)
+  @RequiresPermissions("system:user:resetPwd")
   @GetMapping("/resetPwd/{userId}")
   public String resetPwd(@PathVariable("userId") Long userId, ModelMap mmap) {
     mmap.put("user", userService.selectUserById(userId));
     return prefix + "/resetPwd";
   }
 
-  @RequiresPermissions("system:user:resetPwd")
   @Log(title = "重置密码", businessType = BusinessType.UPDATE)
-  @PostMapping("/resetPwd")
+  @RequiresPermissions("system:user:resetPwd")
   @ResponseBody
+  @PostMapping("/resetPwd")
   public AjaxResult resetPwdSave(SysUser user) {
     userService.checkUserAllowed(user);
     user.setSalt(ShiroUtils.randomSalt());
@@ -192,19 +190,19 @@ public class SysUserController extends BaseController {
   /**
    * 用户授权角色
    */
-  @RequiresPermissions("system:user:add")
   @Log(title = "用户管理", businessType = BusinessType.GRANT)
-  @PostMapping("/authRole/insertAuthRole")
+  @RequiresPermissions("system:user:add")
   @ResponseBody
+  @PostMapping("/authRole/insertAuthRole")
   public AjaxResult insertAuthRole(Long userId, Long[] roleIds) {
     userService.insertUserAuth(userId, roleIds);
     return success();
   }
 
-  @RequiresPermissions("system:user:remove")
   @Log(title = "用户管理", businessType = BusinessType.DELETE)
-  @PostMapping("/remove")
+  @RequiresPermissions("system:user:remove")
   @ResponseBody
+  @PostMapping("/remove")
   public AjaxResult remove(String ids) {
     try {
       return toAjax(userService.deleteUserByIds(ids));
@@ -216,8 +214,8 @@ public class SysUserController extends BaseController {
   /**
    * 校验用户名
    */
-  @PostMapping("/checkLoginNameUnique")
   @ResponseBody
+  @PostMapping("/checkLoginNameUnique")
   public String checkLoginNameUnique(SysUser user) {
     return userService.checkLoginNameUnique(user.getLoginName());
   }
@@ -225,8 +223,8 @@ public class SysUserController extends BaseController {
   /**
    * 校验手机号码
    */
-  @PostMapping("/checkPhoneUnique")
   @ResponseBody
+  @PostMapping("/checkPhoneUnique")
   public String checkPhoneUnique(SysUser user) {
     return userService.checkPhoneUnique(user);
   }
@@ -234,8 +232,8 @@ public class SysUserController extends BaseController {
   /**
    * 校验email邮箱
    */
-  @PostMapping("/checkEmailUnique")
   @ResponseBody
+  @PostMapping("/checkEmailUnique")
   public String checkEmailUnique(SysUser user) {
     return userService.checkEmailUnique(user);
   }
@@ -245,8 +243,8 @@ public class SysUserController extends BaseController {
    */
   @Log(title = "用户管理", businessType = BusinessType.UPDATE)
   @RequiresPermissions("system:user:edit")
-  @PostMapping("/changeStatus")
   @ResponseBody
+  @PostMapping("/changeStatus")
   public AjaxResult changeStatus(SysUser user) {
     userService.checkUserAllowed(user);
     return toAjax(userService.changeStatus(user));

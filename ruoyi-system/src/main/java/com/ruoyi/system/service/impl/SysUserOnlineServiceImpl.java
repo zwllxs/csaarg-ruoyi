@@ -18,6 +18,7 @@ import java.util.List;
  */
 @Service
 public class SysUserOnlineServiceImpl implements ISysUserOnlineService {
+
   @Autowired
   private SysUserOnlineMapper userOnlineDao;
 

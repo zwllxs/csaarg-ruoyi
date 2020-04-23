@@ -21,23 +21,24 @@ import java.util.List;
  *
  * @author ruoyi
  */
-@Controller
 @RequestMapping("/monitor/operlog")
+@Controller
 public class SysOperlogController extends BaseController {
+
   private String prefix = "monitor/operlog";
 
   @Autowired
   private ISysOperLogService operLogService;
 
+  @GetMapping
   @RequiresPermissions("monitor:operlog:view")
-  @GetMapping()
   public String operlog() {
     return prefix + "/operlog";
   }
 
   @RequiresPermissions("monitor:operlog:list")
-  @PostMapping("/list")
   @ResponseBody
+  @PostMapping("/list")
   public TableDataInfo list(SysOperLog operLog) {
     startPage();
     List<SysOperLog> list = operLogService.selectOperLogList(operLog);
@@ -46,8 +47,8 @@ public class SysOperlogController extends BaseController {
 
   @Log(title = "操作日志", businessType = BusinessType.EXPORT)
   @RequiresPermissions("monitor:operlog:export")
-  @PostMapping("/export")
   @ResponseBody
+  @PostMapping("/export")
   public AjaxResult export(SysOperLog operLog) {
     List<SysOperLog> list = operLogService.selectOperLogList(operLog);
     ExcelUtil<SysOperLog> util = new ExcelUtil<SysOperLog>(SysOperLog.class);
@@ -55,8 +56,8 @@ public class SysOperlogController extends BaseController {
   }
 
   @RequiresPermissions("monitor:operlog:remove")
-  @PostMapping("/remove")
   @ResponseBody
+  @PostMapping("/remove")
   public AjaxResult remove(String ids) {
     return toAjax(operLogService.deleteOperLogByIds(ids));
   }
@@ -70,8 +71,8 @@ public class SysOperlogController extends BaseController {
 
   @Log(title = "操作日志", businessType = BusinessType.CLEAN)
   @RequiresPermissions("monitor:operlog:remove")
-  @PostMapping("/clean")
   @ResponseBody
+  @PostMapping("/clean")
   public AjaxResult clean() {
     operLogService.cleanOperLog();
     return success();

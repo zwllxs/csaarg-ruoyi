@@ -15,9 +15,9 @@ import java.util.List;
  */
 @Service("dict")
 public class DictService {
+
   @Autowired
   private ISysDictTypeService dictTypeService;
-
   @Autowired
   private ISysDictDataService dictDataService;
 

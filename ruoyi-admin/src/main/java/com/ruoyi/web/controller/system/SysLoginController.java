@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @Controller
 public class SysLoginController extends BaseController {
+
   @GetMapping("/login")
   public String login(HttpServletRequest request, HttpServletResponse response) {
     // 如果是Ajax请求，返回Json字符串。
@@ -33,8 +34,8 @@ public class SysLoginController extends BaseController {
     return "login";
   }
 
-  @PostMapping("/login")
   @ResponseBody
+  @PostMapping("/login")
   public AjaxResult ajaxLogin(String username, String password, Boolean rememberMe) {
     UsernamePasswordToken token = new UsernamePasswordToken(username, password, rememberMe);
     Subject subject = SecurityUtils.getSubject();

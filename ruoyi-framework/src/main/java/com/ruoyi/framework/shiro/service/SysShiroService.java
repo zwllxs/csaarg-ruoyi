@@ -17,6 +17,7 @@ import java.io.Serializable;
  */
 @Component
 public class SysShiroService {
+
   @Autowired
   private ISysUserOnlineService onlineService;
 

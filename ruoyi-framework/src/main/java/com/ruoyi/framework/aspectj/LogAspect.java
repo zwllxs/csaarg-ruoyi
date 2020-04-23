@@ -10,6 +10,7 @@ import com.ruoyi.framework.manager.factory.AsyncFactory;
 import com.ruoyi.framework.util.ShiroUtils;
 import com.ruoyi.system.domain.SysOperLog;
 import com.ruoyi.system.domain.SysUser;
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -17,8 +18,6 @@ import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
@@ -29,10 +28,10 @@ import java.util.Map;
  *
  * @author ruoyi
  */
+@Slf4j
 @Aspect
 @Component
 public class LogAspect {
-  private static final Logger log = LoggerFactory.getLogger(LogAspect.class);
 
   // 配置织入点
   @Pointcut("@annotation(com.ruoyi.common.annotation.Log)")

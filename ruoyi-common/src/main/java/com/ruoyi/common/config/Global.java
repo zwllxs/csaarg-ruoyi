@@ -8,34 +8,29 @@ import org.springframework.stereotype.Component;
  *
  * @author ruoyi
  */
-@Component
 @ConfigurationProperties(prefix = "ruoyi")
+@Component
 public class Global {
   /**
    * 项目名称
    */
   private static String name;
-
   /**
    * 版本
    */
   private static String version;
-
   /**
    * 版权年份
    */
   private static String copyrightYear;
-
   /**
    * 实例演示开关
    */
   private static boolean demoEnabled;
-
   /**
    * 上传路径
    */
   private static String profile;
-
   /**
    * 获取地址开关
    */
@@ -95,14 +90,12 @@ public class Global {
   public static String getAvatarPath() {
     return getProfile() + "/avatar";
   }
-
   /**
    * 获取下载路径
    */
   public static String getDownloadPath() {
     return getProfile() + "/download/";
   }
-
   /**
    * 获取上传路径
    */

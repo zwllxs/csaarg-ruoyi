@@ -10,8 +10,7 @@ import com.ruoyi.system.domain.*;
 import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.ISysConfigService;
 import com.ruoyi.system.service.ISysUserService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,25 +23,20 @@ import java.util.List;
  *
  * @author ruoyi
  */
+@Slf4j
 @Service
 public class SysUserServiceImpl implements ISysUserService {
-  private static final Logger log = LoggerFactory.getLogger(SysUserServiceImpl.class);
 
   @Autowired
   private SysUserMapper userMapper;
-
   @Autowired
   private SysRoleMapper roleMapper;
-
   @Autowired
   private SysPostMapper postMapper;
-
   @Autowired
   private SysUserPostMapper userPostMapper;
-
   @Autowired
   private SysUserRoleMapper userRoleMapper;
-
   @Autowired
   private ISysConfigService configService;
 
@@ -52,8 +46,8 @@ public class SysUserServiceImpl implements ISysUserService {
    * @param user 用户信息
    * @return 用户信息集合信息
    */
-  @Override
   @DataScope(deptAlias = "d", userAlias = "u")
+  @Override
   public List<SysUser> selectUserList(SysUser user) {
     return userMapper.selectUserList(user);
   }
@@ -64,8 +58,8 @@ public class SysUserServiceImpl implements ISysUserService {
    * @param user 用户信息
    * @return 用户信息集合信息
    */
-  @Override
   @DataScope(deptAlias = "d", userAlias = "u")
+  @Override
   public List<SysUser> selectAllocatedList(SysUser user) {
     return userMapper.selectAllocatedList(user);
   }
@@ -76,8 +70,8 @@ public class SysUserServiceImpl implements ISysUserService {
    * @param user 用户信息
    * @return 用户信息集合信息
    */
-  @Override
   @DataScope(deptAlias = "d", userAlias = "u")
+  @Override
   public List<SysUser> selectUnallocatedList(SysUser user) {
     return userMapper.selectUnallocatedList(user);
   }
@@ -173,8 +167,8 @@ public class SysUserServiceImpl implements ISysUserService {
    * @param user 用户信息
    * @return 结果
    */
-  @Override
   @Transactional
+  @Override
   public int insertUser(SysUser user) {
     // 新增用户信息
     int rows = userMapper.insertUser(user);
@@ -203,8 +197,8 @@ public class SysUserServiceImpl implements ISysUserService {
    * @param user 用户信息
    * @return 结果
    */
-  @Override
   @Transactional
+  @Override
   public int updateUser(SysUser user) {
     Long userId = user.getUserId();
     // 删除用户与角色关联

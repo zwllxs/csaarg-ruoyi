@@ -24,16 +24,17 @@ import java.util.List;
  *
  * @author ruoyi
  */
-@Controller
 @RequestMapping("/system/config")
+@Controller
 public class SysConfigController extends BaseController {
+
   private String prefix = "system/config";
 
   @Autowired
   private ISysConfigService configService;
 
   @RequiresPermissions("system:config:view")
-  @GetMapping()
+  @GetMapping
   public String config() {
     return prefix + "/config";
   }
@@ -42,8 +43,8 @@ public class SysConfigController extends BaseController {
    * 查询参数配置列表
    */
   @RequiresPermissions("system:config:list")
-  @PostMapping("/list")
   @ResponseBody
+  @PostMapping("/list")
   public TableDataInfo list(SysConfig config) {
     startPage();
     List<SysConfig> list = configService.selectConfigList(config);
@@ -52,8 +53,8 @@ public class SysConfigController extends BaseController {
 
   @Log(title = "参数管理", businessType = BusinessType.EXPORT)
   @RequiresPermissions("system:config:export")
-  @PostMapping("/export")
   @ResponseBody
+  @PostMapping("/export")
   public AjaxResult export(SysConfig config) {
     List<SysConfig> list = configService.selectConfigList(config);
     ExcelUtil<SysConfig> util = new ExcelUtil<SysConfig>(SysConfig.class);
@@ -71,10 +72,10 @@ public class SysConfigController extends BaseController {
   /**
    * 新增保存参数配置
    */
-  @RequiresPermissions("system:config:add")
   @Log(title = "参数管理", businessType = BusinessType.INSERT)
-  @PostMapping("/add")
+  @RequiresPermissions("system:config:add")
   @ResponseBody
+  @PostMapping("/add")
   public AjaxResult addSave(@Validated SysConfig config) {
     if (UserConstants.CONFIG_KEY_NOT_UNIQUE.equals(configService.checkConfigKeyUnique(config))) {
       return error("新增参数'" + config.getConfigName() + "'失败，参数键名已存在");
@@ -95,10 +96,10 @@ public class SysConfigController extends BaseController {
   /**
    * 修改保存参数配置
    */
-  @RequiresPermissions("system:config:edit")
   @Log(title = "参数管理", businessType = BusinessType.UPDATE)
-  @PostMapping("/edit")
+  @RequiresPermissions("system:config:edit")
   @ResponseBody
+  @PostMapping("/edit")
   public AjaxResult editSave(@Validated SysConfig config) {
     if (UserConstants.CONFIG_KEY_NOT_UNIQUE.equals(configService.checkConfigKeyUnique(config))) {
       return error("修改参数'" + config.getConfigName() + "'失败，参数键名已存在");
@@ -110,10 +111,10 @@ public class SysConfigController extends BaseController {
   /**
    * 删除参数配置
    */
-  @RequiresPermissions("system:config:remove")
   @Log(title = "参数管理", businessType = BusinessType.DELETE)
-  @PostMapping("/remove")
+  @RequiresPermissions("system:config:remove")
   @ResponseBody
+  @PostMapping("/remove")
   public AjaxResult remove(String ids) {
     return toAjax(configService.deleteConfigByIds(ids));
   }
@@ -121,10 +122,10 @@ public class SysConfigController extends BaseController {
   /**
    * 清空缓存
    */
-  @RequiresPermissions("system:config:remove")
   @Log(title = "参数管理", businessType = BusinessType.CLEAN)
-  @GetMapping("/clearCache")
+  @RequiresPermissions("system:config:remove")
   @ResponseBody
+  @GetMapping("/clearCache")
   public AjaxResult clearCache() {
     configService.clearCache();
     return success();
@@ -133,8 +134,8 @@ public class SysConfigController extends BaseController {
   /**
    * 校验参数键名
    */
-  @PostMapping("/checkConfigKeyUnique")
   @ResponseBody
+  @PostMapping("/checkConfigKeyUnique")
   public String checkConfigKeyUnique(SysConfig config) {
     return configService.checkConfigKeyUnique(config);
   }

@@ -13,13 +13,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
  *
  * @author ruoyi
  */
-@Controller
 @RequestMapping("/monitor/server")
+@Controller
 public class ServerController extends BaseController {
+
   private String prefix = "monitor/server";
 
   @RequiresPermissions("monitor:server:view")
-  @GetMapping()
+  @GetMapping
   public String server(ModelMap mmap) throws Exception {
     Server server = new Server();
     server.copyTo();

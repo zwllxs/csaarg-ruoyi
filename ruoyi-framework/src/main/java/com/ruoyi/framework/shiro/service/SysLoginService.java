@@ -24,9 +24,9 @@ import org.springframework.util.StringUtils;
  */
 @Component
 public class SysLoginService {
+
   @Autowired
   private SysPasswordService passwordService;
-
   @Autowired
   private ISysUserService userService;
 

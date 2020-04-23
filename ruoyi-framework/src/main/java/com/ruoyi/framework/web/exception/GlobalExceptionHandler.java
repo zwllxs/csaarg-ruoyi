@@ -5,9 +5,8 @@ import com.ruoyi.common.exception.BusinessException;
 import com.ruoyi.common.exception.DemoModeException;
 import com.ruoyi.common.utils.ServletUtils;
 import com.ruoyi.common.utils.security.PermissionUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.AuthorizationException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.validation.BindException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -21,10 +20,9 @@ import javax.servlet.http.HttpServletRequest;
  *
  * @author ruoyi
  */
+@Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-  private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
-
   /**
    * 权限校验失败 如果请求为ajax返回json，普通请求跳转页面
    */

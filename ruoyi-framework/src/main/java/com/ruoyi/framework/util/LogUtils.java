@@ -17,8 +17,9 @@ import java.util.Map;
  * @author ruoyi
  */
 public class LogUtils {
-  public static final Logger ERROR_LOG = LoggerFactory.getLogger("sys-error");
-  public static final Logger ACCESS_LOG = LoggerFactory.getLogger("sys-access");
+
+  public static final Logger SYS_ERROR_LOG = LoggerFactory.getLogger("sys-error");
+  public static final Logger SYS_ACCESS_LOG = LoggerFactory.getLogger("sys-access");
 
   /**
    * 记录访问日志 [username][jsessionid][ip][accept][UserAgent][url][params][Referer]
@@ -44,7 +45,7 @@ public class LogUtils {
     s.append(getBlock(url));
     s.append(getBlock(params));
     s.append(getBlock(request.getHeader("Referer")));
-    getAccessLog().info(s.toString());
+    getSysAccessLog().info(s.toString());
   }
 
   /**
@@ -59,7 +60,7 @@ public class LogUtils {
     s.append(getBlock("exception"));
     s.append(getBlock(username));
     s.append(getBlock(message));
-    ERROR_LOG.error(s.toString(), e);
+    SYS_ERROR_LOG.error(s.toString(), e);
   }
 
   /**
@@ -95,7 +96,7 @@ public class LogUtils {
       t = t.getCause();
     }
     s.append(getBlock(sw.toString()));
-    getErrorLog().error(s.toString());
+    getSysErrorLog().error(s.toString());
 
   }
 
@@ -115,11 +116,11 @@ public class LogUtils {
     return (String) SecurityUtils.getSubject().getPrincipal();
   }
 
-  public static Logger getAccessLog() {
-    return ACCESS_LOG;
+  public static Logger getSysAccessLog() {
+    return SYS_ACCESS_LOG;
   }
 
-  public static Logger getErrorLog() {
-    return ERROR_LOG;
+  public static Logger getSysErrorLog() {
+    return SYS_ERROR_LOG;
   }
 }

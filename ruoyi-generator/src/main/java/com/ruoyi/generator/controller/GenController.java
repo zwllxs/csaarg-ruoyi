@@ -32,16 +32,16 @@ import java.util.Map;
 @Controller
 @RequestMapping("/tool/gen")
 public class GenController extends BaseController {
+
   private String prefix = "tool/gen";
 
   @Autowired
   private IGenTableService genTableService;
-
   @Autowired
   private IGenTableColumnService genTableColumnService;
 
   @RequiresPermissions("tool:gen:view")
-  @GetMapping()
+  @GetMapping
   public String gen() {
     return prefix + "/gen";
   }

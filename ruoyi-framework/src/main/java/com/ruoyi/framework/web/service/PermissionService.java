@@ -1,10 +1,9 @@
 package com.ruoyi.framework.web.service;
 
 import com.ruoyi.common.utils.StringUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.beans.BeanInfo;
@@ -16,17 +15,14 @@ import java.beans.PropertyDescriptor;
  *
  * @author ruoyi
  */
+@Slf4j
 @Service("permission")
 public class PermissionService {
-  private static final Logger log = LoggerFactory.getLogger(PermissionService.class);
-
   /**
    * 没有权限，hidden用于前端隐藏按钮
    */
   public static final String NOACCESS = "hidden";
-
   private static final String ROLE_DELIMETER = ",";
-
   private static final String PERMISSION_DELIMETER = ",";
 
   /**

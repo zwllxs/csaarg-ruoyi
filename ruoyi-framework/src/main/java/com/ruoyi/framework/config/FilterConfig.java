@@ -18,12 +18,11 @@ import java.util.Map;
  */
 @Configuration
 public class FilterConfig {
+
   @Value("${xss.enabled}")
   private String enabled;
-
   @Value("${xss.excludes}")
   private String excludes;
-
   @Value("${xss.urlPatterns}")
   private String urlPatterns;
 

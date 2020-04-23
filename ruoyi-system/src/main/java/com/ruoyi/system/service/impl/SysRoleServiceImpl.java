@@ -28,15 +28,13 @@ import java.util.*;
  */
 @Service
 public class SysRoleServiceImpl implements ISysRoleService {
+
   @Autowired
   private SysRoleMapper roleMapper;
-
   @Autowired
   private SysRoleMenuMapper roleMenuMapper;
-
   @Autowired
   private SysUserRoleMapper userRoleMapper;
-
   @Autowired
   private SysRoleDeptMapper roleDeptMapper;
 
@@ -46,8 +44,8 @@ public class SysRoleServiceImpl implements ISysRoleService {
    * @param role 角色信息
    * @return 角色数据集合信息
    */
-  @Override
   @DataScope(deptAlias = "d")
+  @Override
   public List<SysRole> selectRoleList(SysRole role) {
     return roleMapper.selectRoleList(role);
   }
@@ -148,8 +146,8 @@ public class SysRoleServiceImpl implements ISysRoleService {
    * @param role 角色信息
    * @return 结果
    */
-  @Override
   @Transactional
+  @Override
   public int insertRole(SysRole role) {
     // 新增角色信息
     roleMapper.insertRole(role);
@@ -162,8 +160,8 @@ public class SysRoleServiceImpl implements ISysRoleService {
    * @param role 角色信息
    * @return 结果
    */
-  @Override
   @Transactional
+  @Override
   public int updateRole(SysRole role) {
     // 修改角色信息
     roleMapper.updateRole(role);
@@ -178,8 +176,8 @@ public class SysRoleServiceImpl implements ISysRoleService {
    * @param role 角色信息
    * @return 结果
    */
-  @Override
   @Transactional
+  @Override
   public int authDataScope(SysRole role) {
     // 修改角色信息
     roleMapper.updateRole(role);

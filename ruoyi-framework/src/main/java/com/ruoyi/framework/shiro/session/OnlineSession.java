@@ -9,6 +9,7 @@ import org.apache.shiro.session.mgt.SimpleSession;
  * @author ruoyi
  */
 public class OnlineSession extends SimpleSession {
+
   private static final long serialVersionUID = 1L;
 
   /**

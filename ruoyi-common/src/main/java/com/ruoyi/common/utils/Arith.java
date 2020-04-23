@@ -9,7 +9,6 @@ import java.math.RoundingMode;
  * @author ruoyi
  */
 public class Arith {
-
   /**
    * 默认除法运算精度
    */

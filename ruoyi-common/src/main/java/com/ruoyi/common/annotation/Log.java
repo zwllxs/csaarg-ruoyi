@@ -10,9 +10,9 @@ import java.lang.annotation.*;
  *
  * @author ruoyi
  */
-@Target({ElementType.PARAMETER, ElementType.METHOD})
-@Retention(RetentionPolicy.RUNTIME)
 @Documented
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.PARAMETER, ElementType.METHOD})
 public @interface Log {
   /**
    * 模块

@@ -23,23 +23,24 @@ import java.util.List;
  *
  * @author ruoyi
  */
-@Controller
 @RequestMapping("/system/dict/data")
+@Controller
 public class SysDictDataController extends BaseController {
+
   private String prefix = "system/dict/data";
 
   @Autowired
   private ISysDictDataService dictDataService;
 
   @RequiresPermissions("system:dict:view")
-  @GetMapping()
+  @GetMapping
   public String dictData() {
     return prefix + "/data";
   }
 
-  @PostMapping("/list")
   @RequiresPermissions("system:dict:list")
   @ResponseBody
+  @PostMapping("/list")
   public TableDataInfo list(SysDictData dictData) {
     startPage();
     List<SysDictData> list = dictDataService.selectDictDataList(dictData);
@@ -48,8 +49,8 @@ public class SysDictDataController extends BaseController {
 
   @Log(title = "字典数据", businessType = BusinessType.EXPORT)
   @RequiresPermissions("system:dict:export")
-  @PostMapping("/export")
   @ResponseBody
+  @PostMapping("/export")
   public AjaxResult export(SysDictData dictData) {
     List<SysDictData> list = dictDataService.selectDictDataList(dictData);
     ExcelUtil<SysDictData> util = new ExcelUtil<SysDictData>(SysDictData.class);
@@ -70,8 +71,8 @@ public class SysDictDataController extends BaseController {
    */
   @Log(title = "字典数据", businessType = BusinessType.INSERT)
   @RequiresPermissions("system:dict:add")
-  @PostMapping("/add")
   @ResponseBody
+  @PostMapping("/add")
   public AjaxResult addSave(@Validated SysDictData dict) {
     dict.setCreateBy(ShiroUtils.getLoginName());
     return toAjax(dictDataService.insertDictData(dict));
@@ -91,8 +92,8 @@ public class SysDictDataController extends BaseController {
    */
   @Log(title = "字典数据", businessType = BusinessType.UPDATE)
   @RequiresPermissions("system:dict:edit")
-  @PostMapping("/edit")
   @ResponseBody
+  @PostMapping("/edit")
   public AjaxResult editSave(@Validated SysDictData dict) {
     dict.setUpdateBy(ShiroUtils.getLoginName());
     return toAjax(dictDataService.updateDictData(dict));
@@ -100,8 +101,8 @@ public class SysDictDataController extends BaseController {
 
   @Log(title = "字典数据", businessType = BusinessType.DELETE)
   @RequiresPermissions("system:dict:remove")
-  @PostMapping("/remove")
   @ResponseBody
+  @PostMapping("/remove")
   public AjaxResult remove(String ids) {
     return toAjax(dictDataService.deleteDictDataByIds(ids));
   }

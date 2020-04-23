@@ -1,6 +1,9 @@
 package com.ruoyi.web.controller.demo.controller;
 
 import com.ruoyi.common.core.domain.AjaxResult;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,9 +17,10 @@ import java.util.List;
  *
  * @author ruoyi
  */
-@Controller
 @RequestMapping("/demo/form")
+@Controller
 public class DemoFormController {
+
   private String prefix = "demo/form";
 
   private final static List<UserFormModel> users = new ArrayList<UserFormModel>();
@@ -160,8 +164,8 @@ public class DemoFormController {
   /**
    * 获取用户数据
    */
-  @GetMapping("/userModel")
   @ResponseBody
+  @GetMapping("/userModel")
   public AjaxResult userModel() {
     AjaxResult ajax = new AjaxResult();
 
@@ -173,8 +177,8 @@ public class DemoFormController {
   /**
    * 获取数据集合
    */
-  @GetMapping("/collection")
   @ResponseBody
+  @GetMapping("/collection")
   public AjaxResult collection() {
     String[] array = {"ruoyi 1", "ruoyi 2", "ruoyi 3", "ruoyi 4", "ruoyi 5"};
     AjaxResult ajax = new AjaxResult();
@@ -183,68 +187,24 @@ public class DemoFormController {
   }
 }
 
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 class UserFormModel {
   /**
    * 用户ID
    */
   private int userId;
-
   /**
    * 用户编号
    */
   private String userCode;
-
   /**
    * 用户姓名
    */
   private String userName;
-
   /**
    * 用户手机
    */
   private String userPhone;
-
-  public UserFormModel() {
-
-  }
-
-  public UserFormModel(int userId, String userCode, String userName, String userPhone) {
-    this.userId = userId;
-    this.userCode = userCode;
-    this.userName = userName;
-    this.userPhone = userPhone;
-  }
-
-  public int getUserId() {
-    return userId;
-  }
-
-  public void setUserId(int userId) {
-    this.userId = userId;
-  }
-
-  public String getUserCode() {
-    return userCode;
-  }
-
-  public void setUserCode(String userCode) {
-    this.userCode = userCode;
-  }
-
-  public String getUserName() {
-    return userName;
-  }
-
-  public void setUserName(String userName) {
-    this.userName = userName;
-  }
-
-  public String getUserPhone() {
-    return userPhone;
-  }
-
-  public void setUserPhone(String userPhone) {
-    this.userPhone = userPhone;
-  }
-
 }

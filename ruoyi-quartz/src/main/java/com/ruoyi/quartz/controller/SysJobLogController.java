@@ -27,16 +27,16 @@ import java.util.List;
 @Controller
 @RequestMapping("/monitor/jobLog")
 public class SysJobLogController extends BaseController {
+
   private String prefix = "monitor/job";
 
   @Autowired
   private ISysJobService jobService;
-
   @Autowired
   private ISysJobLogService jobLogService;
 
   @RequiresPermissions("monitor:job:view")
-  @GetMapping()
+  @GetMapping
   public String jobLog(@RequestParam(value = "jobId", required = false) Long jobId, ModelMap mmap) {
     if (StringUtils.isNotNull(jobId)) {
       SysJob job = jobService.selectJobById(jobId);

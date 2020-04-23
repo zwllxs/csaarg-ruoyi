@@ -7,8 +7,7 @@ import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.file.FileUploadUtils;
 import com.ruoyi.common.utils.file.FileUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,9 +23,9 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author ruoyi
  */
+@Slf4j
 @Controller
 public class CommonController {
-  private static final Logger log = LoggerFactory.getLogger(CommonController.class);
 
   @Autowired
   private ServerConfig serverConfig;
@@ -62,8 +61,8 @@ public class CommonController {
   /**
    * 通用上传请求
    */
-  @PostMapping("/common/upload")
   @ResponseBody
+  @PostMapping("/common/upload")
   public AjaxResult uploadFile(MultipartFile file) throws Exception {
     try {
       // 上传文件路径

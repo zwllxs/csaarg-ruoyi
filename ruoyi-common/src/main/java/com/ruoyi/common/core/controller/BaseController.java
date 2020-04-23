@@ -11,8 +11,7 @@ import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.ServletUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.sql.SqlUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 
@@ -28,9 +27,8 @@ import java.util.List;
  *
  * @author ruoyi
  */
+@Slf4j
 public class BaseController {
-  protected final Logger logger = LoggerFactory.getLogger(BaseController.class);
-
   /**
    * 将前台传递过来的日期格式的字符串，自动转化为Date类型
    */

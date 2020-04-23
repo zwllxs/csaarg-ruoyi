@@ -1,10 +1,9 @@
 package com.ruoyi.common.utils;
 
 import com.ruoyi.common.utils.spring.SpringUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Iterator;
 import java.util.Set;
@@ -14,8 +13,8 @@ import java.util.Set;
  *
  * @author ruoyi
  */
+@Slf4j
 public class CacheUtils {
-  private static Logger logger = LoggerFactory.getLogger(CacheUtils.class);
 
   private static CacheManager cacheManager = SpringUtils.getBean(CacheManager.class);
 
@@ -119,7 +118,7 @@ public class CacheUtils {
     for (Iterator<String> it = keys.iterator(); it.hasNext(); ) {
       cache.remove(it.next());
     }
-    logger.info("清理缓存： {} => {}", cacheName, keys);
+    log.info("清理缓存： {} => {}", cacheName, keys);
   }
 
   /**
@@ -141,7 +140,7 @@ public class CacheUtils {
     for (Iterator<String> it = keys.iterator(); it.hasNext(); ) {
       remove(it.next());
     }
-    logger.info("清理缓存： {} => {}", cacheName, keys);
+    log.info("清理缓存： {} => {}", cacheName, keys);
   }
 
   /**

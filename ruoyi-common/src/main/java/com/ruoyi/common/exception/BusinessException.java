@@ -6,6 +6,7 @@ package com.ruoyi.common.exception;
  * @author ruoyi
  */
 public class BusinessException extends RuntimeException {
+
   private static final long serialVersionUID = 1L;
 
   protected final String message;

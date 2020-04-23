@@ -18,8 +18,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  *
  * @author ruoyi
  */
-@Configuration
 @EnableSwagger2
+@Configuration
 public class SwaggerConfig {
   /**
    * 创建API

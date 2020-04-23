@@ -9,10 +9,10 @@ import java.lang.annotation.*;
  *
  * @author ruoyi
  */
-@Target({ElementType.METHOD, ElementType.TYPE})
-@Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Inherited
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.METHOD, ElementType.TYPE})
 public @interface DataSource {
   /**
    * 切换数据源名称

@@ -9,9 +9,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
  *
  * @author ruoyi
  */
-@Controller
 @RequestMapping("/demo/report")
+@Controller
 public class DemoReportController {
+
   private String prefix = "demo/report";
 
   /**

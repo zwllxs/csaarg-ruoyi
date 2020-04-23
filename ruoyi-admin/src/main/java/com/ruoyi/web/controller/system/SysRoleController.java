@@ -27,26 +27,26 @@ import java.util.List;
  *
  * @author ruoyi
  */
-@Controller
 @RequestMapping("/system/role")
+@Controller
 public class SysRoleController extends BaseController {
+
   private String prefix = "system/role";
 
   @Autowired
   private ISysRoleService roleService;
-
   @Autowired
   private ISysUserService userService;
 
   @RequiresPermissions("system:role:view")
-  @GetMapping()
+  @GetMapping
   public String role() {
     return prefix + "/role";
   }
 
   @RequiresPermissions("system:role:list")
-  @PostMapping("/list")
   @ResponseBody
+  @PostMapping("/list")
   public TableDataInfo list(SysRole role) {
     startPage();
     List<SysRole> list = roleService.selectRoleList(role);
@@ -55,8 +55,8 @@ public class SysRoleController extends BaseController {
 
   @Log(title = "角色管理", businessType = BusinessType.EXPORT)
   @RequiresPermissions("system:role:export")
-  @PostMapping("/export")
   @ResponseBody
+  @PostMapping("/export")
   public AjaxResult export(SysRole role) {
     List<SysRole> list = roleService.selectRoleList(role);
     ExcelUtil<SysRole> util = new ExcelUtil<SysRole>(SysRole.class);
@@ -74,10 +74,10 @@ public class SysRoleController extends BaseController {
   /**
    * 新增保存角色
    */
-  @RequiresPermissions("system:role:add")
   @Log(title = "角色管理", businessType = BusinessType.INSERT)
-  @PostMapping("/add")
+  @RequiresPermissions("system:role:add")
   @ResponseBody
+  @PostMapping("/add")
   public AjaxResult addSave(@Validated SysRole role) {
     if (UserConstants.ROLE_NAME_NOT_UNIQUE.equals(roleService.checkRoleNameUnique(role))) {
       return error("新增角色'" + role.getRoleName() + "'失败，角色名称已存在");
@@ -102,10 +102,10 @@ public class SysRoleController extends BaseController {
   /**
    * 修改保存角色
    */
-  @RequiresPermissions("system:role:edit")
   @Log(title = "角色管理", businessType = BusinessType.UPDATE)
-  @PostMapping("/edit")
+  @RequiresPermissions("system:role:edit")
   @ResponseBody
+  @PostMapping("/edit")
   public AjaxResult editSave(@Validated SysRole role) {
     roleService.checkRoleAllowed(role);
     if (UserConstants.ROLE_NAME_NOT_UNIQUE.equals(roleService.checkRoleNameUnique(role))) {
@@ -130,10 +130,10 @@ public class SysRoleController extends BaseController {
   /**
    * 保存角色分配数据权限
    */
-  @RequiresPermissions("system:role:edit")
   @Log(title = "角色管理", businessType = BusinessType.UPDATE)
-  @PostMapping("/authDataScope")
+  @RequiresPermissions("system:role:edit")
   @ResponseBody
+  @PostMapping("/authDataScope")
   public AjaxResult authDataScopeSave(SysRole role) {
     roleService.checkRoleAllowed(role);
     role.setUpdateBy(ShiroUtils.getLoginName());
@@ -144,10 +144,10 @@ public class SysRoleController extends BaseController {
     return error();
   }
 
-  @RequiresPermissions("system:role:remove")
   @Log(title = "角色管理", businessType = BusinessType.DELETE)
-  @PostMapping("/remove")
+  @RequiresPermissions("system:role:remove")
   @ResponseBody
+  @PostMapping("/remove")
   public AjaxResult remove(String ids) {
     try {
       return toAjax(roleService.deleteRoleByIds(ids));
@@ -159,8 +159,8 @@ public class SysRoleController extends BaseController {
   /**
    * 校验角色名称
    */
-  @PostMapping("/checkRoleNameUnique")
   @ResponseBody
+  @PostMapping("/checkRoleNameUnique")
   public String checkRoleNameUnique(SysRole role) {
     return roleService.checkRoleNameUnique(role);
   }
@@ -168,8 +168,8 @@ public class SysRoleController extends BaseController {
   /**
    * 校验角色权限
    */
-  @PostMapping("/checkRoleKeyUnique")
   @ResponseBody
+  @PostMapping("/checkRoleKeyUnique")
   public String checkRoleKeyUnique(SysRole role) {
     return roleService.checkRoleKeyUnique(role);
   }
@@ -187,8 +187,8 @@ public class SysRoleController extends BaseController {
    */
   @Log(title = "角色管理", businessType = BusinessType.UPDATE)
   @RequiresPermissions("system:role:edit")
-  @PostMapping("/changeStatus")
   @ResponseBody
+  @PostMapping("/changeStatus")
   public AjaxResult changeStatus(SysRole role) {
     roleService.checkRoleAllowed(role);
     return toAjax(roleService.changeStatus(role));
@@ -208,8 +208,8 @@ public class SysRoleController extends BaseController {
    * 查询已分配用户角色列表
    */
   @RequiresPermissions("system:role:list")
-  @PostMapping("/authUser/allocatedList")
   @ResponseBody
+  @PostMapping("/authUser/allocatedList")
   public TableDataInfo allocatedList(SysUser user) {
     startPage();
     List<SysUser> list = userService.selectAllocatedList(user);
@@ -220,8 +220,8 @@ public class SysRoleController extends BaseController {
    * 取消授权
    */
   @Log(title = "角色管理", businessType = BusinessType.GRANT)
-  @PostMapping("/authUser/cancel")
   @ResponseBody
+  @PostMapping("/authUser/cancel")
   public AjaxResult cancelAuthUser(SysUserRole userRole) {
     return toAjax(roleService.deleteAuthUser(userRole));
   }
@@ -230,8 +230,8 @@ public class SysRoleController extends BaseController {
    * 批量取消授权
    */
   @Log(title = "角色管理", businessType = BusinessType.GRANT)
-  @PostMapping("/authUser/cancelAll")
   @ResponseBody
+  @PostMapping("/authUser/cancelAll")
   public AjaxResult cancelAuthUserAll(Long roleId, String userIds) {
     return toAjax(roleService.deleteAuthUsers(roleId, userIds));
   }
@@ -249,8 +249,8 @@ public class SysRoleController extends BaseController {
    * 查询未分配用户角色列表
    */
   @RequiresPermissions("system:role:list")
-  @PostMapping("/authUser/unallocatedList")
   @ResponseBody
+  @PostMapping("/authUser/unallocatedList")
   public TableDataInfo unallocatedList(SysUser user) {
     startPage();
     List<SysUser> list = userService.selectUnallocatedList(user);
@@ -261,8 +261,8 @@ public class SysRoleController extends BaseController {
    * 批量选择用户授权
    */
   @Log(title = "角色管理", businessType = BusinessType.GRANT)
-  @PostMapping("/authUser/selectAll")
   @ResponseBody
+  @PostMapping("/authUser/selectAll")
   public AjaxResult selectAuthUserAll(Long roleId, String userIds) {
     return toAjax(roleService.insertAuthUsers(roleId, userIds));
   }

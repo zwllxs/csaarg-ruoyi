@@ -24,23 +24,24 @@ import java.util.List;
  *
  * @author ruoyi
  */
-@Controller
 @RequestMapping("/system/menu")
+@Controller
 public class SysMenuController extends BaseController {
+
   private String prefix = "system/menu";
 
   @Autowired
   private ISysMenuService menuService;
 
   @RequiresPermissions("system:menu:view")
-  @GetMapping()
+  @GetMapping
   public String menu() {
     return prefix + "/menu";
   }
 
   @RequiresPermissions("system:menu:list")
-  @PostMapping("/list")
   @ResponseBody
+  @PostMapping("/list")
   public List<SysMenu> list(SysMenu menu) {
     Long userId = ShiroUtils.getUserId();
     List<SysMenu> menuList = menuService.selectMenuList(menu, userId);
@@ -52,8 +53,8 @@ public class SysMenuController extends BaseController {
    */
   @Log(title = "菜单管理", businessType = BusinessType.DELETE)
   @RequiresPermissions("system:menu:remove")
-  @GetMapping("/remove/{menuId}")
   @ResponseBody
+  @GetMapping("/remove/{menuId}")
   public AjaxResult remove(@PathVariable("menuId") Long menuId) {
     if (menuService.selectCountMenuByParentId(menuId) > 0) {
       return AjaxResult.warn("存在子菜单,不允许删除");
@@ -87,8 +88,8 @@ public class SysMenuController extends BaseController {
    */
   @Log(title = "菜单管理", businessType = BusinessType.INSERT)
   @RequiresPermissions("system:menu:add")
-  @PostMapping("/add")
   @ResponseBody
+  @PostMapping("/add")
   public AjaxResult addSave(@Validated SysMenu menu) {
     if (UserConstants.MENU_NAME_NOT_UNIQUE.equals(menuService.checkMenuNameUnique(menu))) {
       return error("新增菜单'" + menu.getMenuName() + "'失败，菜单名称已存在");
@@ -112,8 +113,8 @@ public class SysMenuController extends BaseController {
    */
   @Log(title = "菜单管理", businessType = BusinessType.UPDATE)
   @RequiresPermissions("system:menu:edit")
-  @PostMapping("/edit")
   @ResponseBody
+  @PostMapping("/edit")
   public AjaxResult editSave(@Validated SysMenu menu) {
     if (UserConstants.MENU_NAME_NOT_UNIQUE.equals(menuService.checkMenuNameUnique(menu))) {
       return error("修改菜单'" + menu.getMenuName() + "'失败，菜单名称已存在");
@@ -134,8 +135,8 @@ public class SysMenuController extends BaseController {
   /**
    * 校验菜单名称
    */
-  @PostMapping("/checkMenuNameUnique")
   @ResponseBody
+  @PostMapping("/checkMenuNameUnique")
   public String checkMenuNameUnique(SysMenu menu) {
     return menuService.checkMenuNameUnique(menu);
   }
@@ -143,8 +144,8 @@ public class SysMenuController extends BaseController {
   /**
    * 加载角色菜单列表树
    */
-  @GetMapping("/roleMenuTreeData")
   @ResponseBody
+  @GetMapping("/roleMenuTreeData")
   public List<Ztree> roleMenuTreeData(SysRole role) {
     Long userId = ShiroUtils.getUserId();
     List<Ztree> ztrees = menuService.roleMenuTreeData(role, userId);
@@ -154,8 +155,8 @@ public class SysMenuController extends BaseController {
   /**
    * 加载所有菜单列表树
    */
-  @GetMapping("/menuTreeData")
   @ResponseBody
+  @GetMapping("/menuTreeData")
   public List<Ztree> menuTreeData() {
     Long userId = ShiroUtils.getUserId();
     List<Ztree> ztrees = menuService.menuTreeData(userId);

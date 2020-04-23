@@ -26,6 +26,8 @@
     <swagger.version>2.9.2</swagger.version>
     <pagehelper.boot.version>1.2.5</pagehelper.boot.version>
     <fastjson.version>1.2.68</fastjson.version>
+    <lombok.version>1.18.12</lombok.version>
+
     <oshi.version>3.9.1</oshi.version>
     <commons.io.version>2.5</commons.io.version>
     <commons.fileupload.version>1.3.3</commons.fileupload.version>
@@ -168,6 +170,14 @@
         <version>${fastjson.version}</version>
       </dependency>
 
+      <!-- Spice up your java: Automatic Resource Management, automatic generation of getters, setters, equals, hashCode and toString, and more! -->
+      <dependency>
+        <groupId>org.projectlombok</groupId>
+        <artifactId>lombok</artifactId>
+        <version>${lombok.version}</version>
+        <scope>provided</scope>
+      </dependency>
+
       <!-- 定时任务-->
       <dependency>
         <groupId>com.ruoyi</groupId>
@@ -202,7 +212,6 @@
         <artifactId>ruoyi-common</artifactId>
         <version>${ruoyi.version}</version>
       </dependency>
-
     </dependencies>
   </dependencyManagement>
 

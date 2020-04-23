@@ -10,9 +10,9 @@ import org.springframework.stereotype.Component;
  *
  * @author ruoyi
  */
-@Component
-@ConfigurationProperties(prefix = "gen")
 @PropertySource(value = {"classpath:generator.yml"})
+@ConfigurationProperties(prefix = "gen")
+@Component
 public class GenConfig {
   /**
    * 作者

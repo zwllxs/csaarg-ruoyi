@@ -17,6 +17,7 @@ import java.util.List;
  */
 @Service
 public class SysDictDataServiceImpl implements ISysDictDataService {
+
   @Autowired
   private SysDictDataMapper dictDataMapper;
 

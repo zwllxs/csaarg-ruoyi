@@ -25,23 +25,24 @@ import java.util.List;
  *
  * @author ruoyi
  */
-@Controller
 @RequestMapping("/system/dept")
+@Controller
 public class SysDeptController extends BaseController {
+
   private String prefix = "system/dept";
 
   @Autowired
   private ISysDeptService deptService;
 
   @RequiresPermissions("system:dept:view")
-  @GetMapping()
+  @GetMapping
   public String dept() {
     return prefix + "/dept";
   }
 
   @RequiresPermissions("system:dept:list")
-  @PostMapping("/list")
   @ResponseBody
+  @PostMapping("/list")
   public List<SysDept> list(SysDept dept) {
     List<SysDept> deptList = deptService.selectDeptList(dept);
     return deptList;
@@ -61,8 +62,8 @@ public class SysDeptController extends BaseController {
    */
   @Log(title = "部门管理", businessType = BusinessType.INSERT)
   @RequiresPermissions("system:dept:add")
-  @PostMapping("/add")
   @ResponseBody
+  @PostMapping("/add")
   public AjaxResult addSave(@Validated SysDept dept) {
     if (UserConstants.DEPT_NAME_NOT_UNIQUE.equals(deptService.checkDeptNameUnique(dept))) {
       return error("新增部门'" + dept.getDeptName() + "'失败，部门名称已存在");
@@ -89,8 +90,8 @@ public class SysDeptController extends BaseController {
    */
   @Log(title = "部门管理", businessType = BusinessType.UPDATE)
   @RequiresPermissions("system:dept:edit")
-  @PostMapping("/edit")
   @ResponseBody
+  @PostMapping("/edit")
   public AjaxResult editSave(@Validated SysDept dept) {
     if (UserConstants.DEPT_NAME_NOT_UNIQUE.equals(deptService.checkDeptNameUnique(dept))) {
       return error("修改部门'" + dept.getDeptName() + "'失败，部门名称已存在");
@@ -106,8 +107,8 @@ public class SysDeptController extends BaseController {
    */
   @Log(title = "部门管理", businessType = BusinessType.DELETE)
   @RequiresPermissions("system:dept:remove")
-  @GetMapping("/remove/{deptId}")
   @ResponseBody
+  @GetMapping("/remove/{deptId}")
   public AjaxResult remove(@PathVariable("deptId") Long deptId) {
     if (deptService.selectDeptCount(deptId) > 0) {
       return AjaxResult.warn("存在下级部门,不允许删除");
@@ -121,8 +122,8 @@ public class SysDeptController extends BaseController {
   /**
    * 校验部门名称
    */
-  @PostMapping("/checkDeptNameUnique")
   @ResponseBody
+  @PostMapping("/checkDeptNameUnique")
   public String checkDeptNameUnique(SysDept dept) {
     return deptService.checkDeptNameUnique(dept);
   }
@@ -139,8 +140,8 @@ public class SysDeptController extends BaseController {
   /**
    * 加载部门列表树
    */
-  @GetMapping("/treeData")
   @ResponseBody
+  @GetMapping("/treeData")
   public List<Ztree> treeData() {
     List<Ztree> ztrees = deptService.selectDeptTree(new SysDept());
     return ztrees;
@@ -149,8 +150,8 @@ public class SysDeptController extends BaseController {
   /**
    * 加载角色部门（数据权限）列表树
    */
-  @GetMapping("/roleDeptTreeData")
   @ResponseBody
+  @GetMapping("/roleDeptTreeData")
   public List<Ztree> deptTreeData(SysRole role) {
     List<Ztree> ztrees = deptService.roleDeptTreeData(role);
     return ztrees;

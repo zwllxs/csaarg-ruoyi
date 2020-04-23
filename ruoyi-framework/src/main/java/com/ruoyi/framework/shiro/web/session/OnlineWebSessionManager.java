@@ -7,6 +7,7 @@ import com.ruoyi.common.utils.spring.SpringUtils;
 import com.ruoyi.framework.shiro.session.OnlineSession;
 import com.ruoyi.system.domain.SysUserOnline;
 import com.ruoyi.system.service.ISysUserOnlineService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.shiro.session.ExpiredSessionException;
 import org.apache.shiro.session.InvalidSessionException;
@@ -14,8 +15,6 @@ import org.apache.shiro.session.Session;
 import org.apache.shiro.session.mgt.DefaultSessionKey;
 import org.apache.shiro.session.mgt.SessionKey;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -27,8 +26,8 @@ import java.util.List;
  *
  * @author ruoyi
  */
+@Slf4j
 public class OnlineWebSessionManager extends DefaultWebSessionManager {
-  private static final Logger log = LoggerFactory.getLogger(OnlineWebSessionManager.class);
 
   @Override
   public void setAttribute(SessionKey sessionKey, Object attributeKey, Object value) throws InvalidSessionException {

@@ -4,16 +4,15 @@ import com.ruoyi.common.config.Global;
 import com.ruoyi.common.json.JSON;
 import com.ruoyi.common.json.JSONObject;
 import com.ruoyi.common.utils.http.HttpUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 获取地址类
  *
  * @author ruoyi
  */
+@Slf4j
 public class AddressUtils {
-  private static final Logger log = LoggerFactory.getLogger(AddressUtils.class);
 
   public static final String IP_URL = "http://ip.taobao.com/service/getIpInfo.php";
 

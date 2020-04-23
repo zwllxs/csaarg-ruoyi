@@ -8,8 +8,8 @@ import com.ruoyi.common.utils.StringUtils;
  * @author ruoyi
  */
 public class EscapeUtil {
-  public static final String RE_HTML_MARK = "(<[^<]*?>)|(<[\\s]*?/[^<]*?>)|(<[^<]*?/[\\s]*?>)";
 
+  public static final String RE_HTML_MARK = "(<[^<]*?>)|(<[\\s]*?/[^<]*?>)|(<[^<]*?/[\\s]*?>)";
   private static final char[][] TEXT = new char[64][];
 
   static {

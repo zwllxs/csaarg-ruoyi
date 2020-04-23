@@ -26,9 +26,9 @@ import java.util.List;
  */
 @Service
 public class SysDictTypeServiceImpl implements ISysDictTypeService {
+
   @Autowired
   private SysDictTypeMapper dictTypeMapper;
-
   @Autowired
   private SysDictDataMapper dictDataMapper;
 
@@ -158,8 +158,8 @@ public class SysDictTypeServiceImpl implements ISysDictTypeService {
    * @param dictType 字典类型信息
    * @return 结果
    */
-  @Override
   @Transactional
+  @Override
   public int updateDictType(SysDictType dictType) {
     SysDictType oldDict = dictTypeMapper.selectDictTypeById(dictType.getDictId());
     dictDataMapper.updateDictDataType(oldDict.getDictType(), dictType.getDictType());

@@ -23,7 +23,6 @@ public class CharsetKit {
    * GBK
    */
   public static final String GBK = "GBK";
-
   /**
    * ISO-8859-1
    */

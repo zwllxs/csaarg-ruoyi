@@ -19,9 +19,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @Controller
 public class SysRegisterController extends BaseController {
+
   @Autowired
   private SysRegisterService registerService;
-
   @Autowired
   private ISysConfigService configService;
 
@@ -30,8 +30,8 @@ public class SysRegisterController extends BaseController {
     return "register";
   }
 
-  @PostMapping("/register")
   @ResponseBody
+  @PostMapping("/register")
   public AjaxResult ajaxRegister(SysUser user) {
     if (!("true".equals(configService.selectConfigByKey("sys.account.registerUser")))) {
       return error("当前系统没有开启注册功能！");
