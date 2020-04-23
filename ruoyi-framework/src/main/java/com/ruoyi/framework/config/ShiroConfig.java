@@ -217,11 +217,9 @@ public class ShiroConfig {
     filterChainDefinitionMap.put("/ruoyi.png**", "anon");
     filterChainDefinitionMap.put("/css/**", "anon");
     filterChainDefinitionMap.put("/docs/**", "anon");
-    filterChainDefinitionMap.put("/fonts/**", "anon");
     filterChainDefinitionMap.put("/img/**", "anon");
-    filterChainDefinitionMap.put("/ajax/**", "anon");
     filterChainDefinitionMap.put("/js/**", "anon");
-    filterChainDefinitionMap.put("/ruoyi/**", "anon");
+    filterChainDefinitionMap.put("/lib/**", "anon");
     filterChainDefinitionMap.put("/captcha/captchaImage**", "anon");
     // 退出 logout地址，shiro去清除session
     filterChainDefinitionMap.put("/logout", "logout");

@@ -8,13 +8,13 @@
   <!-- 避免IE使用兼容模式 -->
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link th:href="@{favicon.ico}" rel="stylesheet"/>
-  <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet"/>
-  <link th:href="@{/css/jquery.contextMenu.min.css}" rel="stylesheet"/>
-  <link th:href="@{/css/font-awesome.min.css}" rel="stylesheet"/>
-  <link th:href="@{/css/animate.css}" rel="stylesheet"/>
+  <link th:href="@{/lib/bootstrap/css/bootstrap.min.css}" rel="stylesheet"/>
+  <link th:href="@{/lib/jquery-contextmenu/jquery.contextMenu.min.css}" rel="stylesheet"/>
+  <link th:href="@{/lib/font-awesome/css/font-awesome.min.css}" rel="stylesheet"/>
+  <link th:href="@{/lib/animate.css/animate.min.css}" rel="stylesheet"/>
   <link th:href="@{/css/style.css}" rel="stylesheet"/>
   <link th:href="@{/css/skins.css}" rel="stylesheet"/>
-  <link th:href="@{/ruoyi/css/ry-ui.css?v=4.2.0}" rel="stylesheet"/>
+  <link th:href="@{/css/ry-ui.css?v=4.2.0}" rel="stylesheet"/>
 </head>
 <body class="fixed-sidebar full-height-layout gray-bg" style="overflow: hidden">
 <div id="wrapper">
@@ -240,17 +240,17 @@
   <!--右侧部分结束-->
 </div>
 <!-- 全局js -->
-<script th:src="@{/js/jquery.min.js}"></script>
-<script th:src="@{/js/bootstrap.min.js}"></script>
-<script th:src="@{/js/plugins/metisMenu/jquery.metisMenu.js}"></script>
-<script th:src="@{/js/plugins/slimscroll/jquery.slimscroll.min.js}"></script>
-<script th:src="@{/js/jquery.contextMenu.min.js}"></script>
-<script th:src="@{/ajax/libs/blockUI/jquery.blockUI.js}"></script>
-<script th:src="@{/ajax/libs/layer/layer.min.js}"></script>
-<script th:src="@{/ruoyi/js/ry-ui.js?v=4.2.0}"></script>
-<script th:src="@{/ruoyi/js/common.js?v=4.2.0}"></script>
-<script th:src="@{/ruoyi/index.js}"></script>
-<script th:src="@{/ajax/libs/fullscreen/jquery.fullscreen.js}"></script>
+<script th:src="@{/lib/jquery.min.js}"></script>
+<script th:src="@{/lib/bootstrap/js/bootstrap.min.js}"></script>
+<script th:src="@{/lib/metisMenu/js/metisMenu.min.js}"></script>
+<script th:src="@{/lib/jquery-slimscroll/jquery.slimscroll.min.js}"></script>
+<script th:src="@{/lib/jquery-contextmenu/jquery.contextMenu.min.js}"></script>
+<script th:src="@{/lib/blockUI/jquery.blockUI.js}"></script>
+<script th:src="@{/lib/layer/layer.min.js}"></script>
+<script th:src="@{/js/ry-ui.js?v=4.2.0}"></script>
+<script th:src="@{/js/common.js?v=4.2.0}"></script>
+<script th:src="@{/js/index.js}"></script>
+<script th:src="@{/lib/fullscreen/jquery.fullscreen.js}"></script>
 <script th:inline="javascript">
 var ctx = [[@{/}]];
 // 皮肤缓存
