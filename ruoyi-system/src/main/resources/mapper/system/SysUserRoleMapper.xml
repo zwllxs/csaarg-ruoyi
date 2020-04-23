@@ -4,30 +4,30 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.system.mapper.SysUserRoleMapper">
 
-  <resultMap type="SysUserRole" id="SysUserRoleResult">
+  <resultMap type="com.ruoyi.system.domain.SysUserRole" id="SysUserRoleResult">
     <result property="userId" column="user_id"/>
     <result property="roleId" column="role_id"/>
   </resultMap>
 
-  <select id="selectUserRoleByUserId" parameterType="Long" resultMap="SysUserRoleResult">
+  <select id="selectUserRoleByUserId" resultMap="SysUserRoleResult">
     select user_id, role_id
     from sys_user_role
     where user_id = #{userId}
   </select>
 
-  <delete id="deleteUserRoleByUserId" parameterType="Long">
+  <delete id="deleteUserRoleByUserId">
     delete
     from sys_user_role
     where user_id = #{userId}
   </delete>
 
-  <select id="countUserRoleByRoleId" resultType="Integer">
+  <select id="countUserRoleByRoleId" resultType="java.lang.Integer">
     select count(1)
     from sys_user_role
     where role_id = #{roleId}
   </select>
 
-  <delete id="deleteUserRole" parameterType="Long">
+  <delete id="deleteUserRole">
     delete from sys_user_role where user_id in
     <foreach collection="array" item="userId" open="(" separator="," close=")">
       #{userId}
@@ -41,7 +41,7 @@
     </foreach>
   </insert>
 
-  <delete id="deleteUserRoleInfo" parameterType="SysUserRole">
+  <delete id="deleteUserRoleInfo">
     delete
     from sys_user_role
     where user_id = #{userId}

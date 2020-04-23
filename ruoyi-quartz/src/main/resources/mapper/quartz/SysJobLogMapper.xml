@@ -4,7 +4,7 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.quartz.mapper.SysJobLogMapper">
 
-  <resultMap type="SysJobLog" id="SysJobLogResult">
+  <resultMap type="com.ruoyi.quartz.domain.SysJobLog" id="SysJobLogResult">
     <id property="jobLogId" column="job_log_id"/>
     <result property="jobName" column="job_name"/>
     <result property="jobGroup" column="job_group"/>
@@ -27,7 +27,7 @@
     from sys_job_log
   </sql>
 
-  <select id="selectJobLogList" parameterType="SysJobLog" resultMap="SysJobLogResult">
+  <select id="selectJobLogList" resultMap="SysJobLogResult">
     <include refid="selectJobLogVo"/>
     <where>
       <if test="jobName != null and jobName != ''">
@@ -55,18 +55,18 @@
     <include refid="selectJobLogVo"/>
   </select>
 
-  <select id="selectJobLogById" parameterType="Long" resultMap="SysJobLogResult">
+  <select id="selectJobLogById" resultMap="SysJobLogResult">
     <include refid="selectJobLogVo"/>
     where job_log_id = #{jobLogId}
   </select>
 
-  <delete id="deleteJobLogById" parameterType="Long">
+  <delete id="deleteJobLogById">
     delete
     from sys_job_log
     where job_log_id = #{jobLogId}
   </delete>
 
-  <delete id="deleteJobLogByIds" parameterType="String">
+  <delete id="deleteJobLogByIds">
     delete from sys_job_log where job_log_id in
     <foreach collection="array" item="jobLogId" open="(" separator="," close=")">
       #{jobLogId}
@@ -77,7 +77,7 @@
     truncate table sys_job_log
   </update>
 
-  <insert id="insertJobLog" parameterType="SysJobLog">
+  <insert id="insertJobLog">
     insert into sys_job_log(
     <if test="jobLogId != null and jobLogId != 0">job_log_id,</if>
     <if test="jobName != null and jobName != ''">job_name,</if>

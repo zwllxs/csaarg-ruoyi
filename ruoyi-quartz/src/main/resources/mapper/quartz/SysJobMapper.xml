@@ -4,7 +4,7 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.quartz.mapper.SysJobMapper">
 
-  <resultMap type="SysJob" id="SysJobResult">
+  <resultMap type="com.ruoyi.quartz.domain.SysJob" id="SysJobResult">
     <id property="jobId" column="job_id"/>
     <result property="jobName" column="job_name"/>
     <result property="jobGroup" column="job_group"/>
@@ -35,7 +35,7 @@
     from sys_job
   </sql>
 
-  <select id="selectJobList" parameterType="SysJob" resultMap="SysJobResult">
+  <select id="selectJobList" resultMap="SysJobResult">
     <include refid="selectJobVo"/>
     <where>
       <if test="jobName != null and jobName != ''">
@@ -57,25 +57,25 @@
     <include refid="selectJobVo"/>
   </select>
 
-  <select id="selectJobById" parameterType="Long" resultMap="SysJobResult">
+  <select id="selectJobById" resultMap="SysJobResult">
     <include refid="selectJobVo"/>
     where job_id = #{jobId}
   </select>
 
-  <delete id="deleteJobById" parameterType="Long">
+  <delete id="deleteJobById">
     delete
     from sys_job
     where job_id = #{jobId}
   </delete>
 
-  <delete id="deleteJobByIds" parameterType="Long">
+  <delete id="deleteJobByIds">
     delete from sys_job where job_id in
     <foreach collection="array" item="jobId" open="(" separator="," close=")">
       #{jobId}
     </foreach>
   </delete>
 
-  <update id="updateJob" parameterType="SysJob">
+  <update id="updateJob">
     update sys_job
     <set>
       <if test="jobName != null and jobName != ''">job_name = #{jobName},</if>
@@ -92,7 +92,7 @@
     where job_id = #{jobId}
   </update>
 
-  <insert id="insertJob" parameterType="SysJob" useGeneratedKeys="true" keyProperty="jobId">
+  <insert id="insertJob" useGeneratedKeys="true" keyProperty="jobId">
     insert into sys_job(
     <if test="jobId != null and jobId != 0">job_id,</if>
     <if test="jobName != null and jobName != ''">job_name,</if>

@@ -4,7 +4,7 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.system.mapper.SysUserOnlineMapper">
 
-  <resultMap type="SysUserOnline" id="SysUserOnlineResult">
+  <resultMap type="com.ruoyi.system.domain.SysUserOnline" id="SysUserOnlineResult">
     <id property="sessionId" column="sessionId"/>
     <result property="loginName" column="login_name"/>
     <result property="deptName" column="dept_name"/>
@@ -33,23 +33,23 @@
     from sys_user_online
   </sql>
 
-  <select id="selectOnlineById" parameterType="String" resultMap="SysUserOnlineResult">
+  <select id="selectOnlineById" resultMap="SysUserOnlineResult">
     <include refid="selectOnlineVo"/>
     where sessionid = #{sessionid}
   </select>
 
-  <insert id="saveOnline" parameterType="SysUserOnline">
+  <insert id="saveOnline">
     replace into sys_user_online(sessionId, login_name, dept_name, ipaddr, login_location, browser, os, status, start_timestamp, last_access_time, expire_time)
     values (#{sessionId}, #{loginName}, #{deptName}, #{ipaddr}, #{loginLocation}, #{browser}, #{os}, #{status}, #{startTimestamp}, #{lastAccessTime}, #{expireTime})
   </insert>
 
-  <delete id="deleteOnlineById" parameterType="String">
+  <delete id="deleteOnlineById">
     delete
     from sys_user_online
     where sessionId = #{sessionId}
   </delete>
 
-  <select id="selectUserOnlineList" parameterType="SysUserOnline" resultMap="SysUserOnlineResult">
+  <select id="selectUserOnlineList" resultMap="SysUserOnlineResult">
     <include refid="selectOnlineVo"/>
     <where>
       <if test="ipaddr != null and ipaddr != ''">
@@ -61,7 +61,7 @@
     </where>
   </select>
 
-  <select id="selectOnlineByExpired" parameterType="String" resultMap="SysUserOnlineResult">
+  <select id="selectOnlineByExpired" resultMap="SysUserOnlineResult">
     <include refid="selectOnlineVo"/>
     o
     WHERE o.last_access_time <![CDATA[ <= ]]> #{lastAccessTime} ORDER BY o.last_access_time ASC

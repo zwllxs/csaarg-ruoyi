@@ -18,7 +18,7 @@
     from ${tableName}
   </sql>
 
-  <select id="select${ClassName}List" parameterType="${ClassName}" resultMap="${ClassName}Result">
+  <select id="select${ClassName}List" resultMap="${ClassName}Result">
     <include refid="select${ClassName}Vo"/>
     <where>
       #foreach($column in $columns)
@@ -53,7 +53,7 @@
     #end
   </select>
 
-  <select id="select${ClassName}ById" parameterType="${pkColumn.javaType}" resultMap="${ClassName}Result">
+  <select id="select${ClassName}ById" resultMap="${ClassName}Result">
     #if($table.crud)
       <include refid="select${ClassName}Vo"/>
       where ${pkColumn.columnName} = #{${pkColumn.javaField}}
@@ -65,7 +65,7 @@
     #end
   </select>
 
-  <insert id="insert${ClassName}" parameterType="${ClassName}"#if($pkColumn.increment) useGeneratedKeys="true" keyProperty="$pkColumn.javaField"#end>
+  <insert id="insert${ClassName}"#if($pkColumn.increment) useGeneratedKeys="true" keyProperty="$pkColumn.javaField"#end>
     insert into ${tableName}
     <trim prefix="(" suffix=")" suffixOverrides=",">
       #foreach($column in $columns)
@@ -83,7 +83,7 @@
     </trim>
   </insert>
 
-  <update id="update${ClassName}" parameterType="${ClassName}">
+  <update id="update${ClassName}">
     update ${tableName}
     <trim prefix="SET" suffixOverrides=",">
       #foreach($column in $columns)
@@ -95,12 +95,12 @@
     where ${pkColumn.columnName} = #{${pkColumn.javaField}}
   </update>
 
-  <delete id="delete${ClassName}ById" parameterType="${pkColumn.javaType}">
+  <delete id="delete${ClassName}ById">
     delete
     from ${tableName} where ${pkColumn.columnName} = #{${pkColumn.javaField}}
   </delete>
 
-  <delete id="delete${ClassName}ByIds" parameterType="String">
+  <delete id="delete${ClassName}ByIds">
     delete from ${tableName} where ${pkColumn.columnName} in
     <foreach item="${pkColumn.javaField}" collection="array" open="(" separator="," close=")">
       #{${pkColumn.javaField}}

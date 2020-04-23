@@ -4,7 +4,7 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.generator.mapper.GenTableMapper">
 
-  <resultMap type="GenTable" id="GenTableResult">
+  <resultMap type="com.ruoyi.generator.domain.GenTable" id="GenTableResult">
     <id property="tableId" column="table_id"/>
     <result property="tableName" column="table_name"/>
     <result property="tableComment" column="table_comment"/>
@@ -24,7 +24,7 @@
     <collection property="columns" javaType="java.util.List" resultMap="GenTableColumnResult"/>
   </resultMap>
 
-  <resultMap type="GenTableColumn" id="GenTableColumnResult">
+  <resultMap type="com.ruoyi.generator.domain.GenTableColumn" id="GenTableColumnResult">
     <id property="columnId" column="column_id"/>
     <result property="tableId" column="table_id"/>
     <result property="columnName" column="column_name"/>
@@ -69,7 +69,7 @@
     from gen_table
   </sql>
 
-  <select id="selectGenTableList" parameterType="GenTable" resultMap="GenTableResult">
+  <select id="selectGenTableList" resultMap="GenTableResult">
     <include refid="selectGenTableVo"/>
     <where>
       <if test="tableName != null and tableName != ''">
@@ -81,7 +81,7 @@
     </where>
   </select>
 
-  <select id="selectDbTableList" parameterType="GenTable" resultMap="GenTableResult">
+  <select id="selectDbTableList" resultMap="GenTableResult">
     select table_name, table_comment, create_time, update_time from information_schema.tables
     where table_schema = (select database())
     AND table_name NOT LIKE 'qrtz_%' AND table_name NOT LIKE 'gen_%'
@@ -103,7 +103,7 @@
     </foreach>
   </select>
 
-  <select id="selectTableByName" parameterType="String" resultMap="GenTableResult">
+  <select id="selectTableByName" resultMap="GenTableResult">
     select table_name, table_comment, create_time, update_time
     from information_schema.tables
     where table_comment <![CDATA[ <> ]]> ''
@@ -111,7 +111,7 @@
       and table_name = #{tableName}
   </select>
 
-  <select id="selectGenTableById" parameterType="Long" resultMap="GenTableResult">
+  <select id="selectGenTableById" resultMap="GenTableResult">
     SELECT t.table_id,
            t.table_name,
            t.table_comment,
@@ -147,7 +147,7 @@
     order by c.sort
   </select>
 
-  <select id="selectGenTableByName" parameterType="String" resultMap="GenTableResult">
+  <select id="selectGenTableByName" resultMap="GenTableResult">
     SELECT t.table_id,
            t.table_name,
            t.table_comment,
@@ -183,7 +183,7 @@
     order by c.sort
   </select>
 
-  <insert id="insertGenTable" parameterType="GenTable" useGeneratedKeys="true" keyProperty="tableId">
+  <insert id="insertGenTable" useGeneratedKeys="true" keyProperty="tableId">
     insert into gen_table (
     <if test="tableName != null">table_name,</if>
     <if test="tableComment != null and tableComment != ''">table_comment,</if>
@@ -213,7 +213,7 @@
     )
   </insert>
 
-  <update id="updateGenTable" parameterType="GenTable">
+  <update id="updateGenTable">
     update gen_table
     <set>
       <if test="tableName != null">table_name = #{tableName},</if>
@@ -233,7 +233,7 @@
     where table_id = #{tableId}
   </update>
 
-  <delete id="deleteGenTableByIds" parameterType="Long">
+  <delete id="deleteGenTableByIds">
     delete from gen_table where table_id in
     <foreach collection="array" item="tableId" open="(" separator="," close=")">
       #{tableId}

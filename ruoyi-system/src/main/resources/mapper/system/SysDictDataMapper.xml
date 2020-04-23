@@ -4,7 +4,7 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.system.mapper.SysDictDataMapper">
 
-  <resultMap type="SysDictData" id="SysDictDataResult">
+  <resultMap type="com.ruoyi.system.domain.SysDictData" id="SysDictDataResult">
     <id property="dictCode" column="dict_code"/>
     <result property="dictSort" column="dict_sort"/>
     <result property="dictLabel" column="dict_label"/>
@@ -36,7 +36,7 @@
     from sys_dict_data
   </sql>
 
-  <select id="selectDictDataList" parameterType="SysDictData" resultMap="SysDictDataResult">
+  <select id="selectDictDataList" resultMap="SysDictDataResult">
     <include refid="selectDictDataVo"/>
     <where>
       <if test="dictType != null and dictType != ''">
@@ -51,43 +51,43 @@
     </where>
   </select>
 
-  <select id="selectDictDataByType" parameterType="SysDictData" resultMap="SysDictDataResult">
+  <select id="selectDictDataByType" resultMap="SysDictDataResult">
     <include refid="selectDictDataVo"/>
     where status = '0' and dict_type = #{dictType} order by dict_sort asc
   </select>
 
-  <select id="selectDictLabel" resultType="String">
+  <select id="selectDictLabel" resultType="java.lang.String">
     select dict_label
     from sys_dict_data
     where dict_type = #{dictType}
       and dict_value = #{dictValue}
   </select>
 
-  <select id="selectDictDataById" parameterType="Long" resultMap="SysDictDataResult">
+  <select id="selectDictDataById" resultMap="SysDictDataResult">
     <include refid="selectDictDataVo"/>
     where dict_code = #{dictCode}
   </select>
 
-  <select id="countDictDataByType" resultType="Integer">
+  <select id="countDictDataByType" resultType="java.lang.Integer">
     select count(1)
     from sys_dict_data
     where dict_type = #{dictType}
   </select>
 
-  <delete id="deleteDictDataById" parameterType="Long">
+  <delete id="deleteDictDataById">
     delete
     from sys_dict_data
     where dict_code = #{dictCode}
   </delete>
 
-  <delete id="deleteDictDataByIds" parameterType="String">
+  <delete id="deleteDictDataByIds">
     delete from sys_dict_data where dict_code in
     <foreach collection="array" item="dictCode" open="(" separator="," close=")">
       #{dictCode}
     </foreach>
   </delete>
 
-  <update id="updateDictData" parameterType="SysDictData">
+  <update id="updateDictData">
     update sys_dict_data
     <set>
       <if test="dictSort != null">dict_sort = #{dictSort},</if>
@@ -105,13 +105,13 @@
     where dict_code = #{dictCode}
   </update>
 
-  <update id="updateDictDataType" parameterType="String">
+  <update id="updateDictDataType">
     update sys_dict_data
     set dict_type = #{newDictType}
     where dict_type = #{oldDictType}
   </update>
 
-  <insert id="insertDictData" parameterType="SysDictData">
+  <insert id="insertDictData">
     insert into sys_dict_data(
     <if test="dictSort != null">dict_sort,</if>
     <if test="dictLabel != null and dictLabel != ''">dict_label,</if>

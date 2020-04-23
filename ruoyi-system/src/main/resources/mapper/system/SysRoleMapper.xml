@@ -4,7 +4,7 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.system.mapper.SysRoleMapper">
 
-  <resultMap type="SysRole" id="SysRoleResult">
+  <resultMap type="com.ruoyi.system.domain.SysRole" id="SysRoleResult">
     <id property="roleId" column="role_id"/>
     <result property="roleName" column="role_name"/>
     <result property="roleKey" column="role_key"/>
@@ -48,7 +48,7 @@
     from sys_role r
   </sql>
 
-  <select id="selectRoleList" parameterType="SysRole" resultMap="SysRoleResult">
+  <select id="selectRoleList" resultMap="SysRoleResult">
     <include refid="selectRoleContactVo"/>
     where r.del_flag = '0'
     <if test="roleName != null and roleName != ''">
@@ -73,40 +73,40 @@
     ${params.dataScope}
   </select>
 
-  <select id="selectRolesByUserId" parameterType="Long" resultMap="SysRoleResult">
+  <select id="selectRolesByUserId" resultMap="SysRoleResult">
     <include refid="selectRoleContactVo"/>
     WHERE r.del_flag = '0' and ur.user_id = #{userId}
   </select>
 
-  <select id="selectRoleById" parameterType="Long" resultMap="SysRoleResult">
+  <select id="selectRoleById" resultMap="SysRoleResult">
     <include refid="selectRoleVo"/>
     where r.del_flag = '0' and r.role_id = #{roleId}
   </select>
 
-  <select id="checkRoleNameUnique" parameterType="String" resultMap="SysRoleResult">
+  <select id="checkRoleNameUnique" resultMap="SysRoleResult">
     <include refid="selectRoleVo"/>
     where r.role_name=#{roleName}
   </select>
 
-  <select id="checkRoleKeyUnique" parameterType="String" resultMap="SysRoleResult">
+  <select id="checkRoleKeyUnique" resultMap="SysRoleResult">
     <include refid="selectRoleVo"/>
     where r.role_key=#{roleKey}
   </select>
 
-  <delete id="deleteRoleById" parameterType="Long">
+  <delete id="deleteRoleById">
     delete
     from sys_role
     where role_id = #{roleId}
   </delete>
 
-  <delete id="deleteRoleByIds" parameterType="Long">
+  <delete id="deleteRoleByIds">
     update sys_role set del_flag = '2' where role_id in
     <foreach collection="array" item="roleId" open="(" separator="," close=")">
       #{roleId}
     </foreach>
   </delete>
 
-  <update id="updateRole" parameterType="SysRole">
+  <update id="updateRole">
     update sys_role
     <set>
       <if test="roleName != null and roleName != ''">role_name = #{roleName},</if>
@@ -121,7 +121,7 @@
     where role_id = #{roleId}
   </update>
 
-  <insert id="insertRole" parameterType="SysRole" useGeneratedKeys="true" keyProperty="roleId">
+  <insert id="insertRole" useGeneratedKeys="true" keyProperty="roleId">
     insert into sys_role(
     <if test="roleId != null and roleId != 0">role_id,</if>
     <if test="roleName != null and roleName != ''">role_name,</if>
