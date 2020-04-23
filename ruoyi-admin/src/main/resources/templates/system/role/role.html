@@ -41,10 +41,10 @@
 				<a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="system:role:add">
 	                <i class="fa fa-plus"></i> 新增
 	            </a>
-	            <a class="btn btn-primary btn-edit disabled" onclick="$.operate.edit()" shiro:hasPermission="system:role:edit">
+	            <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="system:role:edit">
 		            <i class="fa fa-edit"></i> 修改
 		        </a>
-				<a class="btn btn-danger btn-del disabled" onclick="$.operate.removeAll()" shiro:hasPermission="system:role:remove">
+				<a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="system:role:remove">
 		            <i class="fa fa-remove"></i> 删除
 		        </a>
 		        <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="system:role:export">
@@ -53,7 +53,7 @@
 	        </div>
 	        
 	        <div class="col-sm-12 select-table table-striped">
-			    <table id="bootstrap-table" data-mobile-responsive="true"></table>
+			    <table id="bootstrap-table"></table>
 			</div>
 		</div>
 	</div>
@@ -114,9 +114,11 @@
 		            formatter: function(value, row, index) {
 		                var actions = [];
 		                actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.roleId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
-		                actions.push('<a class="btn btn-primary btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="authDataScope(\'' + row.roleId + '\')"><i class="fa fa-check-square-o"></i>数据权限</a> ');
-		                actions.push('<a class="btn btn-info btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="authUser(\'' + row.roleId + '\')"><i class="fa fa-user"></i>分配用户</a> ');
 		                actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.roleId + '\')"><i class="fa fa-remove"></i>删除</a> ');
+		                var more = [];
+		                more.push("<a class='btn btn-default btn-xs " + editFlag + "' href='javascript:void(0)' onclick='authDataScope(" + row.roleId + ")'><i class='fa fa-check-square-o'></i>数据权限</a> ");
+		                more.push("<a class='btn btn-default btn-xs " + editFlag + "' href='javascript:void(0)' onclick='authUser(" + row.roleId + ")'><i class='fa fa-user'></i>分配用户</a>");
+		                actions.push('<a tabindex="0" class="btn btn-info btn-xs" role="button" data-container="body" data-placement="left" data-toggle="popover" data-html="true" data-trigger="hover" data-content="' + more.join('') + '"><i class="fa fa-chevron-circle-right"></i>更多操作</a>');
 		                return actions.join('');
 		            }
 		        }]

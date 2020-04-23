@@ -37,7 +37,6 @@ nbdist/
 # Others
 *.log
 *.xml.versionsBackup
-.gitattributes
 
 !*/build/*.java
 !*/build/*.html

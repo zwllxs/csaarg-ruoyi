@@ -1,9 +1,9 @@
 package com.ruoyi.web.core.config;
 
-import io.swagger.annotations.ApiOperation;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import com.ruoyi.common.config.Global;
+import io.swagger.annotations.ApiOperation;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -15,26 +15,29 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
  * Swagger2的接口配置
- *
+ * 
  * @author ruoyi
  */
 @Configuration
 @EnableSwagger2
-public class SwaggerConfig {
-
+public class SwaggerConfig
+{
     /**
      * 创建API
      */
     @Bean
-    public Docket createRestApi() {
+    public Docket createRestApi()
+    {
         return new Docket(DocumentationType.SWAGGER_2)
-                // 详细定制
+                // 用来创建该API的基本信息，展示在文档的页面中（自定义展示的信息）
                 .apiInfo(apiInfo())
+                // 设置哪些接口暴露给Swagger展示
                 .select()
-                // 指定当前包路径
+                // 扫描所有有注解的api，用这种方式更灵活
                 .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))
-                // 扫描所有
-                //.apis(RequestHandlerSelectors.any())
+                // 扫描指定包中的swagger注解
+                //.apis(RequestHandlerSelectors.basePackage("com.ruoyi.project.tool.swagger"))
+                // 扫描所有 .apis(RequestHandlerSelectors.any())
                 .paths(PathSelectors.any())
                 .build();
     }
@@ -42,12 +45,17 @@ public class SwaggerConfig {
     /**
      * 添加摘要信息
      */
-    private ApiInfo apiInfo() {
+    private ApiInfo apiInfo()
+    {
         // 用ApiInfoBuilder进行定制
         return new ApiInfoBuilder()
+                // 设置标题
                 .title("标题：若依管理系统_接口文档")
-                .description("更多内容请关注：https://github.com/lerry903/RuoYi")
-                .contact(new Contact(Global.getName(), "https://github.com/lerry903/RuoYi", "lerry903@163.com"))
+                // 描述
+                .description("描述：用于管理集团旗下公司的人员信息,具体包括XXX,XXX模块...")
+                // 作者信息
+                .contact(new Contact(Global.getName(), null, null))
+                // 版本
                 .version("版本号:" + Global.getVersion())
                 .build();
     }

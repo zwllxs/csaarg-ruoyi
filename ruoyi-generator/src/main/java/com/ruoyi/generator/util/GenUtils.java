@@ -1,232 +1,258 @@
 package com.ruoyi.generator.util;
 
-import cn.hutool.core.util.StrUtil;
-import com.ruoyi.common.config.Global;
-import com.ruoyi.common.constant.Constants;
-import com.ruoyi.common.utils.DateUtil;
-import com.ruoyi.generator.domain.ColumnInfo;
-import com.ruoyi.generator.domain.TableInfo;
-import org.apache.velocity.VelocityContext;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.Arrays;
+import org.apache.commons.lang3.RegExUtils;
+import com.ruoyi.common.constant.GenConstants;
+import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.generator.config.GenConfig;
+import com.ruoyi.generator.domain.GenTable;
+import com.ruoyi.generator.domain.GenTableColumn;
 
 /**
  * 代码生成器 工具类
- *
+ * 
  * @author ruoyi
  */
-public class GenUtils {
-
-    private GenUtils(){
-        throw new IllegalStateException("Utility class");
-    }
+public class GenUtils
+{
     /**
-     * 项目空间路径
+     * 初始化表信息
      */
-    private static final String PROJECT_PATH = getProjectPath();
-
-    /**
-     * mybatis空间路径
-     */
-    private static final String MYBATIS_PATH = "main/resources/mapper" ;
-
-    /**
-     * html空间路径
-     */
-    private static final String TEMPLATES_PATH = "main/resources/templates" ;
-
-    /**
-     * 类型转换
-     */
-    private static Map<String, String> javaTypeMap = new HashMap<>();
-
-    /**
-     * 设置列信息
-     */
-    public static List<ColumnInfo> transColums(List<ColumnInfo> columns) {
-        // 列信息
-        List<ColumnInfo> columsList = new ArrayList<>();
-        for (ColumnInfo column : columns) {
-            // 列名转换成Java属性名
-            String attrName = StrUtil.upperFirst(StrUtil.toUnderlineCase(column.getColumnName()));
-            column.setAttrName(attrName);
-            column.setAttrname(StrUtil.lowerFirst(attrName));
-            column.setExtra(column.getExtra());
-            // 列的数据类型，转换成Java类型
-            String attrType = javaTypeMap.get(column.getDataType());
-            column.setAttrType(attrType);
-
-            columsList.add(column);
-        }
-        return columsList;
+    public static void initTable(GenTable genTable, String operName)
+    {
+        genTable.setClassName(convertClassName(genTable.getTableName()));
+        genTable.setPackageName(GenConfig.getPackageName());
+        genTable.setModuleName(getModuleName(GenConfig.getPackageName()));
+        genTable.setBusinessName(getBusinessName(genTable.getTableName()));
+        genTable.setFunctionName(replaceText(genTable.getTableComment()));
+        genTable.setFunctionAuthor(GenConfig.getAuthor());
+        genTable.setCreateBy(operName);
     }
 
     /**
-     * 获取模板信息
-     *
-     * @return 模板列表
+     * 初始化列属性字段
      */
-    public static VelocityContext getVelocityContext(TableInfo table) {
-        // java对象数据传递到模板文件vm
-        VelocityContext velocityContext = new VelocityContext();
-        String packageName = Global.getPackageName();
-        velocityContext.put("tableName" , table.getTableName());
-        velocityContext.put("tableComment" , replaceKeyword(table.getTableComment()));
-        velocityContext.put("primaryKey" , table.getPrimaryKey());
-        velocityContext.put("className" , table.getClassName());
-        velocityContext.put("classname" , table.getClassname());
-        velocityContext.put("moduleName" , getModuleName(packageName));
-        velocityContext.put("columns" , table.getColumns());
-        velocityContext.put("basePackage" , getBasePackage(packageName));
-        velocityContext.put("package" , packageName);
-        velocityContext.put("author" , Global.getAuthor());
-        velocityContext.put("datetime" , DateUtil.today());
-        return velocityContext;
+    public static void initColumnField(GenTableColumn column, GenTable table)
+    {
+        String dataType = getDbType(column.getColumnType());
+        String columnName = column.getColumnName();
+        column.setTableId(table.getTableId());
+        column.setCreateBy(table.getCreateBy());
+        // 设置java字段名
+        column.setJavaField(StringUtils.toCamelCase(columnName));
+
+        if (arraysContains(GenConstants.COLUMNTYPE_STR, dataType))
+        {
+            column.setJavaType(GenConstants.TYPE_STRING);
+            // 字符串长度超过500设置为文本域
+            Integer columnLength = getColumnLength(column.getColumnType());
+            String htmlType = columnLength >= 500 ? GenConstants.HTML_TEXTAREA : GenConstants.HTML_INPUT;
+            column.setHtmlType(htmlType);
+        }
+        else if (arraysContains(GenConstants.COLUMNTYPE_TIME, dataType))
+        {
+            column.setJavaType(GenConstants.TYPE_DATE);
+            column.setHtmlType(GenConstants.HTML_DATETIME);
+        }
+        else if (arraysContains(GenConstants.COLUMNTYPE_NUMBER, dataType))
+        {
+            column.setHtmlType(GenConstants.HTML_INPUT);
+
+            // 如果是浮点型
+            String[] str = StringUtils.split(StringUtils.substringBetween(column.getColumnType(), "(", ")"), ",");
+            if (str != null && str.length == 2 && Integer.parseInt(str[1]) > 0)
+            {
+                column.setJavaType(GenConstants.TYPE_DOUBLE);
+            }
+            // 如果是整形
+            else if (str != null && str.length == 1 && Integer.parseInt(str[0]) <= 10)
+            {
+                column.setJavaType(GenConstants.TYPE_INTEGER);
+            }
+            // 长整形
+            else
+            {
+                column.setJavaType(GenConstants.TYPE_LONG);
+            }
+        }
+
+        // 插入字段（默认所有字段都需要插入）
+        column.setIsInsert(GenConstants.REQUIRE);
+
+        // 编辑字段
+        if (!arraysContains(GenConstants.COLUMNNAME_NOT_EDIT, columnName) && !column.isPk())
+        {
+            column.setIsEdit(GenConstants.REQUIRE);
+        }
+        // 列表字段
+        if (!arraysContains(GenConstants.COLUMNNAME_NOT_LIST, columnName) && !column.isPk())
+        {
+            column.setIsList(GenConstants.REQUIRE);
+        }
+        // 查询字段
+        if (!arraysContains(GenConstants.COLUMNNAME_NOT_QUERY, columnName) && !column.isPk())
+        {
+            column.setIsQuery(GenConstants.REQUIRE);
+        }
+
+        // 查询字段类型
+        if (StringUtils.endsWithIgnoreCase(columnName, "name"))
+        {
+            column.setQueryType(GenConstants.QUERY_LIKE);
+        }
+        // 状态字段设置单选框
+        if (StringUtils.endsWithIgnoreCase(columnName, "status"))
+        {
+            column.setHtmlType(GenConstants.HTML_RADIO);
+        }
+        // 类型&性别字段设置下拉框
+        else if (StringUtils.endsWithIgnoreCase(columnName, "type")
+                || StringUtils.endsWithIgnoreCase(columnName, "sex"))
+        {
+            column.setHtmlType(GenConstants.HTML_SELECT);
+        }
     }
 
     /**
-     * 获取模板信息
-     *
-     * @return 模板列表
+     * 校验数组是否包含指定值
+     * 
+     * @param arr 数组
+     * @param targetValue 值
+     * @return 是否包含
      */
-    public static List<String> getTemplates() {
-        List<String> templates = new ArrayList<>();
-        templates.add("vm/java/domain.java.vm");
-        templates.add("vm/java/Mapper.java.vm");
-        templates.add("vm/java/Service.java.vm");
-        templates.add("vm/java/ServiceImpl.java.vm");
-        templates.add("vm/java/Controller.java.vm");
-        templates.add("vm/xml/Mapper.xml.vm");
-        templates.add("vm/html/list.html.vm");
-        templates.add("vm/html/add.html.vm");
-        templates.add("vm/html/edit.html.vm");
-        templates.add("vm/sql/sql.vm");
-        return templates;
-    }
-
-    /**
-     * 表名转换成Java类名
-     */
-    public static String tableToJava(String tableName) {
-        if (Constants.AUTO_REOMVE_PRE.equals(Global.getAutoRemovePre())) {
-            tableName = tableName.substring(tableName.indexOf('_') + 1);
-        }
-        if (StrUtil.isNotEmpty(Global.getTablePrefix())) {
-            tableName = tableName.replace(Global.getTablePrefix(), "");
-        }
-        return StrUtil.upperFirst(StrUtil.toUnderlineCase(tableName));
-    }
-
-    /**
-     * 获取文件名
-     */
-    public static String getFileName(String template, TableInfo table, String moduleName) {
-        String str = "/";
-        // 小写类名
-        String classname = table.getClassname();
-        // 大写类名
-        String className = table.getClassName();
-        String javaPath = PROJECT_PATH;
-        String mybatisPath = MYBATIS_PATH + str + moduleName + str + className;
-        String htmlPath = TEMPLATES_PATH + str + moduleName + str + classname;
-
-        if (template.contains("domain.java.vm")) {
-            return javaPath + "domain" + "/" + className + ".java" ;
-        }
-
-        if (template.contains("Mapper.java.vm")) {
-            return javaPath + "mapper" + "/" + className + "Mapper.java" ;
-        }
-
-        if (template.contains("Service.java.vm")) {
-            return javaPath + "service" + "/" + "I" + className + "Service.java" ;
-        }
-
-        if (template.contains("ServiceImpl.java.vm")) {
-            return javaPath + "service" + "/impl/" + className + "ServiceImpl.java" ;
-        }
-
-        if (template.contains("Controller.java.vm")) {
-            return javaPath + "controller" + "/" + className + "Controller.java" ;
-        }
-
-        if (template.contains("Mapper.xml.vm")) {
-            return mybatisPath + "Mapper.xml" ;
-        }
-
-        if (template.contains("list.html.vm")) {
-            return htmlPath + "/" + classname + ".html" ;
-        }
-        if (template.contains("add.html.vm")) {
-            return htmlPath + "/" + "add.html" ;
-        }
-        if (template.contains("edit.html.vm")) {
-            return htmlPath + "/" + "edit.html" ;
-        }
-        if (template.contains("sql.vm")) {
-            return classname + "Menu.sql" ;
-        }
-        return null;
+    public static boolean arraysContains(String[] arr, String targetValue)
+    {
+        return Arrays.asList(arr).contains(targetValue);
     }
 
     /**
      * 获取模块名
-     *
+     * 
      * @param packageName 包名
      * @return 模块名
      */
-    public static String getModuleName(String packageName) {
-        int lastIndex = packageName.lastIndexOf('.');
+    public static String getModuleName(String packageName)
+    {
+        int lastIndex = packageName.lastIndexOf(".");
         int nameLength = packageName.length();
-        return StrUtil.sub(packageName, lastIndex + 1, nameLength);
+        String moduleName = StringUtils.substring(packageName, lastIndex + 1, nameLength);
+        return moduleName;
     }
 
-    private static String getBasePackage(String packageName) {
-        int lastIndex = packageName.lastIndexOf('.');
-        return StrUtil.sub(packageName, 0, lastIndex);
+    /**
+     * 获取业务名
+     * 
+     * @param tableName 表名
+     * @return 业务名
+     */
+    public static String getBusinessName(String tableName)
+    {
+        int lastIndex = tableName.lastIndexOf("_");
+        int nameLength = tableName.length();
+        String businessName = StringUtils.substring(tableName, lastIndex + 1, nameLength);
+        return businessName;
     }
 
-    private static String getProjectPath() {
-        String packageName = Global.getPackageName();
-        StringBuilder projectPath = new StringBuilder();
-        projectPath.append("main/java/");
-        projectPath.append(packageName.replace("." , "/"));
-        projectPath.append("/");
-        return projectPath.toString();
+    /**
+     * 表名转换成Java类名
+     * 
+     * @param tableName 表名称
+     * @return 类名
+     */
+    public static String convertClassName(String tableName)
+    {
+        boolean autoRemovePre = GenConfig.getAutoRemovePre();
+        String tablePrefix = GenConfig.getTablePrefix();
+        if (autoRemovePre && StringUtils.isNotEmpty(tablePrefix))
+        {
+            String[] searchList = StringUtils.split(tablePrefix, ",");
+            tableName = replaceFirst(tableName, searchList);
+        }
+        return StringUtils.convertToCamelCase(tableName);
     }
 
-    private static String replaceKeyword(String keyword) {
-        return keyword.replaceAll("(?:表|信息|管理)", "");
+    /**
+     * 批量替换前缀
+     * 
+     * @param replacementm 替换值
+     * @param searchList 替换列表
+     * @return
+     */
+    public static String replaceFirst(String replacementm, String[] searchList)
+    {
+        String text = replacementm;
+        for (String searchString : searchList)
+        {
+            if (replacementm.startsWith(searchString))
+            {
+                text = replacementm.replaceFirst(searchString, "");
+                break;
+            }
+        }
+        return text;
     }
 
-    static {
-        String string = "String";
-        String integer = "Integer";
-        String date = "Date";
-        javaTypeMap.put("tinyint" , integer);
-        javaTypeMap.put("smallint" , integer);
-        javaTypeMap.put("mediumint" , integer);
-        javaTypeMap.put("int" , integer);
-        javaTypeMap.put("number", integer);
-        javaTypeMap.put("integer" , "integer");
-        javaTypeMap.put("bigint" , "Long");
-        javaTypeMap.put("float" , "Float");
-        javaTypeMap.put("double" , "Double");
-        javaTypeMap.put("decimal" , "BigDecimal");
-        javaTypeMap.put("bit" , "Boolean");
-        javaTypeMap.put("char" , string);
-        javaTypeMap.put("varchar" , string);
-        javaTypeMap.put("varchar2", string);
-        javaTypeMap.put("tinytext" , string);
-        javaTypeMap.put("text" , string);
-        javaTypeMap.put("mediumtext" , string);
-        javaTypeMap.put("longtext" , string);
-        javaTypeMap.put("time" , date);
-        javaTypeMap.put("date" , date);
-        javaTypeMap.put("datetime" , date);
-        javaTypeMap.put("timestamp" , date);
+    /**
+     * 关键字替换
+     * 
+     * @param name 需要被替换的名字
+     * @return 替换后的名字
+     */
+    public static String replaceText(String text)
+    {
+        return RegExUtils.replaceAll(text, "(?:表|若依)", "");
+    }
+
+    /**
+     * 获取数据库类型字段
+     * 
+     * @param columnType 列类型
+     * @return 截取后的列类型
+     */
+    public static String getDbType(String columnType)
+    {
+        if (StringUtils.indexOf(columnType, "(") > 0)
+        {
+            return StringUtils.substringBefore(columnType, "(");
+        }
+        else
+        {
+            return columnType;
+        }
+    }
+
+    /**
+     * 获取字段长度
+     * 
+     * @param columnType 列类型
+     * @return 截取后的列类型
+     */
+    public static Integer getColumnLength(String columnType)
+    {
+        if (StringUtils.indexOf(columnType, "(") > 0)
+        {
+            String length = StringUtils.substringBetween(columnType, "(", ")");
+            return Integer.valueOf(length);
+        }
+        else
+        {
+            return 0;
+        }
+    }
+
+    /**
+     * 获取空数组列表
+     * 
+     * @param length 长度
+     * @return 数组信息
+     */
+    public static String[] emptyList(int length)
+    {
+        String[] values = new String[length];
+        for (int i = 0; i < length; i++)
+        {
+            values[i] = StringUtils.EMPTY;
+        }
+        return values;
     }
 }

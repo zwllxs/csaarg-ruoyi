@@ -294,6 +294,12 @@
 	margin: 5px 0 5px -25px
 }
 
+@media ( min-width : 768px) {
+	.section-content .about {
+		padding-left: 0px
+	}
+}
+
 /** select2 样式修改 **/
 .select2-container--default .select2-selection--multiple .select2-selection__choice {
 	background-color: #1AB394;
@@ -316,17 +322,28 @@
 }
 
 /** 表单验证 样式布局 **/
+.control-label.is-required:before {
+  content: '* ';
+  color: red;
+}
+
 label.error {
 	position: absolute;
 	right: 18px;
 	top: 10px;
 	color: #ef392b;
-	font-size: 12px
+	font-size: 12px;
+	z-index:99;
 }
 
 .input-group label.error {
 	z-index:99;
 	right: 42px
+}
+
+.input-group.date label.error {
+	z-index:99;
+	right: 3px
 }
 
 .Validform_error,input.error,select.error {
@@ -562,14 +579,14 @@ label.error {
 	}
 }
 
-/** 表单查询条件 **/
-ul {
+/** 表单查询条件  **/
+.select-list ul, .layui-layer-content ul {
 	margin: 0;
 	padding: 0;
 	-webkit-tap-highlight-color: rgba(0,0,0,0);
 }
 
-li {
+.select-list li, .layui-layer-content li {
 	list-style: none;
 }
 
@@ -627,10 +644,10 @@ label {
 	margin: 5px 15px 5px 0px;
 }
 
-.select-list li p{
+.select-list li p, .select-list li label:not(.radio-box):not(:select-time){
 	float: left;
-	width: 80px;
-	margin: 5px 15px 5px 0px;
+	width: 65px;
+	margin: 5px 5px 5px 0px;
 	text-align:right;
 }
 
@@ -670,6 +687,12 @@ label {
 	outline: none;
 	height: 34px;
 	background: #FFFFFF none
+}
+
+.file-input .btn-default {
+    color: inherit;
+    background: white;
+    border: 1px solid #e7eaec;
 }
 
 .select-list .btn-default {
@@ -718,6 +741,20 @@ label {
 	color: #fff;
 	text-decoration: none;
 	background-color: #12889a
+}
+
+.select-list .select2-container--bootstrap {
+	width: 200px!important;
+	display: inline-block;
+}
+
+.select-list .select2-container--bootstrap .select2-selection {
+	border-radius: 6px;
+}
+
+.select-list .select2-container--bootstrap .select2-selection--single {
+	height: 30px!important;
+	padding: 5px 10px;
 }
 
 .select-list .select-time input {
@@ -780,10 +817,32 @@ label {
 	border: 0px!important;
 }
 
-.table-striped .table, .fixed-table-container, table, .table-striped .table, .table>thead>tr>th, .table>tbody>tr>th, .table>tfoot>tr>th, .table>thead>tr>td, .table>tbody>tr>td, .table>tfoot>tr>td {
+.table-striped table>thead>tr>th, .table-striped table>tbody>tr>th, .table-striped table>tfoot>tr>th, .table-striped table>thead>tr>td, .table-striped table>tbody>tr>td, .table-striped table>tfoot>tr>td {
 	border-bottom: 1px solid #e7eaec!important;
-	background-color: transparent!important;
+	background-color: transparent;
 	border: 0px;
+}
+
+
+.table-bordered table>thead>tr>th:first-child, .table-bordered table>tbody>tr>td:first-child {
+    border-left: 1px solid #ddd;
+}
+ 
+.table-bordered table>thead>tr>th:last-child, .table-bordered table>tbody>tr>td:last-child {
+	border-right: 1px solid #ddd;
+}
+
+.table-bordered table>thead>tr>th, .table-bordered table>tbody>tr>td {
+    border-top: 1px solid #ddd!important;
+    border-bottom: 1px solid #ddd;
+}
+
+.fixed-table-footer {
+	border-top: 0px solid #ddd;
+}
+
+.fixed-table-container {
+	border: 0px solid #ddd;
 }
 
 .table-striped .table>thead>tr>th, .table-striped .table>tbody>tr>th {
@@ -799,21 +858,38 @@ label {
     background-color: #eff3f8;
 }
 
-.table-bordered td,.table-bordered th {
-	border: 1px solid #ddd!important
-}
-
 .fixed-table-container thead th  >.both{ 
     display: inline-block
 }
 
+.editable-input .input-sm {
+	height: 32px!important;
+}
+
 /** 表格冻结列样式 **/
-.left-fixed-table-columns{ 
+.left-fixed-table-columns, .left-fixed-body-columns {
     position: absolute;
     background-color: #fff;
     display: none;
-    border-right:1px solid #ddd;
+    box-sizing: border-box;
     overflow: hidden;
+}
+
+.left-fixed-table-columns .table, .left-fixed-body-columns .table {
+    border-right: 1px solid #ddd;
+}
+
+.left-fixed-table-columns .table.table-no-bordered, .left-fixed-body-columns .table.table-no-bordered {
+    border-right: 1px solid transparent;
+}
+
+.left-fixed-body-columns table {
+    position: absolute;
+    animation: none;
+}
+
+.bootstrap-table .table-hover > tbody > tr.hover > td {
+    background-color: #f5f5f5;
 }
 
 .right-fixed-table-columns{ 
@@ -833,13 +909,13 @@ label {
 .bootstrap-tree-table .treetable-table thead, .treetable-table tbody tr {display:table;width:100%;table-layout:fixed;}
 .bootstrap-tree-table .treetable-thead th{line-height:24px;border: 0 !important;border-radius: 4px;border-left:0px solid #e7eaec !important;border-bottom:1px solid #ccc!important;text-align: left;}
 .bootstrap-tree-table .treetable-thead tr :first-child{border-left:0 !important}
-.bootstrap-tree-table .treetable-tbody td{overflow:hidden;border: 0 !important;border-left:0px solid #e7eaec !important;border-bottom:1px solid #e7eaec!important;white-space: nowrap; text-overflow: ellipsis;}
+.bootstrap-tree-table .treetable-tbody td{border: 0 !important;border-left:0px solid #e7eaec !important;border-bottom:1px solid #e7eaec!important;white-space: nowrap; text-overflow: ellipsis;}
 .bootstrap-tree-table .treetable-tbody tr :first-child{border-left:0 !important}
 .bootstrap-tree-table .treetable-bars .tool-left, .bootstrap-tree-table .treetable-bars .tool-right{margin-top: 10px; margin-bottom: 10px;}
 .bootstrap-tree-table .treetable-bars .tool-left{float: left;}
 .bootstrap-tree-table .treetable-bars .tool-right{float: right;}
 .bootstrap-tree-table .treetable-bars .columns li label{display: block;padding: 3px 20px;clear: both;font-weight: 400;line-height: 1.428571429;max-width: 100%;margin-bottom: 5px;cursor:pointer;}
-
+.bootstrap-tree-table .table{border-bottom: 0px solid #e7eaec!important;}
 
 /** 首页样式 **/
 .ax_close_max {
@@ -892,7 +968,7 @@ label {
 	padding-bottom:5px
 }
 
-.form-content {
+.main-content {
     background-color: #ffffff;
     color: inherit;
     padding: 10px 15px 15px 15px;
@@ -925,4 +1001,70 @@ label {
 	background-color:#999!important;
 	text-shadow:0 0 10px black,0 0 10px black,0 0 8px black,0 0 6px black,0 0 6px black;
 	box-shadow:0 12px 14px -12px #111 inset,0 -2px 2px -1px #333 inset
+}
+
+/** 表格选中样式 **/
+.fixed-table-container .selected {
+    background-color: #E8F7FD;
+    color: #1890ff;
+}
+
+/** 滚动条样式 **/
+::-webkit-scrollbar-track {
+    background-color: #F5F5F5;
+}
+
+/** 气泡弹出框样式 **/
+.popover {
+	font-size: 13px;
+	max-width: unset;
+}
+
+.popover-title {
+	padding: 8px 14px;
+	margin: 0 !important;
+	font-size: 14px;
+	background-color: #f7f7f7;
+	border-bottom: 1px solid #ebebeb;
+	border-radius: 5px 5px 0 0;
+}
+
+.popover-content {
+	padding: 5px;
+}
+
+/** 向上滚动样式 **/
+#scroll-up {
+	border-width: 0;
+	position: fixed;
+	right: 2px;
+	z-index: 99;
+	-webkit-transition-duration: .3s;
+	transition-duration: .3s;
+	opacity: 0;
+	filter: alpha(opacity=0);
+	bottom: -24px;
+	visibility: hidden;
+	background-color: #aaa;
+	color: #fff;
+	font-size: 14px;
+	display: none;
+}
+
+#scroll-up.display {
+	opacity: .7;
+	filter: alpha(opacity=70);
+	bottom: 2px;
+	visibility: visible;
+}
+
+::-webkit-scrollbar {
+    width: 6px;
+    height: 10px;
+    background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar-thumb {
+	border-radius: 6px;
+	background-color: #999;
 }

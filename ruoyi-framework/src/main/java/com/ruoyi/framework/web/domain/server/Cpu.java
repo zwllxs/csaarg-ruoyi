@@ -1,15 +1,14 @@
 package com.ruoyi.framework.web.domain.server;
 
-import cn.hutool.core.util.NumberUtil;
-
-import java.math.BigDecimal;
+import com.ruoyi.common.utils.Arith;
 
 /**
  * CPU相关信息
- *
+ * 
  * @author ruoyi
  */
-public class Cpu {
+public class Cpu
+{
     /**
      * 核心数
      */
@@ -40,51 +39,63 @@ public class Cpu {
      */
     private double free;
 
-    public int getCpuNum() {
+    public int getCpuNum()
+    {
         return cpuNum;
     }
 
-    public void setCpuNum(int cpuNum) {
+    public void setCpuNum(int cpuNum)
+    {
         this.cpuNum = cpuNum;
     }
 
-    public BigDecimal getTotal() {
-        return NumberUtil.round(NumberUtil.mul(total, 100), 2);
+    public double getTotal()
+    {
+        return Arith.round(Arith.mul(total, 100), 2);
     }
 
-    public void setTotal(double total) {
+    public void setTotal(double total)
+    {
         this.total = total;
     }
 
-    public BigDecimal getSys() {
-        return NumberUtil.round(NumberUtil.mul(sys / total, 100), 2);
+    public double getSys()
+    {
+        return Arith.round(Arith.mul(sys / total, 100), 2);
     }
 
-    public void setSys(double sys) {
+    public void setSys(double sys)
+    {
         this.sys = sys;
     }
 
-    public BigDecimal getUsed() {
-        return NumberUtil.round(NumberUtil.mul(used / total, 100), 2);
+    public double getUsed()
+    {
+        return Arith.round(Arith.mul(used / total, 100), 2);
     }
 
-    public void setUsed(double used) {
+    public void setUsed(double used)
+    {
         this.used = used;
     }
 
-    public BigDecimal getWait() {
-        return NumberUtil.round(NumberUtil.mul(wait / total, 100), 2);
+    public double getWait()
+    {
+        return Arith.round(Arith.mul(wait / total, 100), 2);
     }
 
-    public void setWait(double wait) {
+    public void setWait(double wait)
+    {
         this.wait = wait;
     }
 
-    public BigDecimal getFree() {
-        return NumberUtil.round(NumberUtil.mul(free / total, 100), 2);
+    public double getFree()
+    {
+        return Arith.round(Arith.mul(free / total, 100), 2);
     }
 
-    public void setFree(double free) {
+    public void setFree(double free)
+    {
         this.free = free;
     }
 }

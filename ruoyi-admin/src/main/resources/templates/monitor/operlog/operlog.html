@@ -44,7 +44,7 @@
 			</div>
 			
 			<div class="btn-group-sm" id="toolbar" role="group">
-				<a class="btn btn-danger btn-del disabled" onclick="$.operate.removeAll()" shiro:hasPermission="monitor:operlog:remove">
+				<a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="monitor:operlog:remove">
 		            <i class="fa fa-remove"></i> 删除
 		        </a>
 		        <a class="btn btn-danger" onclick="$.operate.clean()" shiro:hasPermission="monitor:operlog:remove">
@@ -56,7 +56,7 @@
 	        </div>
 	        
 			<div class="col-sm-12 select-table table-striped">
-				<table id="bootstrap-table" data-mobile-responsive="true"></table>
+				<table id="bootstrap-table"></table>
 			</div>
 		</div>
 	</div>
@@ -151,12 +151,13 @@
 		function searchPre() {
 		    var data = {};
 		    data.businessTypes = $.common.join($('#businessTypes').selectpicker('val'));
-		    $.table.search('operlog-form', data);
+		    $.table.search('operlog-form', 'bootstrap-table', data);
 		}
 		
 		function resetPre() {
-			$.form.reset();
+			$("#operlog-form")[0].reset();
 			$("#businessTypes").selectpicker('refresh');
+			$.table.search('operlog-form', 'bootstrap-table');
 		}
 	</script>
 </body>

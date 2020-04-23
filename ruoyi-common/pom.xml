@@ -5,77 +5,96 @@
     <parent>
         <artifactId>ruoyi</artifactId>
         <groupId>com.ruoyi</groupId>
-        <version>3.4.0</version>
+        <version>4.2.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-
+	
     <artifactId>ruoyi-common</artifactId>
-
-    <description>
-        common通用工具
-    </description>
-
-    <properties>
-        <commons.io.version>2.5</commons.io.version>
-        <commons.fileupload.version>1.3.3</commons.fileupload.version>
-        <jsoup.version>1.11.3</jsoup.version>
-        <poi.version>3.17</poi.version>
-    </properties>
+	
+	<description>
+	    common通用工具
+	</description>
 
     <dependencies>
-
-        <!--常用工具类 -->
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
+		
+		<!-- Spring框架基本的核心工具 -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+		</dependency>
+		
+		<!-- SpringWeb模块 -->
+		<dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
         </dependency>
-
+        
         <!--Shiro核心框架 -->
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-core</artifactId>
+		</dependency>
+        
+		<!-- pagehelper 分页插件 -->
+		<dependency>
+			<groupId>com.github.pagehelper</groupId>
+			<artifactId>pagehelper-spring-boot-starter</artifactId>
+		</dependency>
+		
+		<!-- 自定义验证注解 -->
         <dependency>
-            <groupId>org.apache.shiro</groupId>
-            <artifactId>shiro-core</artifactId>
-            <version>1.4.0</version>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
         </dependency>
-        <!-- JSON工具类 -->
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-        </dependency>
+    
+        <!--常用工具类 -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+		</dependency>
+		
+		<!-- JSON工具类 -->
+		<dependency>
+		    <groupId>com.fasterxml.jackson.core</groupId>
+		    <artifactId>jackson-databind</artifactId>
+		</dependency>
 
-        <!--io常用工具类 -->
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>${commons.io.version}</version>
-        </dependency>
+		<!-- 阿里JSON解析器 -->
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+		</dependency>
 
-        <!--文件上传工具类 -->
-        <dependency>
-            <groupId>commons-fileupload</groupId>
-            <artifactId>commons-fileupload</artifactId>
-            <version>${commons.fileupload.version}</version>
-        </dependency>
+		<!-- io常用工具类 -->
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+		</dependency>
 
-        <!-- HTML解析器 -->
+		<!-- 文件上传工具类 -->
+		<dependency>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+		</dependency>
+		
+		<!-- excel工具 -->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+		</dependency>
+		
+		<!-- yml解析器 -->
+		<dependency>
+		    <groupId>org.yaml</groupId>
+		    <artifactId>snakeyaml</artifactId>
+		</dependency>
+		
+		<!-- servlet包 -->
         <dependency>
-            <groupId>org.jsoup</groupId>
-            <artifactId>jsoup</artifactId>
-            <version>${jsoup.version}</version>
-        </dependency>
-
-        <!-- excel工具 -->
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi-ooxml</artifactId>
-            <version>${poi.version}</version>
-        </dependency>
-
-        <!-- yml解析器 -->
-        <dependency>
-            <groupId>org.yaml</groupId>
-            <artifactId>snakeyaml</artifactId>
-        </dependency>
-
+		    <groupId>javax.servlet</groupId>
+		    <artifactId>javax.servlet-api</artifactId>
+		</dependency>
+		
     </dependencies>
-
+  
 </project>

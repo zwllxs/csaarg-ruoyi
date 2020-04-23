@@ -1,161 +1,116 @@
 package com.ruoyi.common.config;
 
-import cn.hutool.core.convert.Convert;
-import cn.hutool.core.util.StrUtil;
-import com.ruoyi.common.utils.YamlUtil;
-import lombok.extern.slf4j.Slf4j;
-
-import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.Map;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
 
 /**
  * 全局配置类
- *
+ * 
  * @author ruoyi
  */
-@Slf4j
-public class Global {
+@Component
+@ConfigurationProperties(prefix = "ruoyi")
+public class Global
+{
+    /** 项目名称 */
+    private static String name;
 
-    private static final String NAME = "application.yml" ;
+    /** 版本 */
+    private static String version;
 
-    private static final String CONFIG_KEY= "ruoyi.profile";
+    /** 版权年份 */
+    private static String copyrightYear;
 
-    /**
-     * 当前对象实例
-     */
-    private static Global global = null;
+    /** 实例演示开关 */
+    private static boolean demoEnabled;
 
-    /**
-     * 保存全局属性值
-     */
-    private static Map<String, String> map = new HashMap<>();
+    /** 上传路径 */
+    private static String profile;
 
-    private Global() {
+    /** 获取地址开关 */
+    private static boolean addressEnabled;
+
+    public static String getName()
+    {
+        return name;
     }
 
-    /**
-     * 静态工厂方法 获取当前对象实例 多线程安全单例模式(使用双重同步锁)
-     */
-
-    public static synchronized Global getInstance() {
-        if (global == null) {
-            synchronized (Global.class) {
-                if (global == null) {
-                    global = new Global();
-                }
-            }
-        }
-        return global;
+    public void setName(String name)
+    {
+        Global.name = name;
     }
 
-    /**
-     * 获取配置
-     */
-    private static String getConfig(String key) {
-        String value = map.get(key);
-        if (value == null) {
-            Map<?, ?> yamlMap;
-            try {
-                yamlMap = YamlUtil.loadYaml(NAME);
-                value = String.valueOf(YamlUtil.getProperty(yamlMap, key));
-                map.put(key, value != null ? value : StrUtil.EMPTY);
-            } catch (Exception e) {
-                log.error("获取全局配置异常 {}" , key);
-            }
-        }
-        return value;
+    public static String getVersion()
+    {
+        return version;
     }
 
-    /**
-     * 获取项目名称
-     */
-    public static String getName() {
-        return Convert.toStr(getConfig("ruoyi.name"), "RuoYi");
+    public void setVersion(String version)
+    {
+        Global.version = version;
     }
 
-    /**
-     * 获取项目版本
-     */
-    public static String getVersion() {
-        return Convert.toStr(getConfig("ruoyi.version"), "3.4.0");
+    public static String getCopyrightYear()
+    {
+        return copyrightYear;
     }
 
-    /**
-     * 获取版权年份
-     */
-    public static String getCopyrightYear() {
-        LocalDate now = LocalDate.now();
-        return String.valueOf(now.getYear());
+    public void setCopyrightYear(String copyrightYear)
+    {
+        Global.copyrightYear = copyrightYear;
     }
 
-    /**
-     * 获取ip地址开关
-     */
-    public static Boolean isAddressEnabled() {
-        return Convert.toBool(getConfig("ruoyi.addressEnabled"));
+    public static boolean isDemoEnabled()
+    {
+        return demoEnabled;
     }
 
-    /**
-     * 是否开启演示实例
-     */
-    public static Boolean isDemoEnabled() {
-        return Convert.toBool(getConfig("ruoyi.demoEnabled"), false);
+    public void setDemoEnabled(boolean demoEnabled)
+    {
+        Global.demoEnabled = demoEnabled;
     }
 
-    /**
-     * 获取文件上传路径
-     */
-    public static String getProfile() {
-        return getConfig(CONFIG_KEY);
+    public static String getProfile()
+    {
+        return profile;
+    }
+
+    public void setProfile(String profile)
+    {
+        Global.profile = profile;
+    }
+
+    public static boolean isAddressEnabled()
+    {
+        return addressEnabled;
+    }
+
+    public void setAddressEnabled(boolean addressEnabled)
+    {
+        Global.addressEnabled = addressEnabled;
     }
 
     /**
      * 获取头像上传路径
      */
-    public static String getAvatarPath() {
-        return getConfig(CONFIG_KEY) + "avatar/" ;
+    public static String getAvatarPath()
+    {
+        return getProfile() + "/avatar";
     }
 
     /**
-     * 获取下载上传路径
+     * 获取下载路径
      */
-    public static String getDownloadPath() {
-        return getConfig(CONFIG_KEY) + "download/" ;
+    public static String getDownloadPath()
+    {
+        return getProfile() + "/download/";
     }
 
     /**
      * 获取上传路径
      */
-    public static String getUploadPath(){
-        return getConfig(CONFIG_KEY) + "upload/";
-    }
-
-    /**
-     * 获取作者
-     */
-    public static String getAuthor() {
-        return Convert.toStr(getConfig("gen.author"), "ruoyi");
-    }
-
-    /**
-     * 生成包路径
-     */
-    public static String getPackageName() {
-        return Convert.toStr(getConfig("gen.packageName"), "com.ruoyi.project.module");
-    }
-
-    /**
-     * 是否自动去除表前缀
-     */
-    public static String getAutoRemovePre() {
-        return Convert.toStr(getConfig("gen.autoRemovePre"), "true");
-    }
-
-    /**
-     * 表前缀(类名不会包含表前缀)
-     */
-    public static String getTablePrefix() {
-        return Convert.toStr(getConfig("gen.tablePrefix"), "sys_");
+    public static String getUploadPath()
+    {
+        return getProfile() + "/upload";
     }
 }

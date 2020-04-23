@@ -1,84 +1,97 @@
 package com.ruoyi.common.exception.base;
 
-import cn.hutool.core.util.StrUtil;
 import com.ruoyi.common.utils.MessageUtils;
+import com.ruoyi.common.utils.StringUtils;
 
 /**
  * 基础异常
- *
+ * 
  * @author ruoyi
  */
-public class BaseException extends RuntimeException {
+public class BaseException extends RuntimeException
+{
     private static final long serialVersionUID = 1L;
 
     /**
      * 所属模块
      */
-    private final String module;
+    private String module;
 
     /**
      * 错误码
      */
-    private final String code;
+    private String code;
 
     /**
      * 错误码对应的参数
      */
-    private final transient Object[] args;
+    private Object[] args;
 
     /**
      * 错误消息
      */
-    private final String defaultMessage;
+    private String defaultMessage;
 
-    public BaseException(String module, String code, Object[] args, String defaultMessage) {
+    public BaseException(String module, String code, Object[] args, String defaultMessage)
+    {
         this.module = module;
         this.code = code;
         this.args = args;
         this.defaultMessage = defaultMessage;
     }
 
-    public BaseException(String module, String code, Object[] args) {
+    public BaseException(String module, String code, Object[] args)
+    {
         this(module, code, args, null);
     }
 
-    public BaseException(String module, String defaultMessage) {
+    public BaseException(String module, String defaultMessage)
+    {
         this(module, null, null, defaultMessage);
     }
 
-    public BaseException(String code, Object[] args) {
+    public BaseException(String code, Object[] args)
+    {
         this(null, code, args, null);
     }
 
-    public BaseException(String defaultMessage) {
+    public BaseException(String defaultMessage)
+    {
         this(null, null, null, defaultMessage);
     }
 
     @Override
-    public String getMessage() {
+    public String getMessage()
+    {
         String message = null;
-        if (!StrUtil.isEmpty(code)) {
+        if (!StringUtils.isEmpty(code))
+        {
             message = MessageUtils.message(code, args);
         }
-        if (message == null) {
+        if (message == null)
+        {
             message = defaultMessage;
         }
         return message;
     }
 
-    public String getModule() {
+    public String getModule()
+    {
         return module;
     }
 
-    public String getCode() {
+    public String getCode()
+    {
         return code;
     }
 
-    public Object[] getArgs() {
+    public Object[] getArgs()
+    {
         return args;
     }
 
-    public String getDefaultMessage() {
+    public String getDefaultMessage()
+    {
         return defaultMessage;
     }
 }
