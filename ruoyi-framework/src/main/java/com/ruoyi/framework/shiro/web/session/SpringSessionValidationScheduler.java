@@ -42,7 +42,9 @@ public class SpringSessionValidationScheduler implements SessionValidationSchedu
   @Autowired
   private ValidatingSessionManager sessionManager;
 
-  // 相隔多久检查一次session的有效性，单位毫秒，默认就是10分钟
+  /**
+   * 相隔多久检查一次session的有效性，单位毫秒，默认就是10分钟
+   */
   @Value("${shiro.session.validationInterval}")
   private long sessionValidationInterval;
 

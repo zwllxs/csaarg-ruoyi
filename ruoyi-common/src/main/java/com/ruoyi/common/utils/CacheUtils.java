@@ -16,7 +16,7 @@ import java.util.Set;
 @Slf4j
 public class CacheUtils {
 
-  private static final CacheManager cacheManager = SpringUtils.getBean(CacheManager.class);
+  private static final CacheManager CACHE_MANAGER = SpringUtils.getBean(CacheManager.class);
 
   private static final String SYS_CACHE = "sys-cache";
 
@@ -160,7 +160,7 @@ public class CacheUtils {
    * @return
    */
   private static Cache<String, Object> getCache(String cacheName) {
-    Cache<String, Object> cache = cacheManager.getCache(cacheName);
+    Cache<String, Object> cache = CACHE_MANAGER.getCache(cacheName);
     if (cache == null) {
       throw new RuntimeException("当前系统中没有定义“" + cacheName + "”这个缓存。");
     }

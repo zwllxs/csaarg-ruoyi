@@ -27,7 +27,12 @@ public class SysIndexController extends BaseController {
   @Autowired
   private ISysConfigService configService;
 
-  // 系统首页
+  /**
+   * 系统首页
+   *
+   * @param mmap
+   * @return
+   */
   @GetMapping("/index")
   public String index(ModelMap mmap) {
     // 取身份信息
@@ -43,13 +48,23 @@ public class SysIndexController extends BaseController {
     return "index";
   }
 
-  // 切换主题
+  /**
+   * 切换主题
+   *
+   * @param mmap
+   * @return
+   */
   @GetMapping("/system/switchSkin")
   public String switchSkin(ModelMap mmap) {
     return "skin";
   }
 
-  // 系统介绍
+  /**
+   * 系统介绍
+   *
+   * @param mmap
+   * @return
+   */
   @GetMapping("/system/main")
   public String main(ModelMap mmap) {
     mmap.put("version", Global.getVersion());

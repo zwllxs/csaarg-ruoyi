@@ -49,7 +49,9 @@ public class DataScopeAspect {
    */
   public static final String DATA_SCOPE = "dataScope";
 
-  // 配置织入点
+  /**
+   * 配置织入点
+   */
   @Pointcut("@annotation(com.ruoyi.common.annotation.DataScope)")
   public void dataScopePointCut() {
   }

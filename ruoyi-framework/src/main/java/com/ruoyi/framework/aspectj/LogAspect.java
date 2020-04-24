@@ -33,7 +33,9 @@ import java.util.Map;
 @Component
 public class LogAspect {
 
-  // 配置织入点
+  /**
+   * 配置织入点
+   */
   @Pointcut("@annotation(com.ruoyi.common.annotation.Log)")
   public void logPointCut() {
   }
