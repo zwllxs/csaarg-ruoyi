@@ -18,11 +18,11 @@
 
 ## 优化项部分内容
 
-|名称|内容|进度|备注|
-|-|-|-|-|
-|代码格式|IDEA 默认的代码格式化。缩进修改为两个空格。HTMl 中的 style 标签和 script 标签中的内容顶头开始。|100%|[我的 Intellij IDEA code style XML 文件](./docs/%5BIntellij%20IDEA%20code%20style%5D%20nowrap.xml)|
-|MyBatis Mapper XML|类使用全路径免除配置 typeAliasesPackage，避免 IDEA 报错，方便提示。删除 parameterType 属性。|100%||
-|Java 代码结构|添加 Lombok，修改所有实体类，LoggerFactory.getLogger 替换为 @Slf4j。调整注解顺序：@RequestMapping < @ResponseBody < @Tranactional < @RequiresPermissions < @Log，@NotNull/NotBlank < @Size < …… < @Excel 等等。|100%||
-|static 目录结构|所有第三方依赖全部放到 lib 目录下|100%||
-|集成 MyBatis Plus|替换所有能替换的 Service 方法。替换分页插件。替换动态数据源。|0%|[MyBatis-Plus](https://mp.baomidou.com/)|
-|……||||
+| 名称 | 内容 | 进度 | 备注 |
+| --- | --- | --- | --- |
+| 代码格式 | IDEA 默认的代码格式化。缩进修改为两个空格。HTMl 中的 style 标签和 script 标签中的内容顶头开始。 | 100% | [我的 Intellij IDEA code style XML 文件](https://github.com/csaarg/csaarg-ruoyi/blob/master/docs/%5BIntellij%20IDEA%20code%20style%5D%20nowrap.xml) |
+| MyBatis Mapper XML | 类使用全路径免除配置 typeAliasesPackage，避免 IDEA 报错，方便提示。删除 parameterType 属性。 | 100% |  |
+| Java 代码结构 | 添加 Lombok，修改所有实体类，LoggerFactory.getLogger 替换为 @Slf4j。调整注解顺序：@RequestMapping < @ResponseBody < @Tranactional < @RequiresPermissions < @Log，@NotNull/NotBlank < @Size < …… < @Excel 等等。 | 100% |  |
+| static 目录结构 | 所有第三方依赖全部放到 lib 目录下 | 100% |  |
+| 集成 MyBatis Plus | 替换所有能替换的 Service 方法。替换分页插件。替换动态数据源。 | 0% | [MyBatis-Plus](https://mp.baomidou.com/) |
+| …… |  |  |  |
