@@ -33,6 +33,7 @@ public interface ISysJobService {
    *
    * @param job 调度信息
    * @return 结果
+   * @throws SchedulerException
    */
   int pauseJob(SysJob job) throws SchedulerException;
 
@@ -41,6 +42,7 @@ public interface ISysJobService {
    *
    * @param job 调度信息
    * @return 结果
+   * @throws SchedulerException
    */
   int resumeJob(SysJob job) throws SchedulerException;
 
@@ -49,6 +51,7 @@ public interface ISysJobService {
    *
    * @param job 调度信息
    * @return 结果
+   * @throws SchedulerException
    */
   int deleteJob(SysJob job) throws SchedulerException;
 
@@ -56,7 +59,7 @@ public interface ISysJobService {
    * 批量删除调度信息
    *
    * @param ids 需要删除的数据ID
-   * @return 结果
+   * @throws SchedulerException
    */
   void deleteJobByIds(String ids) throws SchedulerException;
 
@@ -65,6 +68,7 @@ public interface ISysJobService {
    *
    * @param job 调度信息
    * @return 结果
+   * @throws SchedulerException
    */
   int changeStatus(SysJob job) throws SchedulerException;
 
@@ -72,7 +76,7 @@ public interface ISysJobService {
    * 立即运行任务
    *
    * @param job 调度信息
-   * @return 结果
+   * @throws SchedulerException
    */
   void run(SysJob job) throws SchedulerException;
 
@@ -81,6 +85,8 @@ public interface ISysJobService {
    *
    * @param job 调度信息
    * @return 结果
+   * @throws SchedulerException
+   * @throws TaskException
    */
   int insertJob(SysJob job) throws SchedulerException, TaskException;
 
@@ -89,6 +95,8 @@ public interface ISysJobService {
    *
    * @param job 调度信息
    * @return 结果
+   * @throws SchedulerException
+   * @throws TaskException
    */
   int updateJob(SysJob job) throws SchedulerException, TaskException;
 

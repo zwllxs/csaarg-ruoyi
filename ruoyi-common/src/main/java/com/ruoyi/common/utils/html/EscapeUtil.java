@@ -17,12 +17,17 @@ public class EscapeUtil {
       TEXT[i] = new char[]{(char) i};
     }
 
-    // special HTML characters
-    TEXT['\''] = "&#039;".toCharArray(); // 单引号
-    TEXT['"'] = "&#34;".toCharArray(); // 单引号
-    TEXT['&'] = "&#38;".toCharArray(); // &符
-    TEXT['<'] = "&#60;".toCharArray(); // 小于号
-    TEXT['>'] = "&#62;".toCharArray(); // 大于号
+    /* special HTML characters */
+    // 单引号
+    TEXT['\''] = "&#039;".toCharArray();
+    // 单引号
+    TEXT['"'] = "&#34;".toCharArray();
+    // &符
+    TEXT['&'] = "&#38;".toCharArray();
+    // 小于号
+    TEXT['<'] = "&#60;".toCharArray();
+    // 大于号
+    TEXT['>'] = "&#62;".toCharArray();
   }
 
   /**

@@ -358,7 +358,7 @@ public class SysUserServiceImpl implements ISysUserService {
   @Override
   public String selectUserRoleGroup(Long userId) {
     List<SysRole> list = roleMapper.selectRolesByUserId(userId);
-    StringBuffer idsStr = new StringBuffer();
+    StringBuilder idsStr = new StringBuilder();
     for (SysRole role : list) {
       idsStr.append(role.getRoleName()).append(",");
     }
