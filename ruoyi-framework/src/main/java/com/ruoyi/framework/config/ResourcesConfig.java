@@ -2,7 +2,7 @@ package com.ruoyi.framework.config;
 
 import com.ruoyi.common.config.Global;
 import com.ruoyi.common.constant.Constants;
-import com.ruoyi.framework.interceptor.RepeatSubmitInterceptor;
+import com.ruoyi.framework.interceptor.BaseRepeatSubmitInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -25,7 +25,7 @@ public class ResourcesConfig implements WebMvcConfigurer {
   private String indexUrl;
 
   @Autowired
-  private RepeatSubmitInterceptor repeatSubmitInterceptor;
+  private BaseRepeatSubmitInterceptor repeatSubmitInterceptor;
 
   /**
    * 默认首页的设置，当输入域名是可以自动跳转到默认指定的网页

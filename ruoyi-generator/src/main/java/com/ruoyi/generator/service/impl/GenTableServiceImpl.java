@@ -2,7 +2,6 @@ package com.ruoyi.generator.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.ruoyi.common.constant.Constants;
 import com.ruoyi.common.constant.GenConstants;
 import com.ruoyi.common.core.text.Convert;
 import com.ruoyi.common.exception.BusinessException;
@@ -27,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,6 +42,8 @@ import java.util.zip.ZipOutputStream;
 @Service
 public class GenTableServiceImpl implements IGenTableService {
 
+  private static final String ENCODING = StandardCharsets.UTF_8.name();
+  
   @Autowired
   private GenTableMapper genTableMapper;
   @Autowired
@@ -176,7 +178,7 @@ public class GenTableServiceImpl implements IGenTableService {
     for (String template : templates) {
       // 渲染模板
       StringWriter sw = new StringWriter();
-      Template tpl = Velocity.getTemplate(template, Constants.UTF8);
+      Template tpl = Velocity.getTemplate(template, ENCODING);
       tpl.merge(context, sw);
       dataMap.put(template, sw.toString());
     }
@@ -234,12 +236,12 @@ public class GenTableServiceImpl implements IGenTableService {
     for (String template : templates) {
       // 渲染模板
       StringWriter sw = new StringWriter();
-      Template tpl = Velocity.getTemplate(template, Constants.UTF8);
+      Template tpl = Velocity.getTemplate(template, ENCODING);
       tpl.merge(context, sw);
       try {
         // 添加到zip
         zip.putNextEntry(new ZipEntry(VelocityUtils.getFileName(template, table)));
-        IOUtils.write(sw.toString(), zip, Constants.UTF8);
+        IOUtils.write(sw.toString(), zip, ENCODING);
         IOUtils.closeQuietly(sw);
         zip.flush();
         zip.closeEntry();

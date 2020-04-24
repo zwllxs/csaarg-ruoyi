@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 /**
  * 客户端工具类
@@ -80,7 +81,7 @@ public class ServletUtils {
   public static String renderString(HttpServletResponse response, String string) {
     try {
       response.setContentType("application/json");
-      response.setCharacterEncoding("utf-8");
+      response.setCharacterEncoding(StandardCharsets.UTF_8.name());
       response.getWriter().print(string);
     } catch (IOException e) {
       e.printStackTrace();

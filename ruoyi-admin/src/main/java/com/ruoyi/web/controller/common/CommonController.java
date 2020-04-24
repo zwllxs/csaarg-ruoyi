@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.nio.charset.StandardCharsets;
 
 /**
  * 通用请求处理
@@ -26,6 +27,8 @@ import javax.servlet.http.HttpServletResponse;
 @Slf4j
 @Controller
 public class CommonController {
+
+  private static final String CHARACTER_ENCODING = StandardCharsets.UTF_8.name();
 
   @Autowired
   private ServerConfig serverConfig;
@@ -45,7 +48,7 @@ public class CommonController {
       String realFileName = System.currentTimeMillis() + fileName.substring(fileName.indexOf("_") + 1);
       String filePath = Global.getDownloadPath() + fileName;
 
-      response.setCharacterEncoding("utf-8");
+      response.setCharacterEncoding(CHARACTER_ENCODING);
       response.setContentType("multipart/form-data");
       response.setHeader("Content-Disposition",
         "attachment;fileName=" + FileUtils.setFileDownloadHeader(request, realFileName));
@@ -91,7 +94,7 @@ public class CommonController {
     String downloadPath = localPath + StringUtils.substringAfter(resource, Constants.RESOURCE_PREFIX);
     // 下载名称
     String downloadName = StringUtils.substringAfterLast(downloadPath, "/");
-    response.setCharacterEncoding("utf-8");
+    response.setCharacterEncoding(CHARACTER_ENCODING);
     response.setContentType("multipart/form-data");
     response.setHeader("Content-Disposition",
       "attachment;fileName=" + FileUtils.setFileDownloadHeader(request, downloadName));

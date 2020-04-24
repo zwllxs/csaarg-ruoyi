@@ -15,8 +15,8 @@ import java.util.regex.Pattern;
 public class JSONObject extends LinkedHashMap<String, Object> {
 
   private static final long serialVersionUID = 1L;
-  private static final Pattern arrayNamePattern = Pattern.compile("(\\w+)((\\[\\d+\\])+)");
-  private static final ObjectMapper objectMapper = new ObjectMapper();
+  private static final Pattern ARRAY_NAME_PATTERN = Pattern.compile("(\\w+)((\\[\\d+\\])+)");
+  private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
   /**
    * 数组结构。
@@ -82,7 +82,7 @@ public class JSONObject extends LinkedHashMap<String, Object> {
    */
   public String toCompactString() {
     try {
-      return objectMapper.writeValueAsString(this);
+      return OBJECT_MAPPER.writeValueAsString(this);
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
@@ -183,7 +183,7 @@ public class JSONObject extends LinkedHashMap<String, Object> {
     if (indexDot >= 0) {
       return obj(name.substring(0, indexDot)).value(name.substring(indexDot + 1));
     } else {
-      final Matcher matcher = arrayNamePattern.matcher(name);
+      final Matcher matcher = ARRAY_NAME_PATTERN.matcher(name);
       if (matcher.find()) {
         return endArray(matcher.group(1), matcher.group(2), new EndArrayCallback<Object>() {
           @Override
@@ -209,7 +209,7 @@ public class JSONObject extends LinkedHashMap<String, Object> {
     if (indexDot >= 0) {
       obj(name.substring(0, indexDot)).value(name.substring(indexDot + 1), value);
     } else {
-      final Matcher matcher = arrayNamePattern.matcher(name);
+      final Matcher matcher = ARRAY_NAME_PATTERN.matcher(name);
       if (matcher.find()) {
         endArray(matcher.group(1), matcher.group(2), new EndArrayCallback<Void>() {
           @Override
@@ -232,7 +232,7 @@ public class JSONObject extends LinkedHashMap<String, Object> {
    * @return 返回指定的对象。如果对象不存在，则为指定的名字创建一个空的MessageObject对象。
    */
   public JSONObject obj(final String name) {
-    final Matcher matcher = arrayNamePattern.matcher(name);
+    final Matcher matcher = ARRAY_NAME_PATTERN.matcher(name);
     if (matcher.find()) {
       return endArray(matcher.group(1), matcher.group(2), new EndArrayCallback<JSONObject>() {
         @Override

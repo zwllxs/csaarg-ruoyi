@@ -24,10 +24,6 @@ public interface ShiroConstants {
    */
   public static final String ERROR = "errorMsg";
   /**
-   * 编码格式
-   */
-  public static final String ENCODING = "UTF-8";
-  /**
    * 当前在线会话
    */
   public static final String ONLINE_SESSION = "online_session";

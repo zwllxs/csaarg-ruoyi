@@ -1,7 +1,7 @@
 package com.ruoyi.framework.interceptor.impl;
 
 import com.ruoyi.common.json.JSON;
-import com.ruoyi.framework.interceptor.RepeatSubmitInterceptor;
+import com.ruoyi.framework.interceptor.BaseRepeatSubmitInterceptor;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,7 +16,7 @@ import java.util.Map;
  * @author ruoyi
  */
 @Component
-public class SameUrlDataInterceptor extends RepeatSubmitInterceptor {
+public class SameUrlDataInterceptor extends BaseRepeatSubmitInterceptor {
 
   public final String REPEAT_PARAMS = "repeatParams";
   public final String REPEAT_TIME = "repeatTime";

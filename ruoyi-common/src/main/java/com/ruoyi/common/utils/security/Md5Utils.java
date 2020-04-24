@@ -2,6 +2,7 @@ package com.ruoyi.common.utils.security;
 
 import lombok.extern.slf4j.Slf4j;
 
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 
 /**
@@ -12,12 +13,14 @@ import java.security.MessageDigest;
 @Slf4j
 public class Md5Utils {
 
+  private static final String CHARSET_NAME = StandardCharsets.UTF_8.name();
+  
   private static byte[] md5(String s) {
     MessageDigest algorithm;
     try {
       algorithm = MessageDigest.getInstance("MD5");
       algorithm.reset();
-      algorithm.update(s.getBytes("UTF-8"));
+      algorithm.update(s.getBytes(CHARSET_NAME));
       byte[] messageDigest = algorithm.digest();
       return messageDigest;
     } catch (Exception e) {
@@ -44,7 +47,7 @@ public class Md5Utils {
 
   public static String hash(String s) {
     try {
-      return new String(toHex(md5(s)).getBytes("UTF-8"), "UTF-8");
+      return new String(toHex(md5(s)).getBytes(CHARSET_NAME), CHARSET_NAME);
     } catch (Exception e) {
       log.error("not supported charset...{}", e);
       return s;

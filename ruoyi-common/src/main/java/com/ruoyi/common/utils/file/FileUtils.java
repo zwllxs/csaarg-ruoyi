@@ -3,6 +3,7 @@ package com.ruoyi.common.utils.file;
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 /**
  * 文件处理工具类
@@ -11,7 +12,8 @@ import java.net.URLEncoder;
  */
 public class FileUtils {
 
-  public static String FILENAME_PATTERN = "[a-zA-Z0-9_\\-\\|\\.\\u4e00-\\u9fa5]+";
+  public static final String FILENAME_PATTERN = "[a-zA-Z0-9_\\-\\|\\.\\u4e00-\\u9fa5]+";
+  private static final String ENC = StandardCharsets.UTF_8.name();
 
   /**
    * 输出指定文件的byte数组
@@ -93,17 +95,17 @@ public class FileUtils {
     String filename = fileName;
     if (agent.contains("MSIE")) {
       // IE浏览器
-      filename = URLEncoder.encode(filename, "utf-8");
+      filename = URLEncoder.encode(filename, ENC);
       filename = filename.replace("+", " ");
     } else if (agent.contains("Firefox")) {
       // 火狐浏览器
-      filename = new String(fileName.getBytes(), "ISO8859-1");
+      filename = new String(fileName.getBytes(), StandardCharsets.ISO_8859_1);
     } else if (agent.contains("Chrome")) {
       // google浏览器
-      filename = URLEncoder.encode(filename, "utf-8");
+      filename = URLEncoder.encode(filename, ENC);
     } else {
       // 其它浏览器
-      filename = URLEncoder.encode(filename, "utf-8");
+      filename = URLEncoder.encode(filename, ENC);
     }
     return filename;
   }
