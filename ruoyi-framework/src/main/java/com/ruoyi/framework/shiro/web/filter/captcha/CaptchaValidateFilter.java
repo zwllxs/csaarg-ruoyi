@@ -45,7 +45,7 @@ public class CaptchaValidateFilter extends AccessControlFilter {
     throws Exception {
     HttpServletRequest httpServletRequest = (HttpServletRequest) request;
     // 验证码禁用 或不是表单提交 允许访问
-    if (captchaEnabled == false || !"post".equals(httpServletRequest.getMethod().toLowerCase())) {
+    if (!captchaEnabled || !"post".equals(httpServletRequest.getMethod().toLowerCase())) {
       return true;
     }
     return validateResponse(httpServletRequest, httpServletRequest.getParameter(ShiroConstants.CURRENT_VALIDATECODE));
@@ -61,7 +61,7 @@ public class CaptchaValidateFilter extends AccessControlFilter {
   }
 
   @Override
-  protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
+  protected boolean onAccessDenied(ServletRequest request, ServletResponse response) {
     request.setAttribute(ShiroConstants.CURRENT_CAPTCHA, ShiroConstants.CAPTCHA_ERROR);
     return true;
   }

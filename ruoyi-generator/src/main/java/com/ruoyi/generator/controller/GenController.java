@@ -33,7 +33,7 @@ import java.util.Map;
 @RequestMapping("/tool/gen")
 public class GenController extends BaseController {
 
-  private String prefix = "tool/gen";
+  private static final String PREFIX = "tool/gen";
 
   @Autowired
   private IGenTableService genTableService;
@@ -43,7 +43,7 @@ public class GenController extends BaseController {
   @RequiresPermissions("tool:gen:view")
   @GetMapping
   public String gen() {
-    return prefix + "/gen";
+    return PREFIX + "/gen";
   }
 
   /**
@@ -90,7 +90,7 @@ public class GenController extends BaseController {
   @RequiresPermissions("tool:gen:list")
   @GetMapping("/importTable")
   public String importTable() {
-    return prefix + "/importTable";
+    return PREFIX + "/importTable";
   }
 
   /**
@@ -116,7 +116,7 @@ public class GenController extends BaseController {
   public String edit(@PathVariable("tableId") Long tableId, ModelMap mmap) {
     GenTable table = genTableService.selectGenTableById(tableId);
     mmap.put("table", table);
-    return prefix + "/edit";
+    return PREFIX + "/edit";
   }
 
   /**
@@ -147,7 +147,7 @@ public class GenController extends BaseController {
   @RequiresPermissions("tool:gen:preview")
   @GetMapping("/preview/{tableId}")
   @ResponseBody
-  public AjaxResult preview(@PathVariable("tableId") Long tableId) throws IOException {
+  public AjaxResult preview(@PathVariable("tableId") Long tableId) {
     Map<String, String> dataMap = genTableService.previewCode(tableId);
     return AjaxResult.success(dataMap);
   }

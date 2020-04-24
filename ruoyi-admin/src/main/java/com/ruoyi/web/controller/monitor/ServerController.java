@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class ServerController extends BaseController {
 
-  private String prefix = "monitor/server";
+  private static final String PREFIX = "monitor/server";
 
   @RequiresPermissions("monitor:server:view")
   @GetMapping
@@ -25,6 +25,6 @@ public class ServerController extends BaseController {
     Server server = new Server();
     server.copyTo();
     mmap.put("server", server);
-    return prefix + "/server";
+    return PREFIX + "/server";
   }
 }

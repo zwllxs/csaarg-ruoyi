@@ -15,7 +15,7 @@ public class MapDataUtil {
 
   public static Map<String, Object> convertDataMap(HttpServletRequest request) {
     Map<String, String[]> properties = request.getParameterMap();
-    Map<String, Object> returnMap = new HashMap<String, Object>();
+    Map<String, Object> returnMap = new HashMap<>();
     Iterator<?> entries = properties.entrySet().iterator();
     Map.Entry<?, ?> entry;
     String name = "";

@@ -50,8 +50,7 @@ public class CommonController {
 
       response.setCharacterEncoding(CHARACTER_ENCODING);
       response.setContentType("multipart/form-data");
-      response.setHeader("Content-Disposition",
-        "attachment;fileName=" + FileUtils.setFileDownloadHeader(request, realFileName));
+      response.setHeader("Content-Disposition", "attachment;fileName=" + FileUtils.setFileDownloadHeader(request, realFileName));
       FileUtils.writeBytes(filePath, response.getOutputStream());
       if (delete) {
         FileUtils.deleteFile(filePath);
@@ -66,7 +65,7 @@ public class CommonController {
    */
   @ResponseBody
   @PostMapping("/common/upload")
-  public AjaxResult uploadFile(MultipartFile file) throws Exception {
+  public AjaxResult uploadFile(MultipartFile file) {
     try {
       // 上传文件路径
       String filePath = Global.getUploadPath();

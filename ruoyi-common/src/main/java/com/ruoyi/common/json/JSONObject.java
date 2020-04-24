@@ -234,12 +234,7 @@ public class JSONObject extends LinkedHashMap<String, Object> {
   public JSONObject obj(final String name) {
     final Matcher matcher = ARRAY_NAME_PATTERN.matcher(name);
     if (matcher.find()) {
-      return endArray(matcher.group(1), matcher.group(2), new EndArrayCallback<JSONObject>() {
-        @Override
-        public JSONObject callback(JSONArray arr, int index) {
-          return objAt(arr, index);
-        }
-      });
+      return endArray(matcher.group(1), matcher.group(2), JSONObject::objAt);
     } else {
       JSONObject obj = getObj(name);
       if (obj == null) {
@@ -474,9 +469,7 @@ public class JSONObject extends LinkedHashMap<String, Object> {
 
   private static JSONArray toArr(final Collection<Object> list) {
     final JSONArray arr = new JSONArray(list.size());
-    for (final Object element : list) {
-      arr.add(element);
-    }
+    arr.addAll(list);
     return arr;
   }
 
@@ -591,12 +584,12 @@ public class JSONObject extends LinkedHashMap<String, Object> {
   }
 
   private static int[] parseIndexes(final String s) {
-    int[] indexes = null;
-    List<Integer> list = new ArrayList<Integer>();
+    int[] indexes;
+    List<Integer> list = new ArrayList<>();
 
     final StringTokenizer st = new StringTokenizer(s, "[]");
     while (st.hasMoreTokens()) {
-      final int index = Integer.valueOf(st.nextToken());
+      final int index = Integer.parseInt(st.nextToken());
       if (index < 0) {
         throw new RuntimeException(String.format("Illegal index %1$d in \"%2$s\"", index, s));
       }

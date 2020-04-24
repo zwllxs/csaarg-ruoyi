@@ -33,7 +33,7 @@ import java.util.List;
 @Controller
 public class SysUserController extends BaseController {
 
-  private String prefix = "system/user";
+  private static final String PREFIX = "system/user";
 
   @Autowired
   private ISysUserService userService;
@@ -47,7 +47,7 @@ public class SysUserController extends BaseController {
   @RequiresPermissions("system:user:view")
   @GetMapping
   public String user() {
-    return prefix + "/user";
+    return PREFIX + "/user";
   }
 
   @RequiresPermissions("system:user:list")
@@ -65,7 +65,7 @@ public class SysUserController extends BaseController {
   @PostMapping("/export")
   public AjaxResult export(SysUser user) {
     List<SysUser> list = userService.selectUserList(user);
-    ExcelUtil<SysUser> util = new ExcelUtil<SysUser>(SysUser.class);
+    ExcelUtil<SysUser> util = new ExcelUtil<>(SysUser.class);
     return util.exportExcel(list, "用户数据");
   }
 
@@ -74,7 +74,7 @@ public class SysUserController extends BaseController {
   @ResponseBody
   @PostMapping("/importData")
   public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
-    ExcelUtil<SysUser> util = new ExcelUtil<SysUser>(SysUser.class);
+    ExcelUtil<SysUser> util = new ExcelUtil<>(SysUser.class);
     List<SysUser> userList = util.importExcel(file.getInputStream());
     String operName = ShiroUtils.getSysUser().getLoginName();
     String message = userService.importUser(userList, updateSupport, operName);
@@ -85,7 +85,7 @@ public class SysUserController extends BaseController {
   @ResponseBody
   @GetMapping("/importTemplate")
   public AjaxResult importTemplate() {
-    ExcelUtil<SysUser> util = new ExcelUtil<SysUser>(SysUser.class);
+    ExcelUtil<SysUser> util = new ExcelUtil<>(SysUser.class);
     return util.importTemplateExcel("用户数据");
   }
 
@@ -96,7 +96,7 @@ public class SysUserController extends BaseController {
   public String add(ModelMap mmap) {
     mmap.put("roles", roleService.selectRoleAll());
     mmap.put("posts", postService.selectPostAll());
-    return prefix + "/add";
+    return PREFIX + "/add";
   }
 
   /**
@@ -128,7 +128,7 @@ public class SysUserController extends BaseController {
     mmap.put("user", userService.selectUserById(userId));
     mmap.put("roles", roleService.selectRolesByUserId(userId));
     mmap.put("posts", postService.selectPostsByUserId(userId));
-    return prefix + "/edit";
+    return PREFIX + "/edit";
   }
 
   /**
@@ -154,7 +154,7 @@ public class SysUserController extends BaseController {
   @GetMapping("/resetPwd/{userId}")
   public String resetPwd(@PathVariable("userId") Long userId, ModelMap mmap) {
     mmap.put("user", userService.selectUserById(userId));
-    return prefix + "/resetPwd";
+    return PREFIX + "/resetPwd";
   }
 
   @Log(title = "重置密码", businessType = BusinessType.UPDATE)
@@ -184,7 +184,7 @@ public class SysUserController extends BaseController {
     List<SysUserRole> userRoles = userService.selectUserRoleByUserId(userId);
     mmap.put("user", user);
     mmap.put("userRoles", userRoles);
-    return prefix + "/authRole";
+    return PREFIX + "/authRole";
   }
 
   /**

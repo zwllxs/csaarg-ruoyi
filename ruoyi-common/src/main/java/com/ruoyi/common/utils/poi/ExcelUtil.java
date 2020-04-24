@@ -127,7 +127,7 @@ public class ExcelUtil<T> {
       Row heard = sheet.getRow(0);
       for (int i = 0; i < heard.getPhysicalNumberOfCells(); i++) {
         Cell cell = heard.getCell(i);
-        if (StringUtils.isNotNull(cell != null)) {
+        if (StringUtils.isNotNull(cell)) {
           String value = this.getCellValue(heard, i).toString();
           cellMap.put(value, i);
         } else {
@@ -381,7 +381,7 @@ public class ExcelUtil<T> {
    * 创建表格样式
    */
   public void setDataValidation(Excel attr, Row row, int column) {
-    if (attr.name().indexOf("注：") >= 0) {
+    if (attr.name().contains("注：")) {
       sheet.setColumnWidth(column, 6000);
     } else {
       // 设置列宽
@@ -566,7 +566,7 @@ public class ExcelUtil<T> {
     Object o = field.get(vo);
     if (StringUtils.isNotEmpty(excel.targetAttr())) {
       String target = excel.targetAttr();
-      if (target.indexOf(".") > -1) {
+      if (target.contains(".")) {
         String[] targets = target.split("[.]");
         for (String name : targets) {
           o = getValue(o, name);
@@ -600,7 +600,7 @@ public class ExcelUtil<T> {
    * 得到所有定义字段
    */
   private void createExcelField() {
-    this.fields = new ArrayList<Object[]>();
+    this.fields = new ArrayList<>();
     List<Field> tempFields = new ArrayList<>();
     tempFields.addAll(Arrays.asList(clazz.getSuperclass().getDeclaredFields()));
     tempFields.addAll(Arrays.asList(clazz.getDeclaredFields()));

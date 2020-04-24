@@ -28,7 +28,7 @@ import java.util.List;
 @Controller
 public class SysPostController extends BaseController {
 
-  private String prefix = "system/post";
+  private static final String PREFIX = "system/post";
 
   @Autowired
   private ISysPostService postService;
@@ -36,7 +36,7 @@ public class SysPostController extends BaseController {
   @RequiresPermissions("system:post:view")
   @GetMapping
   public String operlog() {
-    return prefix + "/post";
+    return PREFIX + "/post";
   }
 
   @RequiresPermissions("system:post:list")
@@ -54,7 +54,7 @@ public class SysPostController extends BaseController {
   @PostMapping("/export")
   public AjaxResult export(SysPost post) {
     List<SysPost> list = postService.selectPostList(post);
-    ExcelUtil<SysPost> util = new ExcelUtil<SysPost>(SysPost.class);
+    ExcelUtil<SysPost> util = new ExcelUtil<>(SysPost.class);
     return util.exportExcel(list, "岗位数据");
   }
 
@@ -75,7 +75,7 @@ public class SysPostController extends BaseController {
    */
   @GetMapping("/add")
   public String add() {
-    return prefix + "/add";
+    return PREFIX + "/add";
   }
 
   /**
@@ -101,7 +101,7 @@ public class SysPostController extends BaseController {
   @GetMapping("/edit/{postId}")
   public String edit(@PathVariable("postId") Long postId, ModelMap mmap) {
     mmap.put("post", postService.selectPostById(postId));
-    return prefix + "/edit";
+    return PREFIX + "/edit";
   }
 
   /**

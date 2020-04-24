@@ -28,7 +28,7 @@ import java.util.List;
 @RequestMapping("/monitor/job")
 public class SysJobController extends BaseController {
 
-  private String prefix = "monitor/job";
+  private static final String PREFIX = "monitor/job";
 
   @Autowired
   private ISysJobService jobService;
@@ -36,7 +36,7 @@ public class SysJobController extends BaseController {
   @RequiresPermissions("monitor:job:view")
   @GetMapping
   public String job() {
-    return prefix + "/job";
+    return PREFIX + "/job";
   }
 
   @RequiresPermissions("monitor:job:list")
@@ -54,7 +54,7 @@ public class SysJobController extends BaseController {
   @ResponseBody
   public AjaxResult export(SysJob job) {
     List<SysJob> list = jobService.selectJobList(job);
-    ExcelUtil<SysJob> util = new ExcelUtil<SysJob>(SysJob.class);
+    ExcelUtil<SysJob> util = new ExcelUtil<>(SysJob.class);
     return util.exportExcel(list, "定时任务");
   }
 
@@ -72,7 +72,7 @@ public class SysJobController extends BaseController {
   public String detail(@PathVariable("jobId") Long jobId, ModelMap mmap) {
     mmap.put("name", "job");
     mmap.put("job", jobService.selectJobById(jobId));
-    return prefix + "/detail";
+    return PREFIX + "/detail";
   }
 
   /**
@@ -105,7 +105,7 @@ public class SysJobController extends BaseController {
    */
   @GetMapping("/add")
   public String add() {
-    return prefix + "/add";
+    return PREFIX + "/add";
   }
 
   /**
@@ -125,7 +125,7 @@ public class SysJobController extends BaseController {
   @GetMapping("/edit/{jobId}")
   public String edit(@PathVariable("jobId") Long jobId, ModelMap mmap) {
     mmap.put("job", jobService.selectJobById(jobId));
-    return prefix + "/edit";
+    return PREFIX + "/edit";
   }
 
   /**

@@ -29,7 +29,7 @@ import java.util.List;
 @Controller
 public class SysDeptController extends BaseController {
 
-  private String prefix = "system/dept";
+  private static final String PREFIX = "system/dept";
 
   @Autowired
   private ISysDeptService deptService;
@@ -37,15 +37,14 @@ public class SysDeptController extends BaseController {
   @RequiresPermissions("system:dept:view")
   @GetMapping
   public String dept() {
-    return prefix + "/dept";
+    return PREFIX + "/dept";
   }
 
   @RequiresPermissions("system:dept:list")
   @ResponseBody
   @PostMapping("/list")
   public List<SysDept> list(SysDept dept) {
-    List<SysDept> deptList = deptService.selectDeptList(dept);
-    return deptList;
+    return deptService.selectDeptList(dept);
   }
 
   /**
@@ -54,7 +53,7 @@ public class SysDeptController extends BaseController {
   @GetMapping("/add/{parentId}")
   public String add(@PathVariable("parentId") Long parentId, ModelMap mmap) {
     mmap.put("dept", deptService.selectDeptById(parentId));
-    return prefix + "/add";
+    return PREFIX + "/add";
   }
 
   /**
@@ -82,7 +81,7 @@ public class SysDeptController extends BaseController {
       dept.setParentName("无");
     }
     mmap.put("dept", dept);
-    return prefix + "/edit";
+    return PREFIX + "/edit";
   }
 
   /**
@@ -134,7 +133,7 @@ public class SysDeptController extends BaseController {
   @GetMapping("/selectDeptTree/{deptId}")
   public String selectDeptTree(@PathVariable("deptId") Long deptId, ModelMap mmap) {
     mmap.put("dept", deptService.selectDeptById(deptId));
-    return prefix + "/tree";
+    return PREFIX + "/tree";
   }
 
   /**
@@ -143,8 +142,7 @@ public class SysDeptController extends BaseController {
   @ResponseBody
   @GetMapping("/treeData")
   public List<Ztree> treeData() {
-    List<Ztree> ztrees = deptService.selectDeptTree(new SysDept());
-    return ztrees;
+    return deptService.selectDeptTree(new SysDept());
   }
 
   /**
@@ -153,7 +151,6 @@ public class SysDeptController extends BaseController {
   @ResponseBody
   @GetMapping("/roleDeptTreeData")
   public List<Ztree> deptTreeData(SysRole role) {
-    List<Ztree> ztrees = deptService.roleDeptTreeData(role);
-    return ztrees;
+    return deptService.roleDeptTreeData(role);
   }
 }

@@ -274,7 +274,7 @@ public class GenTableServiceImpl implements IGenTableService {
   /**
    * 设置主键列信息
    *
-   * @param genTable 业务表信息
+   * @param table 业务表信息
    * @param columns  业务字段列表
    */
   public void setPkColumn(GenTable table, List<GenTableColumn> columns) {

@@ -57,7 +57,7 @@ public class ShiroUtils {
   }
 
   public static Long getUserId() {
-    return getSysUser().getUserId().longValue();
+    return getSysUser().getUserId();
   }
 
   public static String getLoginName() {
@@ -78,7 +78,6 @@ public class ShiroUtils {
   public static String randomSalt() {
     // 一个Byte占两个字节，此处生成的3字节，字符串长度为6
     SecureRandomNumberGenerator secureRandom = new SecureRandomNumberGenerator();
-    String hex = secureRandom.nextBytes(3).toHex();
-    return hex;
+    return secureRandom.nextBytes(3).toHex();
   }
 }

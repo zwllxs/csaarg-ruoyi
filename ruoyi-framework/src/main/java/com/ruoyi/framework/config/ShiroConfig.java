@@ -133,8 +133,7 @@ public class ShiroConfig {
    */
   @Bean
   public OnlineSessionDAO sessionDAO() {
-    OnlineSessionDAO sessionDAO = new OnlineSessionDAO();
-    return sessionDAO;
+    return new OnlineSessionDAO();
   }
 
   /**
@@ -142,8 +141,7 @@ public class ShiroConfig {
    */
   @Bean
   public OnlineSessionFactory sessionFactory() {
-    OnlineSessionFactory sessionFactory = new OnlineSessionFactory();
-    return sessionFactory;
+    return new OnlineSessionFactory();
   }
 
   /**
@@ -261,8 +259,7 @@ public class ShiroConfig {
    */
   @Bean
   public SyncOnlineSessionFilter syncOnlineSessionFilter() {
-    SyncOnlineSessionFilter syncOnlineSessionFilter = new SyncOnlineSessionFilter();
-    return syncOnlineSessionFilter;
+    return new SyncOnlineSessionFilter();
   }
 
   /**

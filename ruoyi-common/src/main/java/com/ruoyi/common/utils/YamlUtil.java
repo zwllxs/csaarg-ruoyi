@@ -59,7 +59,7 @@ public class YamlUtil {
         if (input.contains(".")) {
           int index = input.indexOf(".");
           String left = input.substring(0, index);
-          String right = input.substring(index + 1, input.length());
+          String right = input.substring(index + 1);
           setProperty((Map<?, ?>) map.get(left), right, value);
         } else {
           ((Map<Object, Object>) map).put(qualifiedKey, value);

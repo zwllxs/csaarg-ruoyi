@@ -25,9 +25,7 @@ public class JSON {
   public static void marshal(File file, Object value) throws Exception {
     try {
       OBJECT_WRITER.writeValue(file, value);
-    } catch (JsonGenerationException e) {
-      throw new Exception(e);
-    } catch (JsonMappingException e) {
+    } catch (JsonGenerationException | JsonMappingException e) {
       throw new Exception(e);
     } catch (IOException e) {
       throw new Exception(e);
@@ -37,9 +35,7 @@ public class JSON {
   public static void marshal(OutputStream os, Object value) throws Exception {
     try {
       OBJECT_WRITER.writeValue(os, value);
-    } catch (JsonGenerationException e) {
-      throw new Exception(e);
-    } catch (JsonMappingException e) {
+    } catch (JsonGenerationException | JsonMappingException e) {
       throw new Exception(e);
     } catch (IOException e) {
       throw new Exception(e);
@@ -49,9 +45,7 @@ public class JSON {
   public static String marshal(Object value) throws Exception {
     try {
       return OBJECT_WRITER.writeValueAsString(value);
-    } catch (JsonGenerationException e) {
-      throw new Exception(e);
-    } catch (JsonMappingException e) {
+    } catch (JsonGenerationException | JsonMappingException e) {
       throw new Exception(e);
     } catch (IOException e) {
       throw new Exception(e);
@@ -61,9 +55,7 @@ public class JSON {
   public static byte[] marshalBytes(Object value) throws Exception {
     try {
       return OBJECT_WRITER.writeValueAsBytes(value);
-    } catch (JsonGenerationException e) {
-      throw new Exception(e);
-    } catch (JsonMappingException e) {
+    } catch (JsonGenerationException | JsonMappingException e) {
       throw new Exception(e);
     } catch (IOException e) {
       throw new Exception(e);
@@ -73,9 +65,7 @@ public class JSON {
   public static <T> T unmarshal(File file, Class<T> valueType) throws Exception {
     try {
       return OBJECT_MAPPER.readValue(file, valueType);
-    } catch (JsonParseException e) {
-      throw new Exception(e);
-    } catch (JsonMappingException e) {
+    } catch (JsonParseException | JsonMappingException e) {
       throw new Exception(e);
     } catch (IOException e) {
       throw new Exception(e);
@@ -85,9 +75,7 @@ public class JSON {
   public static <T> T unmarshal(InputStream is, Class<T> valueType) throws Exception {
     try {
       return OBJECT_MAPPER.readValue(is, valueType);
-    } catch (JsonParseException e) {
-      throw new Exception(e);
-    } catch (JsonMappingException e) {
+    } catch (JsonParseException | JsonMappingException e) {
       throw new Exception(e);
     } catch (IOException e) {
       throw new Exception(e);
@@ -97,9 +85,7 @@ public class JSON {
   public static <T> T unmarshal(String str, Class<T> valueType) throws Exception {
     try {
       return OBJECT_MAPPER.readValue(str, valueType);
-    } catch (JsonParseException e) {
-      throw new Exception(e);
-    } catch (JsonMappingException e) {
+    } catch (JsonParseException | JsonMappingException e) {
       throw new Exception(e);
     } catch (IOException e) {
       throw new Exception(e);
@@ -112,9 +98,7 @@ public class JSON {
         bytes = new byte[0];
       }
       return OBJECT_MAPPER.readValue(bytes, 0, bytes.length, valueType);
-    } catch (JsonParseException e) {
-      throw new Exception(e);
-    } catch (JsonMappingException e) {
+    } catch (JsonParseException | JsonMappingException e) {
       throw new Exception(e);
     } catch (IOException e) {
       throw new Exception(e);

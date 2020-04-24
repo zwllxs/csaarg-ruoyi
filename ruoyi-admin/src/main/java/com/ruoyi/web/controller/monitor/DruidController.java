@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class DruidController extends BaseController {
 
-  private String prefix = "/druid";
+  private static final String PREFIX = "/druid";
 
   @RequiresPermissions("monitor:data:view")
   @GetMapping
   public String index() {
-    return redirect(prefix + "/index");
+    return redirect(PREFIX + "/index");
   }
 }

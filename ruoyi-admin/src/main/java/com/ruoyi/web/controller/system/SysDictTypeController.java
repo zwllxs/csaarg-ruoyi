@@ -29,7 +29,7 @@ import java.util.List;
 @Controller
 public class SysDictTypeController extends BaseController {
 
-  private String prefix = "system/dict/type";
+  private static final String PREFIX = "system/dict/type";
 
   @Autowired
   private ISysDictTypeService dictTypeService;
@@ -37,7 +37,7 @@ public class SysDictTypeController extends BaseController {
   @RequiresPermissions("system:dict:view")
   @GetMapping
   public String dictType() {
-    return prefix + "/type";
+    return PREFIX + "/type";
   }
 
   @RequiresPermissions("system:dict:list")
@@ -56,7 +56,7 @@ public class SysDictTypeController extends BaseController {
   public AjaxResult export(SysDictType dictType) {
 
     List<SysDictType> list = dictTypeService.selectDictTypeList(dictType);
-    ExcelUtil<SysDictType> util = new ExcelUtil<SysDictType>(SysDictType.class);
+    ExcelUtil<SysDictType> util = new ExcelUtil<>(SysDictType.class);
     return util.exportExcel(list, "字典类型");
   }
 
@@ -65,7 +65,7 @@ public class SysDictTypeController extends BaseController {
    */
   @GetMapping("/add")
   public String add() {
-    return prefix + "/add";
+    return PREFIX + "/add";
   }
 
   /**
@@ -89,7 +89,7 @@ public class SysDictTypeController extends BaseController {
   @GetMapping("/edit/{dictId}")
   public String edit(@PathVariable("dictId") Long dictId, ModelMap mmap) {
     mmap.put("dict", dictTypeService.selectDictTypeById(dictId));
-    return prefix + "/edit";
+    return PREFIX + "/edit";
   }
 
   /**
@@ -151,11 +151,10 @@ public class SysDictTypeController extends BaseController {
    * 选择字典树
    */
   @GetMapping("/selectDictTree/{columnId}/{dictType}")
-  public String selectDeptTree(@PathVariable("columnId") Long columnId, @PathVariable("dictType") String dictType,
-                               ModelMap mmap) {
+  public String selectDeptTree(@PathVariable("columnId") Long columnId, @PathVariable("dictType") String dictType, ModelMap mmap) {
     mmap.put("columnId", columnId);
     mmap.put("dict", dictTypeService.selectDictTypeByType(dictType));
-    return prefix + "/tree";
+    return PREFIX + "/tree";
   }
 
   /**

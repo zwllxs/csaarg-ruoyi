@@ -49,8 +49,7 @@ public class SysDeptServiceImpl implements ISysDeptService {
   @DataScope(deptAlias = "d")
   public List<Ztree> selectDeptTree(SysDept dept) {
     List<SysDept> deptList = deptMapper.selectDeptList(dept);
-    List<Ztree> ztrees = initZtree(deptList);
-    return ztrees;
+    return initZtree(deptList);
   }
 
   /**
@@ -62,7 +61,7 @@ public class SysDeptServiceImpl implements ISysDeptService {
   @Override
   public List<Ztree> roleDeptTreeData(SysRole role) {
     Long roleId = role.getRoleId();
-    List<Ztree> ztrees = new ArrayList<Ztree>();
+    List<Ztree> ztrees;
     List<SysDept> deptList = selectDeptList(new SysDept());
     if (StringUtils.isNotNull(roleId)) {
       List<String> roleDeptList = deptMapper.selectRoleDeptTree(roleId);
@@ -132,7 +131,7 @@ public class SysDeptServiceImpl implements ISysDeptService {
   @Override
   public boolean checkDeptExistUser(Long deptId) {
     int result = deptMapper.checkDeptExistUser(deptId);
-    return result > 0 ? true : false;
+    return result > 0;
   }
 
   /**
@@ -236,9 +235,9 @@ public class SysDeptServiceImpl implements ISysDeptService {
    */
   @Override
   public String checkDeptNameUnique(SysDept dept) {
-    Long deptId = StringUtils.isNull(dept.getDeptId()) ? -1L : dept.getDeptId();
+    long deptId = StringUtils.isNull(dept.getDeptId()) ? -1L : dept.getDeptId();
     SysDept info = deptMapper.checkDeptNameUnique(dept.getDeptName(), dept.getParentId());
-    if (StringUtils.isNotNull(info) && info.getDeptId().longValue() != deptId.longValue()) {
+    if (StringUtils.isNotNull(info) && info.getDeptId() != deptId) {
       return UserConstants.DEPT_NAME_NOT_UNIQUE;
     }
     return UserConstants.DEPT_NAME_UNIQUE;

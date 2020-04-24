@@ -29,9 +29,9 @@ import java.util.Map;
 @Controller
 public class DemoOperateController extends BaseController {
 
-  private String prefix = "demo/operate";
+  private static final String PREFIX = "demo/operate";
 
-  private final static Map<Integer, UserOperateModel> USERS = new LinkedHashMap<Integer, UserOperateModel>();
+  private final static Map<Integer, UserOperateModel> USERS = new LinkedHashMap<>();
 
   {
     USERS.put(1, new UserOperateModel(1, "1000001", "测试1", "0", "15888888888", "ry@qq.com", 150.0, "0"));
@@ -67,7 +67,7 @@ public class DemoOperateController extends BaseController {
    */
   @GetMapping("/table")
   public String table() {
-    return prefix + "/table";
+    return PREFIX + "/table";
   }
 
   /**
@@ -75,7 +75,7 @@ public class DemoOperateController extends BaseController {
    */
   @GetMapping("/other")
   public String other() {
-    return prefix + "/other";
+    return PREFIX + "/other";
   }
 
   /**
@@ -85,7 +85,7 @@ public class DemoOperateController extends BaseController {
   @PostMapping("/list")
   public TableDataInfo list(UserOperateModel userModel) {
     TableDataInfo rspData = new TableDataInfo();
-    List<UserOperateModel> userList = new ArrayList<UserOperateModel>(USERS.values());
+    List<UserOperateModel> userList = new ArrayList<>(USERS.values());
     // 查询条件过滤
     if (StringUtils.isNotEmpty(userModel.getSearchValue())) {
       userList.clear();
@@ -123,7 +123,7 @@ public class DemoOperateController extends BaseController {
    */
   @GetMapping("/add")
   public String add(ModelMap mmap) {
-    return prefix + "/add";
+    return PREFIX + "/add";
   }
 
   /**
@@ -143,7 +143,7 @@ public class DemoOperateController extends BaseController {
   @GetMapping("/edit/{userId}")
   public String edit(@PathVariable("userId") Integer userId, ModelMap mmap) {
     mmap.put("user", USERS.get(userId));
-    return prefix + "/edit";
+    return PREFIX + "/edit";
   }
 
   /**
@@ -161,8 +161,8 @@ public class DemoOperateController extends BaseController {
   @ResponseBody
   @PostMapping("/export")
   public AjaxResult export(UserOperateModel user) {
-    List<UserOperateModel> list = new ArrayList<UserOperateModel>(USERS.values());
-    ExcelUtil<UserOperateModel> util = new ExcelUtil<UserOperateModel>(UserOperateModel.class);
+    List<UserOperateModel> list = new ArrayList<>(USERS.values());
+    ExcelUtil<UserOperateModel> util = new ExcelUtil<>(UserOperateModel.class);
     return util.exportExcel(list, "用户数据");
   }
 
@@ -172,7 +172,7 @@ public class DemoOperateController extends BaseController {
   @ResponseBody
   @GetMapping("/importTemplate")
   public AjaxResult importTemplate() {
-    ExcelUtil<UserOperateModel> util = new ExcelUtil<UserOperateModel>(UserOperateModel.class);
+    ExcelUtil<UserOperateModel> util = new ExcelUtil<>(UserOperateModel.class);
     return util.importTemplateExcel("用户数据");
   }
 
@@ -182,7 +182,7 @@ public class DemoOperateController extends BaseController {
   @ResponseBody
   @PostMapping("/importData")
   public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
-    ExcelUtil<UserOperateModel> util = new ExcelUtil<UserOperateModel>(UserOperateModel.class);
+    ExcelUtil<UserOperateModel> util = new ExcelUtil<>(UserOperateModel.class);
     List<UserOperateModel> userList = util.importExcel(file.getInputStream());
     String message = importUser(userList, updateSupport);
     return AjaxResult.success(message);
@@ -207,7 +207,7 @@ public class DemoOperateController extends BaseController {
   @GetMapping("/detail/{userId}")
   public String detail(@PathVariable("userId") Integer userId, ModelMap mmap) {
     mmap.put("user", USERS.get(userId));
-    return prefix + "/detail";
+    return PREFIX + "/detail";
   }
 
   @ResponseBody
@@ -243,23 +243,23 @@ public class DemoOperateController extends BaseController {
           }
         }
         if (!userFlag) {
-          Integer userId = USERS.size() + 1;
+          int userId = USERS.size() + 1;
           user.setUserId(userId);
           USERS.put(userId, user);
           successNum++;
-          successMsg.append("<br/>" + successNum + "、用户 " + user.getUserName() + " 导入成功");
+          successMsg.append("<br/>").append(successNum).append("、用户 ").append(user.getUserName()).append(" 导入成功");
         } else if (isUpdateSupport) {
           USERS.put(user.getUserId(), user);
           successNum++;
-          successMsg.append("<br/>" + successNum + "、用户 " + user.getUserName() + " 更新成功");
+          successMsg.append("<br/>").append(successNum).append("、用户 ").append(user.getUserName()).append(" 更新成功");
         } else {
           failureNum++;
-          failureMsg.append("<br/>" + failureNum + "、用户 " + user.getUserName() + " 已存在");
+          failureMsg.append("<br/>").append(failureNum).append("、用户 ").append(user.getUserName()).append(" 已存在");
         }
       } catch (Exception e) {
         failureNum++;
         String msg = "<br/>" + failureNum + "、账号 " + user.getUserName() + " 导入失败：";
-        failureMsg.append(msg + e.getMessage());
+        failureMsg.append(msg).append(e.getMessage());
       }
     }
     if (failureNum > 0) {

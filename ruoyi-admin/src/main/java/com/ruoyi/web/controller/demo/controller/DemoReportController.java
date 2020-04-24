@@ -13,14 +13,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class DemoReportController {
 
-  private String prefix = "demo/report";
+  private static final String PREFIX = "demo/report";
 
   /**
    * 百度ECharts
    */
   @GetMapping("/echarts")
   public String echarts() {
-    return prefix + "/echarts";
+    return PREFIX + "/echarts";
   }
 
   /**
@@ -28,7 +28,7 @@ public class DemoReportController {
    */
   @GetMapping("/peity")
   public String peity() {
-    return prefix + "/peity";
+    return PREFIX + "/peity";
   }
 
   /**
@@ -36,7 +36,7 @@ public class DemoReportController {
    */
   @GetMapping("/sparkline")
   public String sparkline() {
-    return prefix + "/sparkline";
+    return PREFIX + "/sparkline";
   }
 
   /**
@@ -44,6 +44,6 @@ public class DemoReportController {
    */
   @GetMapping("/metrics")
   public String metrics() {
-    return prefix + "/metrics";
+    return PREFIX + "/metrics";
   }
 }

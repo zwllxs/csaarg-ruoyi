@@ -13,14 +13,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class DemoIconController {
 
-  private String prefix = "demo/icon";
+  private static final String PREFIX = "demo/icon";
 
   /**
    * FontAwesome图标
    */
   @GetMapping("/fontawesome")
   public String fontAwesome() {
-    return prefix + "/fontawesome";
+    return PREFIX + "/fontawesome";
   }
 
   /**
@@ -28,6 +28,6 @@ public class DemoIconController {
    */
   @GetMapping("/glyphicons")
   public String glyphicons() {
-    return prefix + "/glyphicons";
+    return PREFIX + "/glyphicons";
   }
 }

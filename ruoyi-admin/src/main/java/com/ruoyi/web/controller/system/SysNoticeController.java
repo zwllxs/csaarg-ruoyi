@@ -25,7 +25,7 @@ import java.util.List;
 @Controller
 public class SysNoticeController extends BaseController {
 
-  private String prefix = "system/notice";
+  private static final String PREFIX = "system/notice";
 
   @Autowired
   private ISysNoticeService noticeService;
@@ -33,7 +33,7 @@ public class SysNoticeController extends BaseController {
   @RequiresPermissions("system:notice:view")
   @GetMapping
   public String notice() {
-    return prefix + "/notice";
+    return PREFIX + "/notice";
   }
 
   /**
@@ -53,7 +53,7 @@ public class SysNoticeController extends BaseController {
    */
   @GetMapping("/add")
   public String add() {
-    return prefix + "/add";
+    return PREFIX + "/add";
   }
 
   /**
@@ -74,7 +74,7 @@ public class SysNoticeController extends BaseController {
   @GetMapping("/edit/{noticeId}")
   public String edit(@PathVariable("noticeId") Long noticeId, ModelMap mmap) {
     mmap.put("notice", noticeService.selectNoticeById(noticeId));
-    return prefix + "/edit";
+    return PREFIX + "/edit";
   }
 
   /**

@@ -34,7 +34,7 @@ public class TestController extends BaseController {
   @ApiOperation("获取用户列表")
   @GetMapping("/list")
   public AjaxResult userList() {
-    List<UserEntity> userList = new ArrayList<UserEntity>(USERS.values());
+    List<UserEntity> userList = new ArrayList<>(USERS.values());
     return AjaxResult.success(userList);
   }
 

@@ -28,7 +28,7 @@ import java.util.List;
 @RequestMapping("/monitor/jobLog")
 public class SysJobLogController extends BaseController {
 
-  private String prefix = "monitor/job";
+  private static final String PREFIX = "monitor/job";
 
   @Autowired
   private ISysJobService jobService;
@@ -42,7 +42,7 @@ public class SysJobLogController extends BaseController {
       SysJob job = jobService.selectJobById(jobId);
       mmap.put("job", job);
     }
-    return prefix + "/jobLog";
+    return PREFIX + "/jobLog";
   }
 
   @RequiresPermissions("monitor:job:list")
@@ -77,7 +77,7 @@ public class SysJobLogController extends BaseController {
   public String detail(@PathVariable("jobLogId") Long jobLogId, ModelMap mmap) {
     mmap.put("name", "jobLog");
     mmap.put("jobLog", jobLogService.selectJobLogById(jobLogId));
-    return prefix + "/detail";
+    return PREFIX + "/detail";
   }
 
   @Log(title = "调度日志", businessType = BusinessType.CLEAN)

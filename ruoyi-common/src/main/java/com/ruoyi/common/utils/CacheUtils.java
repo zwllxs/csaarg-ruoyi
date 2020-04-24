@@ -16,7 +16,7 @@ import java.util.Set;
 @Slf4j
 public class CacheUtils {
 
-  private static CacheManager cacheManager = SpringUtils.getBean(CacheManager.class);
+  private static final CacheManager cacheManager = SpringUtils.getBean(CacheManager.class);
 
   private static final String SYS_CACHE = "sys-cache";
 

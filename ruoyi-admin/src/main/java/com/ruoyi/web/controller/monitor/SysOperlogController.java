@@ -25,7 +25,7 @@ import java.util.List;
 @Controller
 public class SysOperlogController extends BaseController {
 
-  private String prefix = "monitor/operlog";
+  private static final String PREFIX = "monitor/operlog";
 
   @Autowired
   private ISysOperLogService operLogService;
@@ -33,7 +33,7 @@ public class SysOperlogController extends BaseController {
   @GetMapping
   @RequiresPermissions("monitor:operlog:view")
   public String operlog() {
-    return prefix + "/operlog";
+    return PREFIX + "/operlog";
   }
 
   @RequiresPermissions("monitor:operlog:list")
@@ -51,7 +51,7 @@ public class SysOperlogController extends BaseController {
   @PostMapping("/export")
   public AjaxResult export(SysOperLog operLog) {
     List<SysOperLog> list = operLogService.selectOperLogList(operLog);
-    ExcelUtil<SysOperLog> util = new ExcelUtil<SysOperLog>(SysOperLog.class);
+    ExcelUtil<SysOperLog> util = new ExcelUtil<>(SysOperLog.class);
     return util.exportExcel(list, "操作日志");
   }
 
@@ -66,7 +66,7 @@ public class SysOperlogController extends BaseController {
   @GetMapping("/detail/{operId}")
   public String detail(@PathVariable("operId") Long operId, ModelMap mmap) {
     mmap.put("operLog", operLogService.selectOperLogById(operId));
-    return prefix + "/detail";
+    return PREFIX + "/detail";
   }
 
   @Log(title = "操作日志", businessType = BusinessType.CLEAN)

@@ -28,7 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Controller
 public class SysProfileController extends BaseController {
 
-  private String prefix = "system/user/profile";
+  private static final String PREFIX = "system/user/profile";
 
   @Autowired
   private ISysUserService userService;
@@ -44,7 +44,7 @@ public class SysProfileController extends BaseController {
     mmap.put("user", user);
     mmap.put("roleGroup", userService.selectUserRoleGroup(user.getUserId()));
     mmap.put("postGroup", userService.selectUserPostGroup(user.getUserId()));
-    return prefix + "/profile";
+    return PREFIX + "/profile";
   }
 
   @ResponseBody
@@ -61,7 +61,7 @@ public class SysProfileController extends BaseController {
   public String resetPwd(ModelMap mmap) {
     SysUser user = ShiroUtils.getSysUser();
     mmap.put("user", userService.selectUserById(user.getUserId()));
-    return prefix + "/resetPwd";
+    return PREFIX + "/resetPwd";
   }
 
   @Log(title = "重置密码", businessType = BusinessType.UPDATE)
@@ -89,7 +89,7 @@ public class SysProfileController extends BaseController {
   public String edit(ModelMap mmap) {
     SysUser user = ShiroUtils.getSysUser();
     mmap.put("user", userService.selectUserById(user.getUserId()));
-    return prefix + "/edit";
+    return PREFIX + "/edit";
   }
 
   /**
@@ -99,7 +99,7 @@ public class SysProfileController extends BaseController {
   public String avatar(ModelMap mmap) {
     SysUser user = ShiroUtils.getSysUser();
     mmap.put("user", userService.selectUserById(user.getUserId()));
-    return prefix + "/avatar";
+    return PREFIX + "/avatar";
   }
 
   /**

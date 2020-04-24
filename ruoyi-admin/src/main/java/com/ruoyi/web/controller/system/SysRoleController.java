@@ -31,7 +31,7 @@ import java.util.List;
 @Controller
 public class SysRoleController extends BaseController {
 
-  private String prefix = "system/role";
+  private static final String PREFIX = "system/role";
 
   @Autowired
   private ISysRoleService roleService;
@@ -41,7 +41,7 @@ public class SysRoleController extends BaseController {
   @RequiresPermissions("system:role:view")
   @GetMapping
   public String role() {
-    return prefix + "/role";
+    return PREFIX + "/role";
   }
 
   @RequiresPermissions("system:role:list")
@@ -59,7 +59,7 @@ public class SysRoleController extends BaseController {
   @PostMapping("/export")
   public AjaxResult export(SysRole role) {
     List<SysRole> list = roleService.selectRoleList(role);
-    ExcelUtil<SysRole> util = new ExcelUtil<SysRole>(SysRole.class);
+    ExcelUtil<SysRole> util = new ExcelUtil<>(SysRole.class);
     return util.exportExcel(list, "角色数据");
   }
 
@@ -68,7 +68,7 @@ public class SysRoleController extends BaseController {
    */
   @GetMapping("/add")
   public String add() {
-    return prefix + "/add";
+    return PREFIX + "/add";
   }
 
   /**
@@ -96,7 +96,7 @@ public class SysRoleController extends BaseController {
   @GetMapping("/edit/{roleId}")
   public String edit(@PathVariable("roleId") Long roleId, ModelMap mmap) {
     mmap.put("role", roleService.selectRoleById(roleId));
-    return prefix + "/edit";
+    return PREFIX + "/edit";
   }
 
   /**
@@ -124,7 +124,7 @@ public class SysRoleController extends BaseController {
   @GetMapping("/authDataScope/{roleId}")
   public String authDataScope(@PathVariable("roleId") Long roleId, ModelMap mmap) {
     mmap.put("role", roleService.selectRoleById(roleId));
-    return prefix + "/dataScope";
+    return PREFIX + "/dataScope";
   }
 
   /**
@@ -179,7 +179,7 @@ public class SysRoleController extends BaseController {
    */
   @GetMapping("/selectMenuTree")
   public String selectMenuTree() {
-    return prefix + "/tree";
+    return PREFIX + "/tree";
   }
 
   /**
@@ -201,7 +201,7 @@ public class SysRoleController extends BaseController {
   @GetMapping("/authUser/{roleId}")
   public String authUser(@PathVariable("roleId") Long roleId, ModelMap mmap) {
     mmap.put("role", roleService.selectRoleById(roleId));
-    return prefix + "/authUser";
+    return PREFIX + "/authUser";
   }
 
   /**
@@ -242,7 +242,7 @@ public class SysRoleController extends BaseController {
   @GetMapping("/authUser/selectUser/{roleId}")
   public String selectUser(@PathVariable("roleId") Long roleId, ModelMap mmap) {
     mmap.put("role", roleService.selectRoleById(roleId));
-    return prefix + "/selectUser";
+    return PREFIX + "/selectUser";
   }
 
   /**

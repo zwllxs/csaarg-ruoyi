@@ -48,7 +48,7 @@ public class FileUploadUtils {
    *
    * @param file 上传的文件
    * @return 文件名称
-   * @throws Exception
+   * @throws IOException
    */
   public static final String upload(MultipartFile file) throws IOException {
     try {
@@ -86,9 +86,7 @@ public class FileUploadUtils {
    * @throws IOException                          比如读写文件出错时
    * @throws InvalidExtensionException            文件校验异常
    */
-  public static final String upload(String baseDir, MultipartFile file, String[] allowedExtension)
-    throws FileSizeLimitExceededException, IOException, FileNameLengthLimitExceededException,
-    InvalidExtensionException {
+  public static final String upload(String baseDir, MultipartFile file, String[] allowedExtension) throws FileSizeLimitExceededException, IOException, FileNameLengthLimitExceededException, InvalidExtensionException {
     int fileNamelength = file.getOriginalFilename().length();
     if (fileNamelength > FileUploadUtils.DEFAULT_FILE_NAME_LENGTH) {
       throw new FileNameLengthLimitExceededException(FileUploadUtils.DEFAULT_FILE_NAME_LENGTH);
@@ -100,8 +98,7 @@ public class FileUploadUtils {
 
     File desc = getAbsoluteFile(baseDir, fileName);
     file.transferTo(desc);
-    String pathFileName = getPathFileName(baseDir, fileName);
-    return pathFileName;
+    return getPathFileName(baseDir, fileName);
   }
 
   /**
@@ -129,8 +126,7 @@ public class FileUploadUtils {
   private static final String getPathFileName(String uploadDir, String fileName) throws IOException {
     int dirLastIndex = Global.getProfile().length() + 1;
     String currentDir = StringUtils.substring(uploadDir, dirLastIndex);
-    String pathFileName = Constants.RESOURCE_PREFIX + "/" + currentDir + "/" + fileName;
-    return pathFileName;
+    return Constants.RESOURCE_PREFIX + "/" + currentDir + "/" + fileName;
   }
 
   /**
@@ -153,7 +149,7 @@ public class FileUploadUtils {
   public static final void assertAllowed(MultipartFile file, String[] allowedExtension)
     throws FileSizeLimitExceededException, InvalidExtensionException {
     long size = file.getSize();
-    if (DEFAULT_MAX_SIZE != -1 && size > DEFAULT_MAX_SIZE) {
+    if (size > DEFAULT_MAX_SIZE) {
       throw new FileSizeLimitExceededException(DEFAULT_MAX_SIZE / 1024 / 1024);
     }
 

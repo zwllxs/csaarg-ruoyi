@@ -28,7 +28,7 @@ import java.util.List;
 @Controller
 public class SysLogininforController extends BaseController {
 
-  private String prefix = "monitor/logininfor";
+  private static final String PREFIX = "monitor/logininfor";
 
   @Autowired
   private ISysLogininforService logininforService;
@@ -38,7 +38,7 @@ public class SysLogininforController extends BaseController {
   @RequiresPermissions("monitor:logininfor:view")
   @GetMapping
   public String logininfor() {
-    return prefix + "/logininfor";
+    return PREFIX + "/logininfor";
   }
 
   @RequiresPermissions("monitor:logininfor:list")
@@ -56,7 +56,7 @@ public class SysLogininforController extends BaseController {
   @PostMapping("/export")
   public AjaxResult export(SysLogininfor logininfor) {
     List<SysLogininfor> list = logininforService.selectLogininforList(logininfor);
-    ExcelUtil<SysLogininfor> util = new ExcelUtil<SysLogininfor>(SysLogininfor.class);
+    ExcelUtil<SysLogininfor> util = new ExcelUtil<>(SysLogininfor.class);
     return util.exportExcel(list, "登陆日志");
   }
 

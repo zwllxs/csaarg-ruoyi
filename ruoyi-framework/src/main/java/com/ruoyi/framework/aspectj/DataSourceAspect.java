@@ -59,8 +59,7 @@ public class DataSourceAspect {
       return targetDataSource;
     } else {
       Method method = signature.getMethod();
-      DataSource dataSource = method.getAnnotation(DataSource.class);
-      return dataSource;
+      return method.getAnnotation(DataSource.class);
     }
   }
 }

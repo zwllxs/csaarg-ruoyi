@@ -32,8 +32,7 @@ public class DictUtils {
   public static List<SysDictData> getDictCache(String key) {
     Object cacheObj = CacheUtils.get(getCacheName(), getCacheKey(key));
     if (StringUtils.isNotNull(cacheObj)) {
-      List<SysDictData> dictDatas = StringUtils.cast(cacheObj);
-      return dictDatas;
+      return StringUtils.cast(cacheObj);
     }
     return null;
   }

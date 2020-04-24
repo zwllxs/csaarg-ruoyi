@@ -28,7 +28,7 @@ import java.util.List;
 @Controller
 public class SysMenuController extends BaseController {
 
-  private String prefix = "system/menu";
+  private static final String PREFIX = "system/menu";
 
   @Autowired
   private ISysMenuService menuService;
@@ -36,7 +36,7 @@ public class SysMenuController extends BaseController {
   @RequiresPermissions("system:menu:view")
   @GetMapping
   public String menu() {
-    return prefix + "/menu";
+    return PREFIX + "/menu";
   }
 
   @RequiresPermissions("system:menu:list")
@@ -44,8 +44,7 @@ public class SysMenuController extends BaseController {
   @PostMapping("/list")
   public List<SysMenu> list(SysMenu menu) {
     Long userId = ShiroUtils.getUserId();
-    List<SysMenu> menuList = menuService.selectMenuList(menu, userId);
-    return menuList;
+    return menuService.selectMenuList(menu, userId);
   }
 
   /**
@@ -80,7 +79,7 @@ public class SysMenuController extends BaseController {
       menu.setMenuName("主目录");
     }
     mmap.put("menu", menu);
-    return prefix + "/add";
+    return PREFIX + "/add";
   }
 
   /**
@@ -105,7 +104,7 @@ public class SysMenuController extends BaseController {
   @GetMapping("/edit/{menuId}")
   public String edit(@PathVariable("menuId") Long menuId, ModelMap mmap) {
     mmap.put("menu", menuService.selectMenuById(menuId));
-    return prefix + "/edit";
+    return PREFIX + "/edit";
   }
 
   /**
@@ -129,7 +128,7 @@ public class SysMenuController extends BaseController {
    */
   @GetMapping("/icon")
   public String icon() {
-    return prefix + "/icon";
+    return PREFIX + "/icon";
   }
 
   /**
@@ -148,8 +147,7 @@ public class SysMenuController extends BaseController {
   @GetMapping("/roleMenuTreeData")
   public List<Ztree> roleMenuTreeData(SysRole role) {
     Long userId = ShiroUtils.getUserId();
-    List<Ztree> ztrees = menuService.roleMenuTreeData(role, userId);
-    return ztrees;
+    return menuService.roleMenuTreeData(role, userId);
   }
 
   /**
@@ -169,6 +167,6 @@ public class SysMenuController extends BaseController {
   @GetMapping("/selectMenuTree/{menuId}")
   public String selectMenuTree(@PathVariable("menuId") Long menuId, ModelMap mmap) {
     mmap.put("menu", menuService.selectMenuById(menuId));
-    return prefix + "/tree";
+    return PREFIX + "/tree";
   }
 }

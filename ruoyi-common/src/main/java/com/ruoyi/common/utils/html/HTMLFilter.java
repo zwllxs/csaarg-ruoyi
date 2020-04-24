@@ -301,7 +301,7 @@ public final class HTMLFilter {
     if (m.find()) {
       final String name = m.group(1).toLowerCase();
       if (allowed(name)) {
-        if (false == inArray(name, vSelfClosingTags)) {
+        if (!inArray(name, vSelfClosingTags)) {
           if (vTagCounts.containsKey(name)) {
             vTagCounts.put(name, vTagCounts.get(name) - 1);
             return "</" + name + ">";
@@ -406,7 +406,7 @@ public final class HTMLFilter {
     Matcher m = P_ENTITY.matcher(s);
     while (m.find()) {
       final String match = m.group(1);
-      final int decimal = Integer.decode(match).intValue();
+      final int decimal = Integer.decode(match);
       m.appendReplacement(buf, Matcher.quoteReplacement(chr(decimal)));
     }
     m.appendTail(buf);
@@ -416,7 +416,7 @@ public final class HTMLFilter {
     m = P_ENTITY_UNICODE.matcher(s);
     while (m.find()) {
       final String match = m.group(1);
-      final int decimal = Integer.valueOf(match, 16).intValue();
+      final int decimal = Integer.valueOf(match, 16);
       m.appendReplacement(buf, Matcher.quoteReplacement(chr(decimal)));
     }
     m.appendTail(buf);
@@ -426,7 +426,7 @@ public final class HTMLFilter {
     m = P_ENCODE.matcher(s);
     while (m.find()) {
       final String match = m.group(1);
-      final int decimal = Integer.valueOf(match, 16).intValue();
+      final int decimal = Integer.valueOf(match, 16);
       m.appendReplacement(buf, Matcher.quoteReplacement(chr(decimal)));
     }
     m.appendTail(buf);

@@ -26,7 +26,7 @@ import java.util.*;
 @Controller
 public class DemoTableController extends BaseController {
 
-  private String prefix = "demo/table";
+  private static final String PREFIX = "demo/table";
 
   private final static List<UserTableModel> USERS = new ArrayList<UserTableModel>();
 
@@ -64,7 +64,7 @@ public class DemoTableController extends BaseController {
    */
   @GetMapping("/search")
   public String search() {
-    return prefix + "/search";
+    return PREFIX + "/search";
   }
 
   /**
@@ -72,7 +72,7 @@ public class DemoTableController extends BaseController {
    */
   @GetMapping("/footer")
   public String footer() {
-    return prefix + "/footer";
+    return PREFIX + "/footer";
   }
 
   /**
@@ -80,7 +80,7 @@ public class DemoTableController extends BaseController {
    */
   @GetMapping("/groupHeader")
   public String groupHeader() {
-    return prefix + "/groupHeader";
+    return PREFIX + "/groupHeader";
   }
 
   /**
@@ -88,7 +88,7 @@ public class DemoTableController extends BaseController {
    */
   @GetMapping("/export")
   public String export() {
-    return prefix + "/export";
+    return PREFIX + "/export";
   }
 
   /**
@@ -96,7 +96,7 @@ public class DemoTableController extends BaseController {
    */
   @GetMapping("/remember")
   public String remember() {
-    return prefix + "/remember";
+    return PREFIX + "/remember";
   }
 
   /**
@@ -104,7 +104,7 @@ public class DemoTableController extends BaseController {
    */
   @GetMapping("/pageGo")
   public String pageGo() {
-    return prefix + "/pageGo";
+    return PREFIX + "/pageGo";
   }
 
   /**
@@ -112,7 +112,7 @@ public class DemoTableController extends BaseController {
    */
   @GetMapping("/params")
   public String params() {
-    return prefix + "/params";
+    return PREFIX + "/params";
   }
 
   /**
@@ -120,7 +120,7 @@ public class DemoTableController extends BaseController {
    */
   @GetMapping("/multi")
   public String multi() {
-    return prefix + "/multi";
+    return PREFIX + "/multi";
   }
 
   /**
@@ -128,7 +128,7 @@ public class DemoTableController extends BaseController {
    */
   @GetMapping("/button")
   public String button() {
-    return prefix + "/button";
+    return PREFIX + "/button";
   }
 
   /**
@@ -137,7 +137,7 @@ public class DemoTableController extends BaseController {
   @GetMapping("/data")
   public String data(ModelMap mmap) {
     mmap.put("users", USERS);
-    return prefix + "/data";
+    return PREFIX + "/data";
   }
 
   /**
@@ -145,7 +145,7 @@ public class DemoTableController extends BaseController {
    */
   @GetMapping("/fixedColumns")
   public String fixedColumns() {
-    return prefix + "/fixedColumns";
+    return PREFIX + "/fixedColumns";
   }
 
   /**
@@ -153,7 +153,7 @@ public class DemoTableController extends BaseController {
    */
   @GetMapping("/event")
   public String event() {
-    return prefix + "/event";
+    return PREFIX + "/event";
   }
 
   /**
@@ -161,7 +161,7 @@ public class DemoTableController extends BaseController {
    */
   @GetMapping("/detail")
   public String detail() {
-    return prefix + "/detail";
+    return PREFIX + "/detail";
   }
 
   /**
@@ -169,7 +169,7 @@ public class DemoTableController extends BaseController {
    */
   @GetMapping("/child")
   public String child() {
-    return prefix + "/child";
+    return PREFIX + "/child";
   }
 
   /**
@@ -177,7 +177,7 @@ public class DemoTableController extends BaseController {
    */
   @GetMapping("/image")
   public String image() {
-    return prefix + "/image";
+    return PREFIX + "/image";
   }
 
   /**
@@ -185,7 +185,7 @@ public class DemoTableController extends BaseController {
    */
   @GetMapping("/curd")
   public String curd() {
-    return prefix + "/curd";
+    return PREFIX + "/curd";
   }
 
   /**
@@ -193,7 +193,7 @@ public class DemoTableController extends BaseController {
    */
   @GetMapping("/reorder")
   public String reorder() {
-    return prefix + "/reorder";
+    return PREFIX + "/reorder";
   }
 
   /**
@@ -201,7 +201,7 @@ public class DemoTableController extends BaseController {
    */
   @GetMapping("/editable")
   public String editable() {
-    return prefix + "/editable";
+    return PREFIX + "/editable";
   }
 
   /**
@@ -209,7 +209,7 @@ public class DemoTableController extends BaseController {
    */
   @GetMapping("/other")
   public String other() {
-    return prefix + "/other";
+    return PREFIX + "/other";
   }
 
   /**
@@ -219,7 +219,7 @@ public class DemoTableController extends BaseController {
   @PostMapping("/list")
   public TableDataInfo list(UserTableModel userModel) {
     TableDataInfo rspData = new TableDataInfo();
-    List<UserTableModel> userList = new ArrayList<UserTableModel>(Arrays.asList(new UserTableModel[USERS.size()]));
+    List<UserTableModel> userList = new ArrayList<>(Arrays.asList(new UserTableModel[USERS.size()]));
     Collections.copy(userList, USERS);
     // 查询条件过滤
     if (StringUtils.isNotEmpty(userModel.getUserName())) {
@@ -236,8 +236,8 @@ public class DemoTableController extends BaseController {
       rspData.setTotal(userList.size());
       return rspData;
     }
-    Integer pageNum = (pageDomain.getPageNum() - 1) * 10;
-    Integer pageSize = pageDomain.getPageNum() * 10;
+    int pageNum = (pageDomain.getPageNum() - 1) * 10;
+    int pageSize = pageDomain.getPageNum() * 10;
     if (pageSize > userList.size()) {
       pageSize = userList.size();
     }

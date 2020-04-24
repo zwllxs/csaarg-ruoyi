@@ -28,7 +28,7 @@ import java.util.List;
 @Controller
 public class SysConfigController extends BaseController {
 
-  private String prefix = "system/config";
+  private static final String PREFIX = "system/config";
 
   @Autowired
   private ISysConfigService configService;
@@ -36,7 +36,7 @@ public class SysConfigController extends BaseController {
   @RequiresPermissions("system:config:view")
   @GetMapping
   public String config() {
-    return prefix + "/config";
+    return PREFIX + "/config";
   }
 
   /**
@@ -57,7 +57,7 @@ public class SysConfigController extends BaseController {
   @PostMapping("/export")
   public AjaxResult export(SysConfig config) {
     List<SysConfig> list = configService.selectConfigList(config);
-    ExcelUtil<SysConfig> util = new ExcelUtil<SysConfig>(SysConfig.class);
+    ExcelUtil<SysConfig> util = new ExcelUtil<>(SysConfig.class);
     return util.exportExcel(list, "参数数据");
   }
 
@@ -66,7 +66,7 @@ public class SysConfigController extends BaseController {
    */
   @GetMapping("/add")
   public String add() {
-    return prefix + "/add";
+    return PREFIX + "/add";
   }
 
   /**
@@ -90,7 +90,7 @@ public class SysConfigController extends BaseController {
   @GetMapping("/edit/{configId}")
   public String edit(@PathVariable("configId") Long configId, ModelMap mmap) {
     mmap.put("config", configService.selectConfigById(configId));
-    return prefix + "/edit";
+    return PREFIX + "/edit";
   }
 
   /**

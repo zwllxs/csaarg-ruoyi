@@ -138,9 +138,9 @@ public class SysPostServiceImpl implements ISysPostService {
    */
   @Override
   public String checkPostNameUnique(SysPost post) {
-    Long postId = StringUtils.isNull(post.getPostId()) ? -1L : post.getPostId();
+    long postId = StringUtils.isNull(post.getPostId()) ? -1L : post.getPostId();
     SysPost info = postMapper.checkPostNameUnique(post.getPostName());
-    if (StringUtils.isNotNull(info) && info.getPostId().longValue() != postId.longValue()) {
+    if (StringUtils.isNotNull(info) && info.getPostId() != postId) {
       return UserConstants.POST_NAME_NOT_UNIQUE;
     }
     return UserConstants.POST_NAME_UNIQUE;
@@ -154,9 +154,9 @@ public class SysPostServiceImpl implements ISysPostService {
    */
   @Override
   public String checkPostCodeUnique(SysPost post) {
-    Long postId = StringUtils.isNull(post.getPostId()) ? -1L : post.getPostId();
+    long postId = StringUtils.isNull(post.getPostId()) ? -1L : post.getPostId();
     SysPost info = postMapper.checkPostCodeUnique(post.getPostCode());
-    if (StringUtils.isNotNull(info) && info.getPostId().longValue() != postId.longValue()) {
+    if (StringUtils.isNotNull(info) && info.getPostId() != postId) {
       return UserConstants.POST_CODE_NOT_UNIQUE;
     }
     return UserConstants.POST_CODE_UNIQUE;
