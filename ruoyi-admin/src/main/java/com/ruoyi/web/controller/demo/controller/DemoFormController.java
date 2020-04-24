@@ -23,14 +23,14 @@ public class DemoFormController {
 
   private String prefix = "demo/form";
 
-  private final static List<UserFormModel> users = new ArrayList<UserFormModel>();
+  private final static List<UserFormModel> USERS = new ArrayList<UserFormModel>();
 
   {
-    users.add(new UserFormModel(1, "1000001", "测试1", "15888888888"));
-    users.add(new UserFormModel(2, "1000002", "测试2", "15666666666"));
-    users.add(new UserFormModel(3, "1000003", "测试3", "15666666666"));
-    users.add(new UserFormModel(4, "1000004", "测试4", "15666666666"));
-    users.add(new UserFormModel(5, "1000005", "测试5", "15666666666"));
+    USERS.add(new UserFormModel(1, "1000001", "测试1", "15888888888"));
+    USERS.add(new UserFormModel(2, "1000002", "测试2", "15666666666"));
+    USERS.add(new UserFormModel(3, "1000003", "测试3", "15666666666"));
+    USERS.add(new UserFormModel(4, "1000004", "测试4", "15666666666"));
+    USERS.add(new UserFormModel(5, "1000005", "测试5", "15666666666"));
   }
 
   /**
@@ -85,7 +85,7 @@ public class DemoFormController {
    * 选项卡 & 面板
    */
   @GetMapping("/tabs_panels")
-  public String tabs_panels() {
+  public String tabsPanels() {
     return prefix + "/tabs_panels";
   }
 
@@ -170,7 +170,7 @@ public class DemoFormController {
     AjaxResult ajax = new AjaxResult();
 
     ajax.put("code", 200);
-    ajax.put("value", users);
+    ajax.put("value", USERS);
     return ajax;
   }
 

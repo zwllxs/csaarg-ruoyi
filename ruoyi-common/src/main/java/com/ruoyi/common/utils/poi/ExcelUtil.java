@@ -391,12 +391,12 @@ public class ExcelUtil<T> {
     // 如果设置了提示信息则鼠标放上去提示.
     if (StringUtils.isNotEmpty(attr.prompt())) {
       // 这里默认设了2-101列提示.
-      setXSSFPrompt(sheet, "", attr.prompt(), 1, 100, column, column);
+      setXssfPrompt(sheet, "", attr.prompt(), 1, 100, column, column);
     }
     // 如果设置了combo属性则本列只能选择不能输入
     if (attr.combo().length > 0) {
       // 这里默认设了2-101列只能选择不能输入.
-      setXSSFValidation(sheet, attr.combo(), 1, 100, column, column);
+      setXssfValidation(sheet, attr.combo(), 1, 100, column, column);
     }
   }
 
@@ -444,7 +444,7 @@ public class ExcelUtil<T> {
    * @param firstCol      开始列
    * @param endCol        结束列
    */
-  public void setXSSFPrompt(Sheet sheet, String promptTitle, String promptContent, int firstRow, int endRow,
+  public void setXssfPrompt(Sheet sheet, String promptTitle, String promptContent, int firstRow, int endRow,
                             int firstCol, int endCol) {
     DataValidationHelper helper = sheet.getDataValidationHelper();
     DataValidationConstraint constraint = helper.createCustomConstraint("DD1");
@@ -466,7 +466,7 @@ public class ExcelUtil<T> {
    * @param endCol   结束列
    * @return 设置好的sheet.
    */
-  public void setXSSFValidation(Sheet sheet, String[] textlist, int firstRow, int endRow, int firstCol, int endCol) {
+  public void setXssfValidation(Sheet sheet, String[] textlist, int firstRow, int endRow, int firstCol, int endCol) {
     DataValidationHelper helper = sheet.getDataValidationHelper();
     // 加载下拉列表内容
     DataValidationConstraint constraint = helper.createExplicitListConstraint(textlist);

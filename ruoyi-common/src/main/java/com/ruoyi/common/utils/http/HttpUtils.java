@@ -117,7 +117,7 @@ public class HttpUtils {
     return result.toString();
   }
 
-  public static String sendSSLPost(String url, String param) {
+  public static String sendSslPost(String url, String param) {
     StringBuilder result = new StringBuilder();
     String urlNameString = url + "?" + param;
     try {
@@ -141,7 +141,7 @@ public class HttpUtils {
       BufferedReader br = new BufferedReader(new InputStreamReader(is));
       String ret = "";
       while ((ret = br.readLine()) != null) {
-        if (ret != null && !ret.trim().equals("")) {
+        if (ret != null && !"".equals(ret.trim())) {
           result.append(new String(ret.getBytes("ISO-8859-1"), "utf-8"));
         }
       }

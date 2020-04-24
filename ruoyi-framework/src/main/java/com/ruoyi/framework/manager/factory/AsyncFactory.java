@@ -47,7 +47,7 @@ public class AsyncFactory {
         online.setLastAccessTime(session.getLastAccessTime());
         online.setExpireTime(session.getTimeout());
         online.setIpaddr(session.getHost());
-        online.setLoginLocation(AddressUtils.getRealAddressByIP(session.getHost()));
+        online.setLoginLocation(AddressUtils.getRealAddressByIp(session.getHost()));
         online.setBrowser(session.getBrowser());
         online.setOs(session.getOs());
         online.setStatus(session.getStatus());
@@ -68,7 +68,7 @@ public class AsyncFactory {
       @Override
       public void run() {
         // 远程查询操作地点
-        operLog.setOperLocation(AddressUtils.getRealAddressByIP(operLog.getOperIp()));
+        operLog.setOperLocation(AddressUtils.getRealAddressByIp(operLog.getOperIp()));
         SpringUtils.getBean(ISysOperLogService.class).insertOperlog(operLog);
       }
     };
@@ -89,7 +89,7 @@ public class AsyncFactory {
     return new TimerTask() {
       @Override
       public void run() {
-        String address = AddressUtils.getRealAddressByIP(ip);
+        String address = AddressUtils.getRealAddressByIp(ip);
         StringBuilder s = new StringBuilder();
         s.append(LogUtils.getBlock(ip));
         s.append(address);

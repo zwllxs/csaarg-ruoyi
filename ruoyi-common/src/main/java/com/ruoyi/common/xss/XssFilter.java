@@ -47,7 +47,7 @@ public class XssFilter implements Filter {
     throws IOException, ServletException {
     HttpServletRequest req = (HttpServletRequest) request;
     HttpServletResponse resp = (HttpServletResponse) response;
-    if (handleExcludeURL(req, resp)) {
+    if (handleExcludeUrl(req, resp)) {
       chain.doFilter(request, response);
       return;
     }
@@ -55,7 +55,7 @@ public class XssFilter implements Filter {
     chain.doFilter(xssRequest, response);
   }
 
-  private boolean handleExcludeURL(HttpServletRequest request, HttpServletResponse response) {
+  private boolean handleExcludeUrl(HttpServletRequest request, HttpServletResponse response) {
     if (!enabled) {
       return true;
     }

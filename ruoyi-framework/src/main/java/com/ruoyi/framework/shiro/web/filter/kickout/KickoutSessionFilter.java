@@ -31,7 +31,7 @@ import java.util.Deque;
  */
 public class KickoutSessionFilter extends AccessControlFilter {
 
-  private final static ObjectMapper objectMapper = new ObjectMapper();
+  private final static ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
   /**
    * 同一个用户最大会话数
@@ -127,7 +127,7 @@ public class KickoutSessionFilter extends AccessControlFilter {
     HttpServletResponse res = (HttpServletResponse) response;
     if (ServletUtils.isAjaxRequest(req)) {
       AjaxResult ajaxResult = AjaxResult.error("您已在别处登录，请您修改密码或重新登录");
-      ServletUtils.renderString(res, objectMapper.writeValueAsString(ajaxResult));
+      ServletUtils.renderString(res, OBJECT_MAPPER.writeValueAsString(ajaxResult));
     } else {
       WebUtils.issueRedirect(request, response, kickoutUrl);
     }
