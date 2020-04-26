@@ -16,11 +16,6 @@
   </description>
 
   <dependencies>
-    <dependency>
-      <groupId>org.projectlombok</groupId>
-      <artifactId>lombok</artifactId>
-    </dependency>
-
     <!-- 定时任务 -->
     <dependency>
       <groupId>org.quartz-scheduler</groupId>
@@ -31,6 +26,18 @@
           <artifactId>c3p0</artifactId>
         </exclusion>
       </exclusions>
+    </dependency>
+
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+    </dependency>
+
+    <!-- MyBatis Plus -->
+    <dependency>
+      <groupId>com.baomidou</groupId>
+      <artifactId>mybatis-plus-boot-starter</artifactId>
+      <version>${mybatis.plus.version}</version>
     </dependency>
 
     <!-- 通用工具-->

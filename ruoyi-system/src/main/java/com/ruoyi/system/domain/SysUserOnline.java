@@ -1,5 +1,7 @@
 package com.ruoyi.system.domain;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.ruoyi.common.core.domain.BaseEntity;
 import com.ruoyi.common.enums.OnlineStatus;
 import lombok.Data;
@@ -21,6 +23,7 @@ public class SysUserOnline extends BaseEntity {
   /**
    * 用户会话id
    */
+  @TableId(type = IdType.INPUT)
   private String sessionId;
   /**
    * 部门名称
@@ -47,6 +50,10 @@ public class SysUserOnline extends BaseEntity {
    */
   private String os;
   /**
+   * 在线状态
+   */
+  private OnlineStatus status = OnlineStatus.on_line;
+  /**
    * session创建时间
    */
   private Date startTimestamp;
@@ -58,8 +65,4 @@ public class SysUserOnline extends BaseEntity {
    * 超时时间，单位为分钟
    */
   private Long expireTime;
-  /**
-   * 在线状态
-   */
-  private OnlineStatus status = OnlineStatus.on_line;
 }

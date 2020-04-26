@@ -1,5 +1,7 @@
 package com.ruoyi.system.domain;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.annotation.Excel.ColumnType;
 import com.ruoyi.common.core.domain.BaseEntity;
@@ -23,6 +25,7 @@ public class SysOperLog extends BaseEntity {
    * 日志主键
    */
   @Excel(name = "操作序号", cellType = ColumnType.NUMERIC)
+  @TableId
   private Long operId;
   /**
    * 操作模块
@@ -37,6 +40,7 @@ public class SysOperLog extends BaseEntity {
   /**
    * 业务类型数组
    */
+  @TableField(exist = false)
   private Integer[] businessTypes;
   /**
    * 请求方法

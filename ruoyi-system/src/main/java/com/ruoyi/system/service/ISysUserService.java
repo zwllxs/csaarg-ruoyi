@@ -1,5 +1,6 @@
 package com.ruoyi.system.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.ruoyi.system.domain.SysUser;
 import com.ruoyi.system.domain.SysUserRole;
 
@@ -10,7 +11,7 @@ import java.util.List;
  *
  * @author ruoyi
  */
-public interface ISysUserService {
+public interface ISysUserService extends IService<SysUser> {
   /**
    * 根据条件分页查询用户列表
    *

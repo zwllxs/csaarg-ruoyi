@@ -1,5 +1,7 @@
 package com.ruoyi.system.domain;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.annotation.Excel.ColumnType;
 import com.ruoyi.common.annotation.Excel.Type;
@@ -29,6 +31,7 @@ public class SysUser extends BaseEntity {
    * 用户ID
    */
   @Excel(name = "用户序号", cellType = ColumnType.NUMERIC, prompt = "用户编号")
+  @TableId
   private Long userId;
   /**
    * 部门ID
@@ -38,10 +41,12 @@ public class SysUser extends BaseEntity {
   /**
    * 部门父ID
    */
+  @TableField(exist = false)
   private Long parentId;
   /**
    * 角色ID
    */
+  @TableField(exist = false)
   private Long roleId;
   /**
    * 登录名称
@@ -116,18 +121,22 @@ public class SysUser extends BaseEntity {
     @Excel(name = "部门名称", targetAttr = "deptName", type = Type.EXPORT),
     @Excel(name = "部门负责人", targetAttr = "leader", type = Type.EXPORT)
   })
+  @TableField(exist = false)
   private SysDept dept;
   /**
    * 角色
    */
+  @TableField(exist = false)
   private List<SysRole> roles;
   /**
    * 角色组
    */
+  @TableField(exist = false)
   private Long[] roleIds;
   /**
    * 岗位组
    */
+  @TableField(exist = false)
   private Long[] postIds;
 
   public SysUser() {

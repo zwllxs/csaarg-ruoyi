@@ -1,5 +1,6 @@
 package com.ruoyi.quartz.service.impl;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ruoyi.common.constant.ScheduleConstants;
 import com.ruoyi.common.core.text.Convert;
 import com.ruoyi.common.exception.job.TaskException;
@@ -25,7 +26,7 @@ import java.util.List;
  * @author ruoyi
  */
 @Service
-public class SysJobServiceImpl implements ISysJobService {
+public class SysJobServiceImpl extends ServiceImpl<SysJobMapper, SysJob> implements ISysJobService {
 
   @Autowired
   private Scheduler scheduler;

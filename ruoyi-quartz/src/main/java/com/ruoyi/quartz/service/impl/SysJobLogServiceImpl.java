@@ -1,5 +1,6 @@
 package com.ruoyi.quartz.service.impl;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ruoyi.common.core.text.Convert;
 import com.ruoyi.quartz.domain.SysJobLog;
 import com.ruoyi.quartz.mapper.SysJobLogMapper;
@@ -15,7 +16,7 @@ import java.util.List;
  * @author ruoyi
  */
 @Service
-public class SysJobLogServiceImpl implements ISysJobLogService {
+public class SysJobLogServiceImpl extends ServiceImpl<SysJobLogMapper, SysJobLog> implements ISysJobLogService {
 
   @Autowired
   private SysJobLogMapper jobLogMapper;

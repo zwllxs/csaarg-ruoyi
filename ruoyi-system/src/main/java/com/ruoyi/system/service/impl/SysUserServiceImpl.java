@@ -1,5 +1,6 @@
 package com.ruoyi.system.service.impl;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ruoyi.common.annotation.DataScope;
 import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.core.text.Convert;
@@ -25,7 +26,7 @@ import java.util.List;
  */
 @Slf4j
 @Service
-public class SysUserServiceImpl implements ISysUserService {
+public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> implements ISysUserService {
 
   @Autowired
   private SysUserMapper userMapper;
@@ -249,7 +250,7 @@ public class SysUserServiceImpl implements ISysUserService {
   /**
    * 新增用户角色信息
    *
-   * @param userId 用户 ID
+   * @param userId  用户 ID
    * @param roleIds 角色 ID 数组
    */
   public void insertUserRole(Long userId, Long[] roleIds) {

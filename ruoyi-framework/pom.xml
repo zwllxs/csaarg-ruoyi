@@ -28,6 +28,13 @@
       <artifactId>spring-boot-starter-aop</artifactId>
     </dependency>
 
+    <!-- MyBatis Plus -->
+    <dependency>
+      <groupId>com.baomidou</groupId>
+      <artifactId>mybatis-plus-boot-starter</artifactId>
+      <version>${mybatis.plus.version}</version>
+    </dependency>
+
     <!--阿里数据库连接池 -->
     <dependency>
       <groupId>com.alibaba</groupId>
@@ -70,12 +77,6 @@
       <artifactId>UserAgentUtils</artifactId>
     </dependency>
 
-    <!-- 系统模块-->
-    <dependency>
-      <groupId>com.ruoyi</groupId>
-      <artifactId>ruoyi-system</artifactId>
-    </dependency>
-
     <!-- 获取系统信息 -->
     <dependency>
       <groupId>com.github.oshi</groupId>
@@ -95,6 +96,12 @@
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
+    </dependency>
+
+    <!-- 系统模块-->
+    <dependency>
+      <groupId>com.ruoyi</groupId>
+      <artifactId>ruoyi-system</artifactId>
     </dependency>
   </dependencies>
 

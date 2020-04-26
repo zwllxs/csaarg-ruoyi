@@ -1,5 +1,7 @@
 package com.ruoyi.system.domain;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.annotation.Excel.ColumnType;
 import com.ruoyi.common.core.domain.BaseEntity;
@@ -24,6 +26,7 @@ public class SysPost extends BaseEntity {
    * 岗位序号
    */
   @Excel(name = "岗位序号", cellType = ColumnType.NUMERIC)
+  @TableId
   private Long postId;
   /**
    * 岗位编码
@@ -53,5 +56,6 @@ public class SysPost extends BaseEntity {
   /**
    * 用户是否存在此岗位标识 默认不存在
    */
+  @TableField(exist = false)
   private boolean flag = false;
 }

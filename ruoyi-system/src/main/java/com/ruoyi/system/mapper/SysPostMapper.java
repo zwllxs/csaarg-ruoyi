@@ -1,5 +1,6 @@
 package com.ruoyi.system.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.ruoyi.system.domain.SysPost;
 
 import java.util.List;
@@ -9,7 +10,7 @@ import java.util.List;
  *
  * @author ruoyi
  */
-public interface SysPostMapper {
+public interface SysPostMapper extends BaseMapper<SysPost> {
   /**
    * 查询岗位数据集合
    *

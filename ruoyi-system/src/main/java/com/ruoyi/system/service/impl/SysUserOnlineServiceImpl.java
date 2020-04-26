@@ -1,5 +1,6 @@
 package com.ruoyi.system.service.impl;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.system.domain.SysUserOnline;
@@ -17,7 +18,7 @@ import java.util.List;
  * @author ruoyi
  */
 @Service
-public class SysUserOnlineServiceImpl implements ISysUserOnlineService {
+public class SysUserOnlineServiceImpl extends ServiceImpl<SysUserOnlineMapper, SysUserOnline> implements ISysUserOnlineService {
 
   @Autowired
   private SysUserOnlineMapper userOnlineDao;

@@ -1,5 +1,6 @@
 package com.ruoyi.system.domain;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.annotation.Excel.ColumnType;
 import com.ruoyi.common.core.domain.BaseEntity;
@@ -24,6 +25,7 @@ public class SysDictData extends BaseEntity {
    * 字典编码
    */
   @Excel(name = "字典编码", cellType = ColumnType.NUMERIC)
+  @TableId
   private Long dictCode;
   /**
    * 字典排序

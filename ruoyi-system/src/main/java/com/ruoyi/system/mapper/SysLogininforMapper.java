@@ -1,5 +1,6 @@
 package com.ruoyi.system.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.ruoyi.system.domain.SysLogininfor;
 
 import java.util.List;
@@ -9,7 +10,7 @@ import java.util.List;
  *
  * @author ruoyi
  */
-public interface SysLogininforMapper {
+public interface SysLogininforMapper extends BaseMapper<SysLogininfor> {
   /**
    * 新增系统登录日志
    *

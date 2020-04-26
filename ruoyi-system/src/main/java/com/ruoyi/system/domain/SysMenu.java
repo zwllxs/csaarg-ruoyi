@@ -1,5 +1,7 @@
 package com.ruoyi.system.domain;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.ruoyi.common.core.domain.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -23,6 +25,7 @@ public class SysMenu extends BaseEntity {
   /**
    * 菜单ID
    */
+  @TableId
   private Long menuId;
   /**
    * 菜单名称
@@ -73,5 +76,6 @@ public class SysMenu extends BaseEntity {
   /**
    * 子菜单
    */
-  private List<SysMenu> children = new ArrayList<SysMenu>();
+  @TableField(exist = false)
+  private List<SysMenu> children = new ArrayList<>();
 }

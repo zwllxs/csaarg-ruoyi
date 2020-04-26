@@ -1,5 +1,6 @@
 package com.ruoyi.system.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.ruoyi.system.domain.SysOperLog;
 
 import java.util.List;
@@ -9,7 +10,7 @@ import java.util.List;
  *
  * @author ruoyi
  */
-public interface ISysOperLogService {
+public interface ISysOperLogService extends IService<SysOperLog> {
   /**
    * 新增操作日志
    *

@@ -1,5 +1,6 @@
 package com.ruoyi.system.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.ruoyi.system.domain.SysUserPost;
 
 import java.util.List;
@@ -9,7 +10,7 @@ import java.util.List;
  *
  * @author ruoyi
  */
-public interface SysUserPostMapper {
+public interface SysUserPostMapper extends BaseMapper<SysUserPost> {
   /**
    * 通过用户ID删除用户和岗位关联
    *

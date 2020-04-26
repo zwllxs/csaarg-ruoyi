@@ -1,5 +1,6 @@
 package com.ruoyi.system.domain;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.annotation.Excel.ColumnType;
 import com.ruoyi.common.core.domain.BaseEntity;
@@ -24,6 +25,7 @@ public class SysConfig extends BaseEntity {
    * 参数主键
    */
   @Excel(name = "参数主键", cellType = ColumnType.NUMERIC)
+  @TableField(exist = false)
   private Long configId;
   /**
    * 参数名称

@@ -1,5 +1,6 @@
 package com.ruoyi.system.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.ruoyi.system.domain.SysUserOnline;
 
 import java.util.Date;
@@ -10,7 +11,7 @@ import java.util.List;
  *
  * @author ruoyi
  */
-public interface ISysUserOnlineService {
+public interface ISysUserOnlineService extends IService<SysUserOnline> {
   /**
    * 通过会话序号查询信息
    *

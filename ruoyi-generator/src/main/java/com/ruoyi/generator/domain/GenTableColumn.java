@@ -1,5 +1,6 @@
 package com.ruoyi.generator.domain;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.ruoyi.common.core.domain.BaseEntity;
 import com.ruoyi.common.utils.StringUtils;
 import lombok.Data;
@@ -21,6 +22,7 @@ public class GenTableColumn extends BaseEntity {
   /**
    * 编号
    */
+  @TableId
   private Long columnId;
   /**
    * 归属表编号

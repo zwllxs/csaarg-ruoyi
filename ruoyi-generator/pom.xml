@@ -27,6 +27,13 @@
       <artifactId>lombok</artifactId>
     </dependency>
 
+    <!-- MyBatis Plus -->
+    <dependency>
+      <groupId>com.baomidou</groupId>
+      <artifactId>mybatis-plus-boot-starter</artifactId>
+      <version>${mybatis.plus.version}</version>
+    </dependency>
+
     <!-- 通用工具-->
     <dependency>
       <groupId>com.ruoyi</groupId>

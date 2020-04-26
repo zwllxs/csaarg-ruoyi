@@ -2,6 +2,7 @@ package com.ruoyi.generator.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ruoyi.common.constant.GenConstants;
 import com.ruoyi.common.core.text.Convert;
 import com.ruoyi.common.exception.BusinessException;
@@ -40,10 +41,10 @@ import java.util.zip.ZipOutputStream;
  */
 @Slf4j
 @Service
-public class GenTableServiceImpl implements IGenTableService {
+public class GenTableServiceImpl extends ServiceImpl<GenTableMapper, GenTable> implements IGenTableService {
 
   private static final String ENCODING = StandardCharsets.UTF_8.name();
-  
+
   @Autowired
   private GenTableMapper genTableMapper;
   @Autowired
@@ -274,8 +275,8 @@ public class GenTableServiceImpl implements IGenTableService {
   /**
    * 设置主键列信息
    *
-   * @param table 业务表信息
-   * @param columns  业务字段列表
+   * @param table   业务表信息
+   * @param columns 业务字段列表
    */
   public void setPkColumn(GenTable table, List<GenTableColumn> columns) {
     for (GenTableColumn column : columns) {

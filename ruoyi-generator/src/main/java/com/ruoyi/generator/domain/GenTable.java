@@ -1,5 +1,7 @@
 package com.ruoyi.generator.domain;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.ruoyi.common.constant.GenConstants;
 import com.ruoyi.common.core.domain.BaseEntity;
 import com.ruoyi.common.utils.StringUtils;
@@ -25,6 +27,7 @@ public class GenTable extends BaseEntity {
   /**
    * 编号
    */
+  @TableId
   private Long tableId;
   /**
    * 表名称
@@ -73,11 +76,13 @@ public class GenTable extends BaseEntity {
   /**
    * 主键信息
    */
+  @TableField(exist = false)
   private GenTableColumn pkColumn;
   /**
    * 表列信息
    */
   @Valid
+  @TableField(exist = false)
   private List<GenTableColumn> columns;
   /**
    * 其它生成选项
@@ -86,14 +91,17 @@ public class GenTable extends BaseEntity {
   /**
    * 树编码字段
    */
+  @TableField(exist = false)
   private String treeCode;
   /**
    * 树父编码字段
    */
+  @TableField(exist = false)
   private String treeParentCode;
   /**
    * 树名称字段
    */
+  @TableField(exist = false)
   private String treeName;
 
   public boolean isTree() {

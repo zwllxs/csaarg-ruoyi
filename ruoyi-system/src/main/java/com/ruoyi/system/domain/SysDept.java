@@ -1,5 +1,7 @@
 package com.ruoyi.system.domain;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.ruoyi.common.core.domain.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -22,6 +24,7 @@ public class SysDept extends BaseEntity {
   /**
    * 部门ID
    */
+  @TableId
   private Long deptId;
   /**
    * 父部门ID
@@ -68,5 +71,6 @@ public class SysDept extends BaseEntity {
   /**
    * 父部门名称
    */
+  @TableField(exist = false)
   private String parentName;
 }

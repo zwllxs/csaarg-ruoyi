@@ -1,5 +1,6 @@
 package com.ruoyi.system.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.ruoyi.common.core.domain.Ztree;
 import com.ruoyi.system.domain.SysMenu;
 import com.ruoyi.system.domain.SysRole;
@@ -14,7 +15,7 @@ import java.util.Set;
  *
  * @author ruoyi
  */
-public interface ISysMenuService {
+public interface ISysMenuService extends IService<SysMenu> {
   /**
    * 根据用户ID查询菜单
    *

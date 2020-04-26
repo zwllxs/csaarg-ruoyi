@@ -1,5 +1,6 @@
 package com.ruoyi.quartz.domain;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.annotation.Excel.ColumnType;
 import com.ruoyi.common.constant.ScheduleConstants;
@@ -30,6 +31,7 @@ public class SysJob extends BaseEntity {
    * 任务ID
    */
   @Excel(name = "任务序号", cellType = ColumnType.NUMERIC)
+  @TableId
   private Long jobId;
   /**
    * 任务名称

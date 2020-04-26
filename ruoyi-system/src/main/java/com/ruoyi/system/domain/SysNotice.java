@@ -1,5 +1,6 @@
 package com.ruoyi.system.domain;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.ruoyi.common.core.domain.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -21,6 +22,7 @@ public class SysNotice extends BaseEntity {
   /**
    * 公告ID
    */
+  @TableId
   private Long noticeId;
   /**
    * 公告标题

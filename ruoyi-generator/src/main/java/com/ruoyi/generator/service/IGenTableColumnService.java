@@ -1,5 +1,6 @@
 package com.ruoyi.generator.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.ruoyi.generator.domain.GenTableColumn;
 
 import java.util.List;
@@ -9,7 +10,7 @@ import java.util.List;
  *
  * @author ruoyi
  */
-public interface IGenTableColumnService {
+public interface IGenTableColumnService extends IService<GenTableColumn> {
   /**
    * 查询业务字段列表
    *

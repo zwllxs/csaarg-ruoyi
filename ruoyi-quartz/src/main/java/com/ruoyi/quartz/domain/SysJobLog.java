@@ -1,5 +1,7 @@
 package com.ruoyi.quartz.domain;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
 import lombok.Data;
@@ -22,6 +24,7 @@ public class SysJobLog extends BaseEntity {
    * ID
    */
   @Excel(name = "日志序号")
+  @TableId
   private Long jobLogId;
   /**
    * 任务名称
@@ -56,9 +59,11 @@ public class SysJobLog extends BaseEntity {
   /**
    * 开始时间
    */
+  @TableField(exist = false)
   private Date startTime;
   /**
    * 结束时间
    */
+  @TableField(exist = false)
   private Date endTime;
 }

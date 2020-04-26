@@ -1,5 +1,6 @@
 package com.ruoyi.system.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.ruoyi.system.domain.SysUserOnline;
 
 import java.util.List;
@@ -9,7 +10,7 @@ import java.util.List;
  *
  * @author ruoyi
  */
-public interface SysUserOnlineMapper {
+public interface SysUserOnlineMapper extends BaseMapper<SysUserOnline> {
   /**
    * 通过会话序号查询信息
    *
