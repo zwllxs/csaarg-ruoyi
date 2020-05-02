@@ -1,5 +1,7 @@
 package com.ruoyi.system.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ruoyi.common.annotation.DataScope;
 import com.ruoyi.common.constant.UserConstants;
@@ -38,6 +40,11 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
   private SysUserRoleMapper userRoleMapper;
   @Autowired
   private SysRoleDeptMapper roleDeptMapper;
+
+  @Override
+  public IPage<SysRole> page(Page<SysRole> page, SysRole role) {
+    return page.setRecords(roleMapper.page(page, role));
+  }
 
   /**
    * 根据条件分页查询角色数据

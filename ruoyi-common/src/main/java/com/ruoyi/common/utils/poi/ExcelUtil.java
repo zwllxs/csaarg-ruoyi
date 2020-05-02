@@ -5,7 +5,7 @@ import com.ruoyi.common.annotation.Excel.ColumnType;
 import com.ruoyi.common.annotation.Excel.Type;
 import com.ruoyi.common.annotation.Excels;
 import com.ruoyi.common.config.Global;
-import com.ruoyi.common.core.domain.AjaxResult;
+import com.ruoyi.common.core.domain.Result;
 import com.ruoyi.common.core.text.Convert;
 import com.ruoyi.common.exception.BusinessException;
 import com.ruoyi.common.utils.DateUtils;
@@ -214,7 +214,7 @@ public class ExcelUtil<T> {
    * @param sheetName 工作表的名称
    * @return 结果
    */
-  public AjaxResult exportExcel(List<T> list, String sheetName) {
+  public Result exportExcel(List<T> list, String sheetName) {
     this.init(list, sheetName, Type.EXPORT);
     return exportExcel();
   }
@@ -225,7 +225,7 @@ public class ExcelUtil<T> {
    * @param sheetName 工作表的名称
    * @return 结果
    */
-  public AjaxResult importTemplateExcel(String sheetName) {
+  public Result importTemplateExcel(String sheetName) {
     this.init(null, sheetName, Type.IMPORT);
     return exportExcel();
   }
@@ -235,7 +235,7 @@ public class ExcelUtil<T> {
    *
    * @return 结果
    */
-  public AjaxResult exportExcel() {
+  public Result exportExcel() {
     OutputStream out = null;
     try {
       // 取出一共有多少个sheet.
@@ -258,7 +258,7 @@ public class ExcelUtil<T> {
       String filename = encodingFilename(sheetName);
       out = new FileOutputStream(getAbsoluteFile(filename));
       wb.write(out);
-      return AjaxResult.success(filename);
+      return Result.success(filename);
     } catch (Exception e) {
       log.error("导出Excel异常{}", e.getMessage());
       throw new BusinessException("导出Excel失败，请联系网站管理员！");

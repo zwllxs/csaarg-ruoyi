@@ -36,6 +36,21 @@
     from sys_dict_data
   </sql>
 
+  <select id="page" resultType="com.ruoyi.system.domain.SysDictData">
+    select sdd.* from sys_dict_data sdd
+    <where>
+      <if test="dictData.dictType != null and dictData.dictType != ''">
+        and sdd.dict_type = #{dictData.dictType}
+      </if>
+      <if test="dictData.dictLabel != null and dictData.dictLabel != ''">
+        and sdd.dict_label like concat('%', #{dictData.dictLabel}, '%')
+      </if>
+      <if test="dictData.status != null and dictData.status != ''">
+        and sdd.status = #{dictData.status}
+      </if>
+    </where>
+  </select>
+
   <select id="selectDictDataList" resultMap="SysDictDataResult">
     <include refid="selectDictDataVo"/>
     <where>

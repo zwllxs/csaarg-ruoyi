@@ -1,6 +1,7 @@
 package com.ruoyi.system.domain;
 
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.annotation.Excel.ColumnType;
 import com.ruoyi.common.core.domain.BaseEntity;
@@ -25,6 +26,7 @@ public class SysRole extends BaseEntity {
    * 角色ID
    */
   @Excel(name = "角色序号", cellType = ColumnType.NUMERIC)
+  @TableId
   private Long roleId;
   /**
    * 角色名称

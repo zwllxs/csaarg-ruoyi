@@ -1,8 +1,9 @@
 package com.ruoyi.generator.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
-import com.ruoyi.common.core.domain.AjaxResult;
+import com.ruoyi.common.core.domain.Result;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.core.text.Convert;
 import com.ruoyi.common.enums.BusinessType;
@@ -52,10 +53,8 @@ public class GenController extends BaseController {
   @RequiresPermissions("tool:gen:list")
   @PostMapping("/list")
   @ResponseBody
-  public TableDataInfo genList(GenTable genTable) {
-    startPage();
-    List<GenTable> list = genTableService.selectGenTableList(genTable);
-    return getDataTable(list);
+  public Result genList(Page<GenTable> page, GenTable genTable) {
+    return Result.success(genTableService.page(page, genTable));
   }
 
   /**
@@ -64,10 +63,8 @@ public class GenController extends BaseController {
   @RequiresPermissions("tool:gen:list")
   @PostMapping("/db/list")
   @ResponseBody
-  public TableDataInfo dataList(GenTable genTable) {
-    startPage();
-    List<GenTable> list = genTableService.selectDbTableList(genTable);
-    return getDataTable(list);
+  public Result dataList(Page<GenTable> page, GenTable genTable) {
+    return Result.success(genTableService.pageByDbTable(page, genTable));
   }
 
   /**
@@ -100,13 +97,13 @@ public class GenController extends BaseController {
   @Log(title = "代码生成", businessType = BusinessType.IMPORT)
   @PostMapping("/importTable")
   @ResponseBody
-  public AjaxResult importTableSave(String tables) {
+  public Result importTableSave(String tables) {
     String[] tableNames = Convert.toStrArray(tables);
     // 查询表信息
     List<GenTable> tableList = genTableService.selectDbTableListByNames(tableNames);
     String operName = (String) PermissionUtils.getPrincipalProperty("loginName");
     genTableService.importGenTable(tableList, operName);
-    return AjaxResult.success();
+    return Result.success();
   }
 
   /**
@@ -126,19 +123,19 @@ public class GenController extends BaseController {
   @Log(title = "代码生成", businessType = BusinessType.UPDATE)
   @PostMapping("/edit")
   @ResponseBody
-  public AjaxResult editSave(@Validated GenTable genTable) {
+  public Result editSave(@Validated GenTable genTable) {
     genTableService.validateEdit(genTable);
     genTableService.updateGenTable(genTable);
-    return AjaxResult.success();
+    return Result.success();
   }
 
   @RequiresPermissions("tool:gen:remove")
   @Log(title = "代码生成", businessType = BusinessType.DELETE)
   @PostMapping("/remove")
   @ResponseBody
-  public AjaxResult remove(String ids) {
+  public Result remove(String ids) {
     genTableService.deleteGenTableByIds(ids);
-    return AjaxResult.success();
+    return Result.success();
   }
 
   /**
@@ -147,9 +144,9 @@ public class GenController extends BaseController {
   @RequiresPermissions("tool:gen:preview")
   @GetMapping("/preview/{tableId}")
   @ResponseBody
-  public AjaxResult preview(@PathVariable("tableId") Long tableId) {
+  public Result preview(@PathVariable("tableId") Long tableId) {
     Map<String, String> dataMap = genTableService.previewCode(tableId);
-    return AjaxResult.success(dataMap);
+    return Result.success(dataMap);
   }
 
   /**

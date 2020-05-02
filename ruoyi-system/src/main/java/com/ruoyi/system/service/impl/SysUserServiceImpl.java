@@ -1,5 +1,7 @@
 package com.ruoyi.system.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ruoyi.common.annotation.DataScope;
 import com.ruoyi.common.constant.UserConstants;
@@ -41,6 +43,11 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
   @Autowired
   private ISysConfigService configService;
 
+  @Override
+  public IPage<SysUser> page(Page<SysUser> page, SysUser user) {
+    return page.setRecords(userMapper.page(page, user));
+  }
+
   /**
    * 根据条件分页查询用户列表
    *
@@ -51,6 +58,12 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
   @Override
   public List<SysUser> selectUserList(SysUser user) {
     return userMapper.selectUserList(user);
+  }
+
+  @DataScope(deptAlias = "d", userAlias = "u")
+  @Override
+  public IPage<SysUser> pageByAllocated(Page<SysUser> page, SysUser user) {
+    return page.setRecords(userMapper.pageByAllocated(page, user));
   }
 
   /**

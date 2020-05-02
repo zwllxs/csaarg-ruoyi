@@ -1,5 +1,7 @@
 package com.ruoyi.system.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ruoyi.common.core.text.Convert;
 import com.ruoyi.system.domain.SysNotice;
@@ -31,6 +33,11 @@ public class SysNoticeServiceImpl extends ServiceImpl<SysNoticeMapper, SysNotice
   @Override
   public SysNotice selectNoticeById(Long noticeId) {
     return noticeMapper.selectNoticeById(noticeId);
+  }
+
+  @Override
+  public IPage<SysNotice> page(Page<SysNotice> page, SysNotice notice) {
+    return page.setRecords(noticeMapper.page(page, notice));
   }
 
   /**

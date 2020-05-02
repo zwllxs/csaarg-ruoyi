@@ -1,9 +1,9 @@
 package com.ruoyi.web.controller.monitor;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
-import com.ruoyi.common.core.domain.AjaxResult;
-import com.ruoyi.common.core.page.TableDataInfo;
+import com.ruoyi.common.core.domain.Result;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.framework.shiro.service.SysPasswordService;
@@ -18,6 +18,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
+
+import static com.ruoyi.common.core.domain.Result.custom;
+import static com.ruoyi.common.core.domain.Result.success;
 
 /**
  * 系统访问记录
@@ -44,35 +47,33 @@ public class SysLogininforController extends BaseController {
   @RequiresPermissions("monitor:logininfor:list")
   @ResponseBody
   @PostMapping("/list")
-  public TableDataInfo list(SysLogininfor logininfor) {
-    startPage();
-    List<SysLogininfor> list = logininforService.selectLogininforList(logininfor);
-    return getDataTable(list);
+  public Result list(Page<SysLogininfor> page, SysLogininfor logininfor) {
+    return success(logininforService.page(page, logininfor));
   }
 
-  @Log(title = "登陆日志", businessType = BusinessType.EXPORT)
+  @Log(title = "登录日志", businessType = BusinessType.EXPORT)
   @RequiresPermissions("monitor:logininfor:export")
   @ResponseBody
   @PostMapping("/export")
-  public AjaxResult export(SysLogininfor logininfor) {
+  public Result export(SysLogininfor logininfor) {
     List<SysLogininfor> list = logininforService.selectLogininforList(logininfor);
     ExcelUtil<SysLogininfor> util = new ExcelUtil<>(SysLogininfor.class);
-    return util.exportExcel(list, "登陆日志");
+    return util.exportExcel(list, "登录日志");
   }
 
-  @Log(title = "登陆日志", businessType = BusinessType.DELETE)
+  @Log(title = "登录日志", businessType = BusinessType.DELETE)
   @RequiresPermissions("monitor:logininfor:remove")
   @ResponseBody
   @PostMapping("/remove")
-  public AjaxResult remove(String ids) {
-    return toAjax(logininforService.deleteLogininforByIds(ids));
+  public Result remove(String ids) {
+    return custom(logininforService.deleteLogininforByIds(ids));
   }
 
-  @Log(title = "登陆日志", businessType = BusinessType.CLEAN)
+  @Log(title = "登录日志", businessType = BusinessType.CLEAN)
   @RequiresPermissions("monitor:logininfor:remove")
   @ResponseBody
   @PostMapping("/clean")
-  public AjaxResult clean() {
+  public Result clean() {
     logininforService.cleanLogininfor();
     return success();
   }
@@ -81,7 +82,7 @@ public class SysLogininforController extends BaseController {
   @RequiresPermissions("monitor:logininfor:unlock")
   @ResponseBody
   @PostMapping("/unlock")
-  public AjaxResult unlock(String loginName) {
+  public Result unlock(String loginName) {
     passwordService.unlock(loginName);
     return success();
   }

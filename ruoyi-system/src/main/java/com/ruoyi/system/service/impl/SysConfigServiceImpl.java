@@ -1,5 +1,7 @@
 package com.ruoyi.system.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ruoyi.common.constant.Constants;
 import com.ruoyi.common.constant.UserConstants;
@@ -70,6 +72,11 @@ public class SysConfigServiceImpl extends ServiceImpl<SysConfigMapper, SysConfig
       return retConfig.getConfigValue();
     }
     return StringUtils.EMPTY;
+  }
+
+  @Override
+  public IPage<SysConfig> page(Page<SysConfig> page, SysConfig config) {
+    return configMapper.page(page, config);
   }
 
   /**

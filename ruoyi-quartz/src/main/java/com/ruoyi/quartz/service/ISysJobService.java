@@ -1,5 +1,7 @@
 package com.ruoyi.quartz.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.ruoyi.common.exception.job.TaskException;
 import com.ruoyi.quartz.domain.SysJob;
@@ -13,6 +15,9 @@ import java.util.List;
  * @author ruoyi
  */
 public interface ISysJobService extends IService<SysJob> {
+
+  IPage<SysJob> page(Page<SysJob> page, SysJob job);
+
   /**
    * 获取quartz调度器的计划任务
    *

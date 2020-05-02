@@ -1,5 +1,7 @@
 package com.ruoyi.system.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.ruoyi.system.domain.SysConfig;
 
@@ -27,6 +29,7 @@ public interface ISysConfigService extends IService<SysConfig> {
    */
   String selectConfigByKey(String configKey);
 
+  IPage<SysConfig> page(Page<SysConfig> page, SysConfig config);
   /**
    * 查询参数配置列表
    *

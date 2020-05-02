@@ -1,7 +1,7 @@
 package com.ruoyi.web.controller.tool;
 
 import com.ruoyi.common.core.controller.BaseController;
-import com.ruoyi.common.core.domain.AjaxResult;
+import com.ruoyi.common.core.domain.Result;
 import com.ruoyi.common.utils.StringUtils;
 import io.swagger.annotations.*;
 import lombok.AllArgsConstructor;
@@ -13,6 +13,9 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.ruoyi.common.core.domain.Result.error;
+import static com.ruoyi.common.core.domain.Result.success;
 
 /**
  * swagger 用户测试方法
@@ -33,17 +36,17 @@ public class TestController extends BaseController {
 
   @ApiOperation("获取用户列表")
   @GetMapping("/list")
-  public AjaxResult userList() {
+  public Result userList() {
     List<UserEntity> userList = new ArrayList<>(USERS.values());
-    return AjaxResult.success(userList);
+    return success(userList);
   }
 
   @ApiImplicitParam(name = "userId", value = "用户ID", required = true, dataType = "int", paramType = "path")
   @ApiOperation("获取用户详细")
   @GetMapping("/{userId}")
-  public AjaxResult getUser(@PathVariable Integer userId) {
+  public Result getUser(@PathVariable Integer userId) {
     if (!USERS.isEmpty() && USERS.containsKey(userId)) {
-      return AjaxResult.success(USERS.get(userId));
+      return success(USERS.get(userId));
     } else {
       return error("用户不存在");
     }
@@ -52,17 +55,17 @@ public class TestController extends BaseController {
   @ApiImplicitParam(name = "userEntity", value = "新增用户信息", dataType = "UserEntity")
   @ApiOperation("新增用户")
   @PostMapping("/save")
-  public AjaxResult save(UserEntity user) {
+  public Result save(UserEntity user) {
     if (StringUtils.isNull(user) || StringUtils.isNull(user.getUserId())) {
       return error("用户ID不能为空");
     }
-    return AjaxResult.success(USERS.put(user.getUserId(), user));
+    return success(USERS.put(user.getUserId(), user));
   }
 
   @ApiImplicitParam(name = "userEntity", value = "新增用户信息", dataType = "UserEntity")
   @ApiOperation("更新用户")
   @PutMapping("/update")
-  public AjaxResult update(UserEntity user) {
+  public Result update(UserEntity user) {
     if (StringUtils.isNull(user) || StringUtils.isNull(user.getUserId())) {
       return error("用户ID不能为空");
     }
@@ -70,13 +73,13 @@ public class TestController extends BaseController {
       return error("用户不存在");
     }
     USERS.remove(user.getUserId());
-    return AjaxResult.success(USERS.put(user.getUserId(), user));
+    return success(USERS.put(user.getUserId(), user));
   }
 
   @ApiImplicitParam(name = "userId", value = "用户ID", required = true, dataType = "int", paramType = "path")
   @ApiOperation("删除用户信息")
   @DeleteMapping("/{userId}")
-  public AjaxResult delete(@PathVariable Integer userId) {
+  public Result delete(@PathVariable Integer userId) {
     if (!USERS.isEmpty() && USERS.containsKey(userId)) {
       USERS.remove(userId);
       return success();

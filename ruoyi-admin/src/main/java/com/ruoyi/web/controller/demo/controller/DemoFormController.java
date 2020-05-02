@@ -1,6 +1,6 @@
 package com.ruoyi.web.controller.demo.controller;
 
-import com.ruoyi.common.core.domain.AjaxResult;
+import com.ruoyi.common.core.domain.Result;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -166,12 +166,11 @@ public class DemoFormController {
    */
   @ResponseBody
   @GetMapping("/userModel")
-  public AjaxResult userModel() {
-    AjaxResult ajax = new AjaxResult();
-
-    ajax.put("code", 200);
-    ajax.put("value", USERS);
-    return ajax;
+  public Result userModel() {
+    Result result = new Result();
+    result.put("code", 200);
+    result.put("value", USERS);
+    return result;
   }
 
   /**
@@ -179,11 +178,11 @@ public class DemoFormController {
    */
   @ResponseBody
   @GetMapping("/collection")
-  public AjaxResult collection() {
+  public Result collection() {
     String[] array = {"ruoyi 1", "ruoyi 2", "ruoyi 3", "ruoyi 4", "ruoyi 5"};
-    AjaxResult ajax = new AjaxResult();
-    ajax.put("value", array);
-    return ajax;
+    Result result = new Result();
+    result.put("value", array);
+    return result;
   }
 }
 

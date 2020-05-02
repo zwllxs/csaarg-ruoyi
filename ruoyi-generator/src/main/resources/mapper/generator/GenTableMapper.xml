@@ -69,6 +69,19 @@
     from gen_table
   </sql>
 
+  <select id="page" resultType="com.ruoyi.generator.domain.GenTable">
+    select gt.*
+    from gen_table gt
+    <where>
+      <if test="genTable.tableName != null and genTable.tableName != ''">
+        and lower(gt.table_name) like lower(concat('%', #{genTable.tableName}, '%'))
+      </if>
+      <if test="genTable.tableComment != null and genTable.tableComment != ''">
+        and lower(gt.table_comment) like lower(concat('%', #{genTable.tableComment}, '%'))
+      </if>
+    </where>
+  </select>
+
   <select id="selectGenTableList" resultMap="GenTableResult">
     <include refid="selectGenTableVo"/>
     <where>
@@ -79,6 +92,19 @@
         AND lower(table_comment) like lower(concat('%', #{tableComment}, '%'))
       </if>
     </where>
+  </select>
+
+  <select id="pageByDbTable" resultType="com.ruoyi.generator.domain.GenTable">
+    select table_name, table_comment, create_time, update_time from information_schema.tables
+    where table_schema = (select database())
+    and table_name not like 'qrtz_%' and table_name not like 'gen_%'
+    and table_name not in (select table_name from gen_table)
+    <if test="genTable.tableName != null and genTable.tableName != ''">
+      and lower(table_name) like lower(concat('%', #{genTable.tableName}, '%'))
+    </if>
+    <if test="genTable.tableComment != null and genTable.tableComment != ''">
+      and lower(table_comment) like lower(concat('%', #{genTable.tableComment}, '%'))
+    </if>
   </select>
 
   <select id="selectDbTableList" resultMap="GenTableResult">

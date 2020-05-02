@@ -1,9 +1,9 @@
 package com.ruoyi.quartz.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
-import com.ruoyi.common.core.domain.AjaxResult;
-import com.ruoyi.common.core.page.TableDataInfo;
+import com.ruoyi.common.core.domain.Result;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.exception.job.TaskException;
 import com.ruoyi.common.utils.poi.ExcelUtil;
@@ -18,6 +18,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static com.ruoyi.common.core.domain.Result.custom;
+import static com.ruoyi.common.core.domain.Result.success;
 
 /**
  * 调度任务信息操作处理
@@ -42,17 +45,15 @@ public class SysJobController extends BaseController {
   @RequiresPermissions("monitor:job:list")
   @PostMapping("/list")
   @ResponseBody
-  public TableDataInfo list(SysJob job) {
-    startPage();
-    List<SysJob> list = jobService.selectJobList(job);
-    return getDataTable(list);
+  public Result list(Page<SysJob> page, SysJob job) {
+    return success(jobService.page(page, job));
   }
 
   @Log(title = "定时任务", businessType = BusinessType.EXPORT)
   @RequiresPermissions("monitor:job:export")
   @PostMapping("/export")
   @ResponseBody
-  public AjaxResult export(SysJob job) {
+  public Result export(SysJob job) {
     List<SysJob> list = jobService.selectJobList(job);
     ExcelUtil<SysJob> util = new ExcelUtil<>(SysJob.class);
     return util.exportExcel(list, "定时任务");
@@ -62,7 +63,7 @@ public class SysJobController extends BaseController {
   @RequiresPermissions("monitor:job:remove")
   @PostMapping("/remove")
   @ResponseBody
-  public AjaxResult remove(String ids) throws SchedulerException {
+  public Result remove(String ids) throws SchedulerException {
     jobService.deleteJobByIds(ids);
     return success();
   }
@@ -82,10 +83,10 @@ public class SysJobController extends BaseController {
   @RequiresPermissions("monitor:job:changeStatus")
   @PostMapping("/changeStatus")
   @ResponseBody
-  public AjaxResult changeStatus(SysJob job) throws SchedulerException {
+  public Result changeStatus(SysJob job) throws SchedulerException {
     SysJob newJob = jobService.selectJobById(job.getJobId());
     newJob.setStatus(job.getStatus());
-    return toAjax(jobService.changeStatus(newJob));
+    return custom(jobService.changeStatus(newJob));
   }
 
   /**
@@ -95,7 +96,7 @@ public class SysJobController extends BaseController {
   @RequiresPermissions("monitor:job:changeStatus")
   @PostMapping("/run")
   @ResponseBody
-  public AjaxResult run(SysJob job) throws SchedulerException {
+  public Result run(SysJob job) throws SchedulerException {
     jobService.run(job);
     return success();
   }
@@ -115,8 +116,8 @@ public class SysJobController extends BaseController {
   @RequiresPermissions("monitor:job:add")
   @PostMapping("/add")
   @ResponseBody
-  public AjaxResult addSave(@Validated SysJob job) throws SchedulerException, TaskException {
-    return toAjax(jobService.insertJob(job));
+  public Result addSave(@Validated SysJob job) throws SchedulerException, TaskException {
+    return custom(jobService.insertJob(job));
   }
 
   /**
@@ -135,8 +136,8 @@ public class SysJobController extends BaseController {
   @RequiresPermissions("monitor:job:edit")
   @PostMapping("/edit")
   @ResponseBody
-  public AjaxResult editSave(@Validated SysJob job) throws SchedulerException, TaskException {
-    return toAjax(jobService.updateJob(job));
+  public Result editSave(@Validated SysJob job) throws SchedulerException, TaskException {
+    return custom(jobService.updateJob(job));
   }
 
   /**

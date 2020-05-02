@@ -1,9 +1,9 @@
 package com.ruoyi.web.controller.system;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
-import com.ruoyi.common.core.domain.AjaxResult;
-import com.ruoyi.common.core.page.TableDataInfo;
+import com.ruoyi.common.core.domain.Result;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.framework.util.ShiroUtils;
 import com.ruoyi.system.domain.SysNotice;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import static com.ruoyi.common.core.domain.Result.custom;
 
 /**
  * 公告 信息操作处理
@@ -42,10 +42,8 @@ public class SysNoticeController extends BaseController {
   @RequiresPermissions("system:notice:list")
   @ResponseBody
   @PostMapping("/list")
-  public TableDataInfo list(SysNotice notice) {
-    startPage();
-    List<SysNotice> list = noticeService.selectNoticeList(notice);
-    return getDataTable(list);
+  public Result list(Page<SysNotice> page, SysNotice notice) {
+    return Result.success(noticeService.page(page, notice));
   }
 
   /**
@@ -63,9 +61,9 @@ public class SysNoticeController extends BaseController {
   @RequiresPermissions("system:notice:add")
   @ResponseBody
   @PostMapping("/add")
-  public AjaxResult addSave(SysNotice notice) {
+  public Result addSave(SysNotice notice) {
     notice.setCreateBy(ShiroUtils.getLoginName());
-    return toAjax(noticeService.insertNotice(notice));
+    return custom(noticeService.insertNotice(notice));
   }
 
   /**
@@ -84,9 +82,9 @@ public class SysNoticeController extends BaseController {
   @RequiresPermissions("system:notice:edit")
   @ResponseBody
   @PostMapping("/edit")
-  public AjaxResult editSave(SysNotice notice) {
+  public Result editSave(SysNotice notice) {
     notice.setUpdateBy(ShiroUtils.getLoginName());
-    return toAjax(noticeService.updateNotice(notice));
+    return custom(noticeService.updateNotice(notice));
   }
 
   /**
@@ -96,7 +94,7 @@ public class SysNoticeController extends BaseController {
   @RequiresPermissions("system:notice:remove")
   @ResponseBody
   @PostMapping("/remove")
-  public AjaxResult remove(String ids) {
-    return toAjax(noticeService.deleteNoticeByIds(ids));
+  public Result remove(String ids) {
+    return custom(noticeService.deleteNoticeByIds(ids));
   }
 }

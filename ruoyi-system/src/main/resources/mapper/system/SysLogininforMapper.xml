@@ -21,6 +21,27 @@
     values (#{loginName}, #{status}, #{ipaddr}, #{loginLocation}, #{browser}, #{os}, #{msg}, sysdate())
   </insert>
 
+  <select id="page" resultType="com.ruoyi.system.domain.SysLogininfor">
+    select sl.* from sys_logininfor sl
+    <where>
+      <if test="logininfor.ipaddr != null and logininfor.ipaddr != ''">
+        and sl.ipaddr like concat('%', #{logininfor.ipaddr}, '%')
+      </if>
+      <if test="logininfor.status != null and logininfor.status != ''">
+        and sl.status = #{logininfor.status}
+      </if>
+      <if test="logininfor.loginName != null and logininfor.loginName != ''">
+        and sl.login_name like concat('%', #{logininfor.loginName}, '%')
+      </if>
+      <if test="logininfor.params.beginTime != null and logininfor.params.beginTime != ''"><!-- 开始时间检索 -->
+        and sl.date_format(login_time,'%y%m%d') &gt;= date_format(#{logininfor.params.beginTime},'%y%m%d')
+      </if>
+      <if test="logininfor.params.endTime != null and logininfor.params.endTime != ''"><!-- 结束时间检索 -->
+        and sl.date_format(login_time,'%y%m%d') &lt;= date_format(#{logininfor.params.endTime},'%y%m%d')
+      </if>
+    </where>
+  </select>
+
   <select id="selectLogininforList" resultMap="SysLogininforResult">
     select info_id,login_name,ipaddr,login_location,browser,os,status,msg,login_time from sys_logininfor
     <where>

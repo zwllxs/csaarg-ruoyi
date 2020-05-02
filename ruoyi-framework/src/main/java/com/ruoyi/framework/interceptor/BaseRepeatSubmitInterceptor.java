@@ -1,7 +1,7 @@
 package com.ruoyi.framework.interceptor;
 
 import com.ruoyi.common.annotation.RepeatSubmit;
-import com.ruoyi.common.core.domain.AjaxResult;
+import com.ruoyi.common.core.domain.Result;
 import com.ruoyi.common.json.JSON;
 import com.ruoyi.common.utils.ServletUtils;
 import org.springframework.stereotype.Component;
@@ -28,8 +28,8 @@ public abstract class BaseRepeatSubmitInterceptor extends HandlerInterceptorAdap
       RepeatSubmit annotation = method.getAnnotation(RepeatSubmit.class);
       if (annotation != null) {
         if (this.isRepeatSubmit(request)) {
-          AjaxResult ajaxResult = AjaxResult.error("不允许重复提交，请稍后再试");
-          ServletUtils.renderString(response, JSON.marshal(ajaxResult));
+          Result result = Result.error("不允许重复提交，请稍后再试");
+          ServletUtils.renderString(response, JSON.marshal(result));
           return false;
         }
       }

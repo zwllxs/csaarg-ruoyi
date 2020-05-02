@@ -1,5 +1,7 @@
 package com.ruoyi.generator.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.ruoyi.generator.domain.GenTable;
 
@@ -12,6 +14,9 @@ import java.util.Map;
  * @author ruoyi
  */
 public interface IGenTableService extends IService<GenTable> {
+
+  IPage<GenTable> page(Page<GenTable> page, GenTable genTable);
+
   /**
    * 查询业务列表
    *
@@ -19,6 +24,8 @@ public interface IGenTableService extends IService<GenTable> {
    * @return 业务集合
    */
   List<GenTable> selectGenTableList(GenTable genTable);
+
+  IPage<GenTable> pageByDbTable(Page<GenTable> page, GenTable genTable);
 
   /**
    * 查询据库列表

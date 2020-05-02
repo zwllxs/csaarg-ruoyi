@@ -1,5 +1,7 @@
 package com.ruoyi.system.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.core.domain.Ztree;
@@ -43,6 +45,11 @@ public class SysDictTypeServiceImpl extends ServiceImpl<SysDictTypeMapper, SysDi
       List<SysDictData> dictDatas = dictDataMapper.selectDictDataByType(dictType.getDictType());
       DictUtils.setDictCache(dictType.getDictType(), dictDatas);
     }
+  }
+
+  @Override
+  public IPage<SysDictType> page(Page<SysDictType> page, SysDictType dictType) {
+    return page.setRecords(dictTypeMapper.page(page,dictType));
   }
 
   /**

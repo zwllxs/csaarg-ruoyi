@@ -1,5 +1,7 @@
 package com.ruoyi.quartz.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ruoyi.common.core.text.Convert;
 import com.ruoyi.quartz.domain.SysJobLog;
@@ -20,6 +22,11 @@ public class SysJobLogServiceImpl extends ServiceImpl<SysJobLogMapper, SysJobLog
 
   @Autowired
   private SysJobLogMapper jobLogMapper;
+
+  @Override
+  public IPage<SysJobLog> page(Page<SysJobLog> page, SysJobLog jobLog) {
+    return page.setRecords(jobLogMapper.page(page, jobLog));
+  }
 
   /**
    * 获取quartz调度器日志的计划任务

@@ -1,9 +1,9 @@
 package com.ruoyi.quartz.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
-import com.ruoyi.common.core.domain.AjaxResult;
-import com.ruoyi.common.core.page.TableDataInfo;
+import com.ruoyi.common.core.domain.Result;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.poi.ExcelUtil;
@@ -18,6 +18,9 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static com.ruoyi.common.core.domain.Result.custom;
+import static com.ruoyi.common.core.domain.Result.success;
 
 /**
  * 调度日志操作处理
@@ -48,17 +51,15 @@ public class SysJobLogController extends BaseController {
   @RequiresPermissions("monitor:job:list")
   @PostMapping("/list")
   @ResponseBody
-  public TableDataInfo list(SysJobLog jobLog) {
-    startPage();
-    List<SysJobLog> list = jobLogService.selectJobLogList(jobLog);
-    return getDataTable(list);
+  public Result list(Page<SysJobLog> page, SysJobLog jobLog) {
+    return success(jobLogService.page(page, jobLog));
   }
 
   @Log(title = "调度日志", businessType = BusinessType.EXPORT)
   @RequiresPermissions("monitor:job:export")
   @PostMapping("/export")
   @ResponseBody
-  public AjaxResult export(SysJobLog jobLog) {
+  public Result export(SysJobLog jobLog) {
     List<SysJobLog> list = jobLogService.selectJobLogList(jobLog);
     ExcelUtil<SysJobLog> util = new ExcelUtil<SysJobLog>(SysJobLog.class);
     return util.exportExcel(list, "调度日志");
@@ -68,8 +69,8 @@ public class SysJobLogController extends BaseController {
   @RequiresPermissions("monitor:job:remove")
   @PostMapping("/remove")
   @ResponseBody
-  public AjaxResult remove(String ids) {
-    return toAjax(jobLogService.deleteJobLogByIds(ids));
+  public Result remove(String ids) {
+    return custom(jobLogService.deleteJobLogByIds(ids));
   }
 
   @RequiresPermissions("monitor:job:detail")
@@ -84,7 +85,7 @@ public class SysJobLogController extends BaseController {
   @RequiresPermissions("monitor:job:remove")
   @PostMapping("/clean")
   @ResponseBody
-  public AjaxResult clean() {
+  public Result clean() {
     jobLogService.cleanJobLog();
     return success();
   }

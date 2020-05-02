@@ -47,6 +47,22 @@
     order by d.parent_id, d.order_num
   </select>
 
+  <select id="page" resultType="com.ruoyi.system.domain.SysDept">
+    select sd.* from sys_dept sd where sd.del_flag = 0
+    <if test="sysDept.parentId != null and sysDept.parentId != 0">
+      and sd.parent_id = #{sysDept.parentId}
+    </if>
+    <if test="sysDept.deptName != null and sysDept.deptName != ''">
+      and sd.dept_name like concat('%', #{sysDept.deptName}, '%')
+    </if>
+    <if test="sysDept.status != null and sysDept.status != ''">
+      and sd.status = #{sysDept.status}
+    </if>
+    <!-- 数据范围过滤 -->
+    ${sysDept.params.dataScope}
+    order by sd.parent_id, sd.order_num
+  </select>
+
   <select id="selectDeptList" resultMap="SysDeptResult">
     <include refid="selectDeptVo"/>
     where d.del_flag = '0'

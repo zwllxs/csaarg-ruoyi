@@ -1,8 +1,9 @@
 package com.ruoyi.quartz.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ruoyi.quartz.domain.SysJob;
-import com.ruoyi.quartz.domain.SysJobLog;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -12,6 +13,9 @@ import java.util.List;
  * @author ruoyi
  */
 public interface SysJobMapper extends BaseMapper<SysJob> {
+
+  List<SysJob> page(Page<SysJob> page, @Param("job") SysJob job);
+
   /**
    * 查询调度任务日志集合
    *

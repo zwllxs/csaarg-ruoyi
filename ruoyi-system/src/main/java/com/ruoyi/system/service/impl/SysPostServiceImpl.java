@@ -1,5 +1,7 @@
 package com.ruoyi.system.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.core.text.Convert;
@@ -26,6 +28,11 @@ public class SysPostServiceImpl extends ServiceImpl<SysPostMapper, SysPost> impl
   private SysPostMapper postMapper;
   @Autowired
   private SysUserPostMapper userPostMapper;
+
+  @Override
+  public IPage<SysPost> page(Page<SysPost> page, SysPost post) {
+    return page.setRecords(postMapper.page(page, post));
+  }
 
   /**
    * 查询岗位信息集合

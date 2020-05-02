@@ -1,5 +1,7 @@
 package com.ruoyi.system.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ruoyi.common.annotation.DataScope;
 import com.ruoyi.common.constant.UserConstants;
@@ -27,6 +29,11 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
 
   @Autowired
   private SysDeptMapper deptMapper;
+
+  @Override
+  public IPage<SysDept> page(Page<SysDept> page, SysDept sysDept) {
+    return page.setRecords(deptMapper.page(page,sysDept));
+  }
 
   /**
    * 查询部门管理数据

@@ -1,5 +1,7 @@
 package com.ruoyi.system.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ruoyi.common.core.text.Convert;
 import com.ruoyi.system.domain.SysDictData;
@@ -21,6 +23,11 @@ public class SysDictDataServiceImpl extends ServiceImpl<SysDictDataMapper, SysDi
 
   @Autowired
   private SysDictDataMapper dictDataMapper;
+
+  @Override
+  public IPage<SysDictData> page(Page<SysDictData> page, SysDictData dictData) {
+    return page.setRecords(dictDataMapper.page(page, dictData));
+  }
 
   /**
    * 根据条件分页查询字典数据

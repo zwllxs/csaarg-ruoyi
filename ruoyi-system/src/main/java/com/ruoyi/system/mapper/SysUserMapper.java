@@ -1,7 +1,9 @@
 package com.ruoyi.system.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ruoyi.system.domain.SysUser;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -11,6 +13,9 @@ import java.util.List;
  * @author ruoyi
  */
 public interface SysUserMapper extends BaseMapper<SysUser> {
+
+  List<SysUser> page(Page<SysUser> page, @Param("user") SysUser user);
+
   /**
    * 根据条件分页查询用户列表
    *
@@ -18,6 +23,8 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
    * @return 用户信息集合信息
    */
   List<SysUser> selectUserList(SysUser sysUser);
+
+  List<SysUser> pageByAllocated(Page<SysUser> page, @Param("user") SysUser user);
 
   /**
    * 根据条件分页查询未已配用户角色列表

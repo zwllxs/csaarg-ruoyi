@@ -1,7 +1,9 @@
 package com.ruoyi.system.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ruoyi.system.domain.SysUserOnline;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -35,6 +37,8 @@ public interface SysUserOnlineMapper extends BaseMapper<SysUserOnline> {
    */
   int saveOnline(SysUserOnline online);
 
+  List<SysUserOnline> page(Page<SysUserOnline> page, @Param("userOnline") SysUserOnline userOnline);
+
   /**
    * 查询会话集合
    *
@@ -50,4 +54,5 @@ public interface SysUserOnlineMapper extends BaseMapper<SysUserOnline> {
    * @return 会话集合
    */
   List<SysUserOnline> selectOnlineByExpired(String lastAccessTime);
+
 }

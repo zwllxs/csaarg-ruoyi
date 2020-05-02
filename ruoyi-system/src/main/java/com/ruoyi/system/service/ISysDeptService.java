@@ -1,5 +1,7 @@
 package com.ruoyi.system.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.ruoyi.common.core.domain.Ztree;
 import com.ruoyi.system.domain.SysDept;
@@ -13,8 +15,11 @@ import java.util.List;
  * @author ruoyi
  */
 public interface ISysDeptService extends IService<SysDept> {
+
+  IPage<SysDept> page(Page<SysDept> page, SysDept sysDept);
   /**
    * 查询部门管理数据
+   *
    *
    * @param dept 部门信息
    * @return 部门信息集合

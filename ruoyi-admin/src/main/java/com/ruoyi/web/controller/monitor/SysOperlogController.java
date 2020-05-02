@@ -1,9 +1,9 @@
 package com.ruoyi.web.controller.monitor;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
-import com.ruoyi.common.core.domain.AjaxResult;
-import com.ruoyi.common.core.page.TableDataInfo;
+import com.ruoyi.common.core.domain.Result;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.system.domain.SysOperLog;
@@ -15,6 +15,9 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static com.ruoyi.common.core.domain.Result.custom;
+import static com.ruoyi.common.core.domain.Result.success;
 
 /**
  * 操作日志记录
@@ -39,17 +42,15 @@ public class SysOperlogController extends BaseController {
   @RequiresPermissions("monitor:operlog:list")
   @ResponseBody
   @PostMapping("/list")
-  public TableDataInfo list(SysOperLog operLog) {
-    startPage();
-    List<SysOperLog> list = operLogService.selectOperLogList(operLog);
-    return getDataTable(list);
+  public Result list(Page<SysOperLog> page, SysOperLog operLog) {
+    return success(operLogService.page(page, operLog));
   }
 
   @Log(title = "操作日志", businessType = BusinessType.EXPORT)
   @RequiresPermissions("monitor:operlog:export")
   @ResponseBody
   @PostMapping("/export")
-  public AjaxResult export(SysOperLog operLog) {
+  public Result export(SysOperLog operLog) {
     List<SysOperLog> list = operLogService.selectOperLogList(operLog);
     ExcelUtil<SysOperLog> util = new ExcelUtil<>(SysOperLog.class);
     return util.exportExcel(list, "操作日志");
@@ -58,8 +59,8 @@ public class SysOperlogController extends BaseController {
   @RequiresPermissions("monitor:operlog:remove")
   @ResponseBody
   @PostMapping("/remove")
-  public AjaxResult remove(String ids) {
-    return toAjax(operLogService.deleteOperLogByIds(ids));
+  public Result remove(String ids) {
+    return custom(operLogService.deleteOperLogByIds(ids));
   }
 
   @RequiresPermissions("monitor:operlog:detail")
@@ -73,7 +74,7 @@ public class SysOperlogController extends BaseController {
   @RequiresPermissions("monitor:operlog:remove")
   @ResponseBody
   @PostMapping("/clean")
-  public AjaxResult clean() {
+  public Result clean() {
     operLogService.cleanOperLog();
     return success();
   }

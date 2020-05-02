@@ -1,5 +1,7 @@
 package com.ruoyi.system.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.ruoyi.system.domain.SysLogininfor;
 
@@ -17,6 +19,8 @@ public interface ISysLogininforService extends IService<SysLogininfor> {
    * @param logininfor 访问日志对象
    */
   void insertLogininfor(SysLogininfor logininfor);
+
+  IPage<SysLogininfor> page(Page<SysLogininfor> page, SysLogininfor logininfor);
 
   /**
    * 查询系统登录日志集合

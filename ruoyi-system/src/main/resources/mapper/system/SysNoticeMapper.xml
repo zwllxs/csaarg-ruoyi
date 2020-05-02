@@ -36,6 +36,21 @@
     where notice_id = #{noticeId}
   </select>
 
+  <select id="page" resultType="com.ruoyi.system.domain.SysNotice">
+    select sn.* from sys_notice sn
+    <where>
+      <if test="notice.noticeTitle != null and notice.noticeTitle != ''">
+        and sn.notice_title like concat('%', #{notice.noticeTitle}, '%')
+      </if>
+      <if test="notice.noticeType != null and notice.noticeType != ''">
+        and sn.notice_type = #{notice.noticeType}
+      </if>
+      <if test="notice.createBy != null and notice.createBy != ''">
+        and sn.create_by like concat('%', #{notice.createBy}, '%')
+      </if>
+    </where>
+  </select>
+
   <select id="selectNoticeList" resultMap="SysNoticeResult">
     <include refid="selectNoticeVo"/>
     <where>

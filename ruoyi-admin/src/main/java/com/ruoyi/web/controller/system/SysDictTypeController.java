@@ -1,11 +1,11 @@
 package com.ruoyi.web.controller.system;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.core.controller.BaseController;
-import com.ruoyi.common.core.domain.AjaxResult;
+import com.ruoyi.common.core.domain.Result;
 import com.ruoyi.common.core.domain.Ztree;
-import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.framework.util.ShiroUtils;
@@ -19,6 +19,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static com.ruoyi.common.core.domain.Result.*;
 
 /**
  * 数据字典信息
@@ -43,17 +45,15 @@ public class SysDictTypeController extends BaseController {
   @RequiresPermissions("system:dict:list")
   @ResponseBody
   @PostMapping("/list")
-  public TableDataInfo list(SysDictType dictType) {
-    startPage();
-    List<SysDictType> list = dictTypeService.selectDictTypeList(dictType);
-    return getDataTable(list);
+  public Result list(Page<SysDictType> page, SysDictType dictType) {
+    return success(dictTypeService.page(page, dictType));
   }
 
   @Log(title = "字典类型", businessType = BusinessType.EXPORT)
   @RequiresPermissions("system:dict:export")
   @ResponseBody
   @PostMapping("/export")
-  public AjaxResult export(SysDictType dictType) {
+  public Result export(SysDictType dictType) {
 
     List<SysDictType> list = dictTypeService.selectDictTypeList(dictType);
     ExcelUtil<SysDictType> util = new ExcelUtil<>(SysDictType.class);
@@ -75,12 +75,12 @@ public class SysDictTypeController extends BaseController {
   @RequiresPermissions("system:dict:add")
   @ResponseBody
   @PostMapping("/add")
-  public AjaxResult addSave(@Validated SysDictType dict) {
+  public Result addSave(@Validated SysDictType dict) {
     if (UserConstants.DICT_TYPE_NOT_UNIQUE.equals(dictTypeService.checkDictTypeUnique(dict))) {
       return error("新增字典'" + dict.getDictName() + "'失败，字典类型已存在");
     }
     dict.setCreateBy(ShiroUtils.getLoginName());
-    return toAjax(dictTypeService.insertDictType(dict));
+    return custom(dictTypeService.insertDictType(dict));
   }
 
   /**
@@ -99,20 +99,20 @@ public class SysDictTypeController extends BaseController {
   @RequiresPermissions("system:dict:edit")
   @ResponseBody
   @PostMapping("/edit")
-  public AjaxResult editSave(@Validated SysDictType dict) {
+  public Result editSave(@Validated SysDictType dict) {
     if (UserConstants.DICT_TYPE_NOT_UNIQUE.equals(dictTypeService.checkDictTypeUnique(dict))) {
       return error("修改字典'" + dict.getDictName() + "'失败，字典类型已存在");
     }
     dict.setUpdateBy(ShiroUtils.getLoginName());
-    return toAjax(dictTypeService.updateDictType(dict));
+    return custom(dictTypeService.updateDictType(dict));
   }
 
   @Log(title = "字典类型", businessType = BusinessType.DELETE)
   @RequiresPermissions("system:dict:remove")
   @ResponseBody
   @PostMapping("/remove")
-  public AjaxResult remove(String ids) {
-    return toAjax(dictTypeService.deleteDictTypeByIds(ids));
+  public Result remove(String ids) {
+    return custom(dictTypeService.deleteDictTypeByIds(ids));
   }
 
   /**
@@ -122,7 +122,7 @@ public class SysDictTypeController extends BaseController {
   @RequiresPermissions("system:dict:remove")
   @ResponseBody
   @GetMapping("/clearCache")
-  public AjaxResult clearCache() {
+  public Result clearCache() {
     dictTypeService.clearCache();
     return success();
   }

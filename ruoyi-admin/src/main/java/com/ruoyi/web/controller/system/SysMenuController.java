@@ -3,7 +3,7 @@ package com.ruoyi.web.controller.system;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.core.controller.BaseController;
-import com.ruoyi.common.core.domain.AjaxResult;
+import com.ruoyi.common.core.domain.Result;
 import com.ruoyi.common.core.domain.Ztree;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.framework.util.ShiroUtils;
@@ -18,6 +18,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static com.ruoyi.common.core.domain.Result.custom;
+import static com.ruoyi.common.core.domain.Result.error;
 
 /**
  * 菜单信息
@@ -54,15 +57,15 @@ public class SysMenuController extends BaseController {
   @RequiresPermissions("system:menu:remove")
   @ResponseBody
   @GetMapping("/remove/{menuId}")
-  public AjaxResult remove(@PathVariable("menuId") Long menuId) {
+  public Result remove(@PathVariable("menuId") Long menuId) {
     if (menuService.selectCountMenuByParentId(menuId) > 0) {
-      return AjaxResult.warn("存在子菜单,不允许删除");
+      return Result.error("存在子菜单,不允许删除");
     }
     if (menuService.selectCountRoleMenuByMenuId(menuId) > 0) {
-      return AjaxResult.warn("菜单已分配,不允许删除");
+      return Result.error("菜单已分配,不允许删除");
     }
     ShiroUtils.clearCachedAuthorizationInfo();
-    return toAjax(menuService.deleteMenuById(menuId));
+    return custom(menuService.deleteMenuById(menuId));
   }
 
   /**
@@ -89,13 +92,13 @@ public class SysMenuController extends BaseController {
   @RequiresPermissions("system:menu:add")
   @ResponseBody
   @PostMapping("/add")
-  public AjaxResult addSave(@Validated SysMenu menu) {
+  public Result addSave(@Validated SysMenu menu) {
     if (UserConstants.MENU_NAME_NOT_UNIQUE.equals(menuService.checkMenuNameUnique(menu))) {
       return error("新增菜单'" + menu.getMenuName() + "'失败，菜单名称已存在");
     }
     menu.setCreateBy(ShiroUtils.getLoginName());
     ShiroUtils.clearCachedAuthorizationInfo();
-    return toAjax(menuService.insertMenu(menu));
+    return custom(menuService.insertMenu(menu));
   }
 
   /**
@@ -114,13 +117,13 @@ public class SysMenuController extends BaseController {
   @RequiresPermissions("system:menu:edit")
   @ResponseBody
   @PostMapping("/edit")
-  public AjaxResult editSave(@Validated SysMenu menu) {
+  public Result editSave(@Validated SysMenu menu) {
     if (UserConstants.MENU_NAME_NOT_UNIQUE.equals(menuService.checkMenuNameUnique(menu))) {
       return error("修改菜单'" + menu.getMenuName() + "'失败，菜单名称已存在");
     }
     menu.setUpdateBy(ShiroUtils.getLoginName());
     ShiroUtils.clearCachedAuthorizationInfo();
-    return toAjax(menuService.updateMenu(menu));
+    return custom(menuService.updateMenu(menu));
   }
 
   /**

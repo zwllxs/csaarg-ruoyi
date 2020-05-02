@@ -1,5 +1,6 @@
 package com.ruoyi.common.core.domain;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
@@ -21,6 +22,7 @@ public class BaseEntity implements Serializable {
   /**
    * 搜索值
    */
+  @TableField(exist = false)
   private String searchValue;
   /**
    * 创建者
@@ -47,6 +49,7 @@ public class BaseEntity implements Serializable {
   /**
    * 请求参数
    */
+  @TableField(exist = false)
   private Map<String, Object> params;
 
   public Map<String, Object> getParams() {

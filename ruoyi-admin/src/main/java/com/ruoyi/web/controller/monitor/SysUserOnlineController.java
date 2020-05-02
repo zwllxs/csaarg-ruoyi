@@ -1,9 +1,9 @@
 package com.ruoyi.web.controller.monitor;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
-import com.ruoyi.common.core.domain.AjaxResult;
-import com.ruoyi.common.core.page.TableDataInfo;
+import com.ruoyi.common.core.domain.Result;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.enums.OnlineStatus;
 import com.ruoyi.framework.shiro.session.OnlineSession;
@@ -16,7 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import static com.ruoyi.common.core.domain.Result.error;
+import static com.ruoyi.common.core.domain.Result.success;
 
 /**
  * 在线用户监控
@@ -43,17 +44,15 @@ public class SysUserOnlineController extends BaseController {
   @RequiresPermissions("monitor:online:list")
   @ResponseBody
   @PostMapping("/list")
-  public TableDataInfo list(SysUserOnline userOnline) {
-    startPage();
-    List<SysUserOnline> list = userOnlineService.selectUserOnlineList(userOnline);
-    return getDataTable(list);
+  public Result list(Page<SysUserOnline> page, SysUserOnline userOnline) {
+    return success(userOnlineService.page(page, userOnline));
   }
 
   @Log(title = "在线用户", businessType = BusinessType.FORCE)
   @RequiresPermissions("monitor:online:batchForceLogout")
   @ResponseBody
   @PostMapping("/batchForceLogout")
-  public AjaxResult batchForceLogout(@RequestParam("ids[]") String[] ids) {
+  public Result batchForceLogout(@RequestParam("ids[]") String[] ids) {
     for (String sessionId : ids) {
       SysUserOnline online = userOnlineService.selectOnlineById(sessionId);
       if (online == null) {
@@ -64,7 +63,7 @@ public class SysUserOnlineController extends BaseController {
         return error("用户已下线");
       }
       if (sessionId.equals(ShiroUtils.getSessionId())) {
-        return error("当前登陆用户无法强退");
+        return error("当前登录用户无法强退");
       }
       onlineSession.setStatus(OnlineStatus.off_line);
       onlineSessionDAO.update(onlineSession);
@@ -78,10 +77,10 @@ public class SysUserOnlineController extends BaseController {
   @RequiresPermissions("monitor:online:forceLogout")
   @ResponseBody
   @PostMapping("/forceLogout")
-  public AjaxResult forceLogout(String sessionId) {
+  public Result forceLogout(String sessionId) {
     SysUserOnline online = userOnlineService.selectOnlineById(sessionId);
     if (sessionId.equals(ShiroUtils.getSessionId())) {
-      return error("当前登陆用户无法强退");
+      return error("当前登录用户无法强退");
     }
     if (online == null) {
       return error("用户已下线");

@@ -1,5 +1,7 @@
 package com.ruoyi.system.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.ruoyi.common.core.domain.Ztree;
 import com.ruoyi.system.domain.SysDictData;
@@ -13,6 +15,9 @@ import java.util.List;
  * @author ruoyi
  */
 public interface ISysDictTypeService extends IService<SysDictType> {
+
+  IPage<SysDictType> page(Page<SysDictType> page, SysDictType dictType);
+
   /**
    * 根据条件分页查询字典类型
    *

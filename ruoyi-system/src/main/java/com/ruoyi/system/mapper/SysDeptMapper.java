@@ -1,6 +1,7 @@
 package com.ruoyi.system.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ruoyi.system.domain.SysDept;
 import org.apache.ibatis.annotations.Param;
 
@@ -12,6 +13,9 @@ import java.util.List;
  * @author ruoyi
  */
 public interface SysDeptMapper extends BaseMapper<SysDept> {
+
+  List<SysDept> page(Page<SysDept> page, @Param("sysDept") SysDept sysDept);
+
   /**
    * 查询部门人数
    *

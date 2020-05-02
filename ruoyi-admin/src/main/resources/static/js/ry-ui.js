@@ -99,7 +99,7 @@ var table = {
           search: options.search,                             // 是否显示搜索框功能
           searchText: options.searchText,                     // 搜索框初始显示的内容，默认为空
           showSearch: options.showSearch,                     // 是否显示检索信息
-          showPageGo: options.showPageGo,               		// 是否显示跳转页
+          showPageGo: options.showPageGo,               		  // 是否显示跳转页
           showRefresh: options.showRefresh,                   // 是否显示刷新按钮
           showColumns: options.showColumns,                   // 是否显示隐藏某列下拉框
           showToggle: options.showToggle,                     // 是否显示详细视图和列表视图的切换按钮
@@ -107,7 +107,7 @@ var table = {
           showHeader: options.showHeader,                     // 是否显示表头
           showFullscreen: options.showFullscreen,             // 是否显示全屏按钮
           uniqueId: options.uniqueId,                         // 唯 一的标识符
-          clickToSelect: options.clickToSelect,				// 是否启用点击选中行
+          clickToSelect: options.clickToSelect,				        // 是否启用点击选中行
           singleSelect: options.singleSelect,                 // 是否单选checkbox
           mobileResponsive: options.mobileResponsive,         // 是否支持移动端适配
           detailView: options.detailView,                     // 是否启用显示细节视图
@@ -161,16 +161,17 @@ var table = {
           table.options.responseHandler(res);
         }
         if (res.code == 0) {
+          const records = res.data.records;
           if ($.common.isNotEmpty(table.options.sidePagination) && table.options.sidePagination == 'client') {
-            return res.rows;
+            return records;
           } else {
             if ($.common.isNotEmpty(table.options.rememberSelected) && table.options.rememberSelected) {
               var column = $.common.isEmpty(table.options.uniqueId) ? table.options.columns[1].field : table.options.uniqueId;
-              $.each(res.rows, function (i, row) {
+              $.each(records, function (i, row) {
                 row.state = $.inArray(row[column], table.rememberSelectedIds[table.options.id]) !== -1;
               })
             }
-            return { rows: res.rows, total: res.total };
+            return { rows: records, total: res.data.total };
           }
         } else {
           $.modal.alertWarning(res.msg);

@@ -2,7 +2,7 @@ package com.ruoyi.framework.shiro.web.filter.kickout;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ruoyi.common.constant.ShiroConstants;
-import com.ruoyi.common.core.domain.AjaxResult;
+import com.ruoyi.common.core.domain.Result;
 import com.ruoyi.common.utils.ServletUtils;
 import com.ruoyi.framework.util.ShiroUtils;
 import com.ruoyi.system.domain.SysUser;
@@ -125,8 +125,8 @@ public class KickoutSessionFilter extends AccessControlFilter {
     HttpServletRequest req = (HttpServletRequest) request;
     HttpServletResponse res = (HttpServletResponse) response;
     if (ServletUtils.isAjaxRequest(req)) {
-      AjaxResult ajaxResult = AjaxResult.error("您已在别处登录，请您修改密码或重新登录");
-      ServletUtils.renderString(res, OBJECT_MAPPER.writeValueAsString(ajaxResult));
+      Result result = Result.error("您已在别处登录，请您修改密码或重新登录");
+      ServletUtils.renderString(res, OBJECT_MAPPER.writeValueAsString(result));
     } else {
       WebUtils.issueRedirect(request, response, kickoutUrl);
     }

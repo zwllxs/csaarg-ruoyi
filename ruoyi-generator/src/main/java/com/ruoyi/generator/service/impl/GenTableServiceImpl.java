@@ -2,6 +2,8 @@ package com.ruoyi.generator.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ruoyi.common.constant.GenConstants;
 import com.ruoyi.common.core.text.Convert;
@@ -63,6 +65,11 @@ public class GenTableServiceImpl extends ServiceImpl<GenTableMapper, GenTable> i
     return genTable;
   }
 
+  @Override
+  public IPage<GenTable> page(Page<GenTable> page, GenTable genTable) {
+    return page.setRecords(genTableMapper.page(page, genTable));
+  }
+
   /**
    * 查询业务列表
    *
@@ -72,6 +79,11 @@ public class GenTableServiceImpl extends ServiceImpl<GenTableMapper, GenTable> i
   @Override
   public List<GenTable> selectGenTableList(GenTable genTable) {
     return genTableMapper.selectGenTableList(genTable);
+  }
+
+  @Override
+  public IPage<GenTable> pageByDbTable(Page<GenTable> page, GenTable genTable) {
+    return page.setRecords(genTableMapper.pageByDbTable(page, genTable));
   }
 
   /**

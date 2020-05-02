@@ -1,7 +1,9 @@
 package com.ruoyi.system.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ruoyi.system.domain.SysLogininfor;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -17,6 +19,8 @@ public interface SysLogininforMapper extends BaseMapper<SysLogininfor> {
    * @param logininfor 访问日志对象
    */
   void insertLogininfor(SysLogininfor logininfor);
+
+  List<SysLogininfor> page(Page<SysLogininfor> page, @Param("logininfor") SysLogininfor logininfor);
 
   /**
    * 查询系统登录日志集合

@@ -1,5 +1,7 @@
 package com.ruoyi.system.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ruoyi.common.core.text.Convert;
 import com.ruoyi.system.domain.SysLogininfor;
@@ -29,6 +31,11 @@ public class SysLogininforServiceImpl extends ServiceImpl<SysLogininforMapper, S
   @Override
   public void insertLogininfor(SysLogininfor logininfor) {
     logininforMapper.insertLogininfor(logininfor);
+  }
+
+  @Override
+  public IPage<SysLogininfor> page(Page<SysLogininfor> page, SysLogininfor logininfor) {
+    return page.setRecords(logininforMapper.page(page, logininfor));
   }
 
   /**

@@ -1,5 +1,7 @@
 package com.ruoyi.system.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.ruoyi.system.domain.SysUserOnline;
 
@@ -42,6 +44,8 @@ public interface ISysUserOnlineService extends IService<SysUserOnline> {
    * @param online 会话信息
    */
   void saveOnline(SysUserOnline online);
+
+  IPage<SysUserOnline> page(Page<SysUserOnline> page, SysUserOnline userOnline);
 
   /**
    * 查询会话集合

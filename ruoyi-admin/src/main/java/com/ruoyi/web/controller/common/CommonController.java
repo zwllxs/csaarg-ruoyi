@@ -3,7 +3,7 @@ package com.ruoyi.web.controller.common;
 import com.ruoyi.common.config.Global;
 import com.ruoyi.common.config.ServerConfig;
 import com.ruoyi.common.constant.Constants;
-import com.ruoyi.common.core.domain.AjaxResult;
+import com.ruoyi.common.core.domain.Result;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.file.FileUploadUtils;
 import com.ruoyi.common.utils.file.FileUtils;
@@ -65,19 +65,19 @@ public class CommonController {
    */
   @ResponseBody
   @PostMapping("/common/upload")
-  public AjaxResult uploadFile(MultipartFile file) {
+  public Result uploadFile(MultipartFile file) {
     try {
       // 上传文件路径
       String filePath = Global.getUploadPath();
       // 上传并返回新文件名称
       String fileName = FileUploadUtils.upload(filePath, file);
       String url = serverConfig.getUrl() + fileName;
-      AjaxResult ajax = AjaxResult.success();
-      ajax.put("fileName", fileName);
-      ajax.put("url", url);
-      return ajax;
+      Result result = Result.success();
+      result.put("fileName", fileName);
+      result.put("url", url);
+      return result;
     } catch (Exception e) {
-      return AjaxResult.error(e.getMessage());
+      return Result.error(e.getMessage());
     }
   }
 

@@ -3,7 +3,7 @@ package com.ruoyi.web.controller.system;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.core.controller.BaseController;
-import com.ruoyi.common.core.domain.AjaxResult;
+import com.ruoyi.common.core.domain.Result;
 import com.ruoyi.common.core.domain.Ztree;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.StringUtils;
@@ -19,6 +19,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static com.ruoyi.common.core.domain.Result.custom;
+import static com.ruoyi.common.core.domain.Result.error;
 
 /**
  * 部门信息
@@ -63,12 +66,12 @@ public class SysDeptController extends BaseController {
   @RequiresPermissions("system:dept:add")
   @ResponseBody
   @PostMapping("/add")
-  public AjaxResult addSave(@Validated SysDept dept) {
+  public Result addSave(@Validated SysDept dept) {
     if (UserConstants.DEPT_NAME_NOT_UNIQUE.equals(deptService.checkDeptNameUnique(dept))) {
       return error("新增部门'" + dept.getDeptName() + "'失败，部门名称已存在");
     }
     dept.setCreateBy(ShiroUtils.getLoginName());
-    return toAjax(deptService.insertDept(dept));
+    return custom(deptService.insertDept(dept));
   }
 
   /**
@@ -91,14 +94,14 @@ public class SysDeptController extends BaseController {
   @RequiresPermissions("system:dept:edit")
   @ResponseBody
   @PostMapping("/edit")
-  public AjaxResult editSave(@Validated SysDept dept) {
+  public Result editSave(@Validated SysDept dept) {
     if (UserConstants.DEPT_NAME_NOT_UNIQUE.equals(deptService.checkDeptNameUnique(dept))) {
       return error("修改部门'" + dept.getDeptName() + "'失败，部门名称已存在");
     } else if (dept.getParentId().equals(dept.getDeptId())) {
       return error("修改部门'" + dept.getDeptName() + "'失败，上级部门不能是自己");
     }
     dept.setUpdateBy(ShiroUtils.getLoginName());
-    return toAjax(deptService.updateDept(dept));
+    return custom(deptService.updateDept(dept));
   }
 
   /**
@@ -108,14 +111,14 @@ public class SysDeptController extends BaseController {
   @RequiresPermissions("system:dept:remove")
   @ResponseBody
   @GetMapping("/remove/{deptId}")
-  public AjaxResult remove(@PathVariable("deptId") Long deptId) {
+  public Result remove(@PathVariable("deptId") Long deptId) {
     if (deptService.selectDeptCount(deptId) > 0) {
-      return AjaxResult.warn("存在下级部门,不允许删除");
+      return Result.error("存在下级部门,不允许删除");
     }
     if (deptService.checkDeptExistUser(deptId)) {
-      return AjaxResult.warn("部门存在用户,不允许删除");
+      return Result.error("部门存在用户,不允许删除");
     }
-    return toAjax(deptService.deleteDeptById(deptId));
+    return custom(deptService.deleteDeptById(deptId));
   }
 
   /**

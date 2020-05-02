@@ -35,6 +35,24 @@
     from sys_job
   </sql>
 
+  <select id="page" resultType="com.ruoyi.quartz.domain.SysJob">
+select sj.* from sys_job sj
+    <where>
+      <if test="job.jobName != null and job.jobName != ''">
+        and sj.job_name like concat('%', #{job.jobName}, '%')
+      </if>
+      <if test="job.jobGroup != null and job.jobGroup != ''">
+        and sj.job_group = #{job.jobGroup}
+      </if>
+      <if test="job.status != null and job.status != ''">
+        and sj.status = #{job.status}
+      </if>
+      <if test="job.invokeTarget != null and job.invokeTarget != ''">
+        and sj.invoke_target like concat('%', #{job.invokeTarget}, '%')
+      </if>
+    </where>
+  </select>
+
   <select id="selectJobList" resultMap="SysJobResult">
     <include refid="selectJobVo"/>
     <where>

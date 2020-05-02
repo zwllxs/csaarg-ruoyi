@@ -83,6 +83,47 @@
            left join sys_role r on r.role_id = ur.role_id
   </sql>
 
+  <select id="page" resultType="com.ruoyi.system.domain.SysUser">
+    select su.*,
+    sd.dept_id,
+    sd.parent_id,
+    sd.dept_name,
+    sd.order_num,
+    sd.leader,
+    sd.status as dept_status,
+    sr.role_id,
+    sr.role_name,
+    sr.role_key,
+    sr.role_sort,
+    sr.data_scope,
+    sr.status as role_status
+    from sys_user su
+    left join sys_dept sd on su.dept_id = sd.dept_id
+    left join sys_user_role sur on su.user_id = sur.user_id
+    left join sys_role sr on sr.role_id = sur.role_id
+    where su.del_flag = '0'
+    <if test="user.loginName != null and user.loginName != ''">
+      and su.login_name like concat('%', #{user.loginName}, '%')
+    </if>
+    <if test="user.status != null and user.status != ''">
+      and su.status = #{user.status}
+    </if>
+    <if test="user.phonenumber != null and user.phonenumber != ''">
+      and su.phonenumber like concat('%', #{user.phonenumber}, '%')
+    </if>
+    <if test="user.params.beginTime != null and user.params.beginTime != ''"><!-- 开始时间检索 -->
+      and date_format(su.create_time,'%y%m%d') &gt;= date_format(#{user.params.beginTime}, '%y%m%d')
+    </if>
+    <if test="user.params.endTime != null and user.params.endTime != ''"><!-- 结束时间检索 -->
+      and date_format(su.create_time,'%y%m%d') &lt;= date_format(#{user.params.endTime}, '%y%m%d')
+    </if>
+    <if test="user.deptId != null and user.deptId != 0">
+      and (su.dept_id = #{user.deptId} or su.dept_id in ( select t.dept_id from sys_dept t where find_in_set(#{user.deptId}, ancestors) ))
+    </if>
+    <!-- 数据范围过滤 -->
+    ${user.params.dataScope}
+  </select>
+
   <select id="selectUserList" resultMap="SysUserResult">
     select u.user_id, u.dept_id, u.login_name, u.user_name, u.user_type, u.email, u.avatar, u.phonenumber, u.password, u.sex, u.salt, u.status, u.del_flag, u.login_ip, u.login_date, u.create_by, u.create_time, u.remark, d.dept_name, d.leader from sys_user u
     left join sys_dept d on u.dept_id = d.dept_id
@@ -107,6 +148,23 @@
     </if>
     <!-- 数据范围过滤 -->
     ${params.dataScope}
+  </select>
+
+  <select id="pageByAllocated" resultType="com.ruoyi.system.domain.SysUser">
+    select distinct su.user_id, su.dept_id, su.login_name, su.user_name, su.user_type, su.email, su.avatar, su.phonenumber, su.status, su.create_time
+    from sys_user su
+    left join sys_dept sd on su.dept_id = sd.dept_id
+    left join sys_user_role sur on su.user_id = sur.user_id
+    left join sys_role sr on sr.role_id = sur.role_id
+    where su.del_flag = '0' and sr.role_id = #{roleId}
+    <if test="user.loginName != null and user.loginName != ''">
+      AND su.login_name like concat('%', #{user.loginName}, '%')
+    </if>
+    <if test="user.phonenumber != null and user.phonenumber != ''">
+      AND su.phonenumber like concat('%', #{user.phonenumber}, '%')
+    </if>
+    <!-- 数据范围过滤 -->
+    ${user.params.dataScope}
   </select>
 
   <select id="selectAllocatedList" resultMap="SysUserResult">

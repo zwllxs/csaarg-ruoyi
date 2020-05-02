@@ -1,5 +1,7 @@
 package com.ruoyi.system.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.ruoyi.system.domain.SysOperLog;
 
@@ -17,6 +19,8 @@ public interface ISysOperLogService extends IService<SysOperLog> {
    * @param operLog 操作日志对象
    */
   void insertOperlog(SysOperLog operLog);
+
+  IPage<SysOperLog> page(Page<SysOperLog> page, SysOperLog operLog);
 
   /**
    * 查询系统操作日志集合

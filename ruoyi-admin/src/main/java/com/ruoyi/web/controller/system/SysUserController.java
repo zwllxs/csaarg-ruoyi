@@ -1,10 +1,10 @@
 package com.ruoyi.web.controller.system;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.core.controller.BaseController;
-import com.ruoyi.common.core.domain.AjaxResult;
-import com.ruoyi.common.core.page.TableDataInfo;
+import com.ruoyi.common.core.domain.Result;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.framework.shiro.service.SysPasswordService;
@@ -23,6 +23,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+
+import static com.ruoyi.common.core.domain.Result.*;
 
 /**
  * 用户信息
@@ -53,17 +55,15 @@ public class SysUserController extends BaseController {
   @RequiresPermissions("system:user:list")
   @ResponseBody
   @PostMapping("/list")
-  public TableDataInfo list(SysUser user) {
-    startPage();
-    List<SysUser> list = userService.selectUserList(user);
-    return getDataTable(list);
+  public Result list(Page<SysUser> page, SysUser user) {
+    return Result.success(userService.page(page, user));
   }
 
   @RequiresPermissions("system:user:export")
   @Log(title = "用户管理", businessType = BusinessType.EXPORT)
   @ResponseBody
   @PostMapping("/export")
-  public AjaxResult export(SysUser user) {
+  public Result export(SysUser user) {
     List<SysUser> list = userService.selectUserList(user);
     ExcelUtil<SysUser> util = new ExcelUtil<>(SysUser.class);
     return util.exportExcel(list, "用户数据");
@@ -73,18 +73,18 @@ public class SysUserController extends BaseController {
   @RequiresPermissions("system:user:import")
   @ResponseBody
   @PostMapping("/importData")
-  public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
+  public Result importData(MultipartFile file, boolean updateSupport) throws Exception {
     ExcelUtil<SysUser> util = new ExcelUtil<>(SysUser.class);
     List<SysUser> userList = util.importExcel(file.getInputStream());
     String operName = ShiroUtils.getSysUser().getLoginName();
     String message = userService.importUser(userList, updateSupport, operName);
-    return AjaxResult.success(message);
+    return Result.success(message);
   }
 
   @RequiresPermissions("system:user:view")
   @ResponseBody
   @GetMapping("/importTemplate")
-  public AjaxResult importTemplate() {
+  public Result importTemplate() {
     ExcelUtil<SysUser> util = new ExcelUtil<>(SysUser.class);
     return util.importTemplateExcel("用户数据");
   }
@@ -106,7 +106,7 @@ public class SysUserController extends BaseController {
   @RequiresPermissions("system:user:add")
   @ResponseBody
   @PostMapping("/add")
-  public AjaxResult addSave(@Validated SysUser user) {
+  public Result addSave(@Validated SysUser user) {
     if (UserConstants.USER_NAME_NOT_UNIQUE.equals(userService.checkLoginNameUnique(user.getLoginName()))) {
       return error("新增用户'" + user.getLoginName() + "'失败，登录账号已存在");
     } else if (UserConstants.USER_PHONE_NOT_UNIQUE.equals(userService.checkPhoneUnique(user))) {
@@ -117,7 +117,7 @@ public class SysUserController extends BaseController {
     user.setSalt(ShiroUtils.randomSalt());
     user.setPassword(passwordService.encryptPassword(user.getLoginName(), user.getPassword(), user.getSalt()));
     user.setCreateBy(ShiroUtils.getLoginName());
-    return toAjax(userService.insertUser(user));
+    return custom(userService.insertUser(user));
   }
 
   /**
@@ -138,7 +138,7 @@ public class SysUserController extends BaseController {
   @RequiresPermissions("system:user:edit")
   @ResponseBody
   @PostMapping("/edit")
-  public AjaxResult editSave(@Validated SysUser user) {
+  public Result editSave(@Validated SysUser user) {
     userService.checkUserAllowed(user);
     if (UserConstants.USER_PHONE_NOT_UNIQUE.equals(userService.checkPhoneUnique(user))) {
       return error("修改用户'" + user.getLoginName() + "'失败，手机号码已存在");
@@ -146,7 +146,7 @@ public class SysUserController extends BaseController {
       return error("修改用户'" + user.getLoginName() + "'失败，邮箱账号已存在");
     }
     user.setUpdateBy(ShiroUtils.getLoginName());
-    return toAjax(userService.updateUser(user));
+    return custom(userService.updateUser(user));
   }
 
   @Log(title = "重置密码", businessType = BusinessType.UPDATE)
@@ -161,7 +161,7 @@ public class SysUserController extends BaseController {
   @RequiresPermissions("system:user:resetPwd")
   @ResponseBody
   @PostMapping("/resetPwd")
-  public AjaxResult resetPwdSave(SysUser user) {
+  public Result resetPwdSave(SysUser user) {
     userService.checkUserAllowed(user);
     user.setSalt(ShiroUtils.randomSalt());
     user.setPassword(passwordService.encryptPassword(user.getLoginName(), user.getPassword(), user.getSalt()));
@@ -194,7 +194,7 @@ public class SysUserController extends BaseController {
   @RequiresPermissions("system:user:add")
   @ResponseBody
   @PostMapping("/authRole/insertAuthRole")
-  public AjaxResult insertAuthRole(Long userId, Long[] roleIds) {
+  public Result insertAuthRole(Long userId, Long[] roleIds) {
     userService.insertUserAuth(userId, roleIds);
     return success();
   }
@@ -203,9 +203,9 @@ public class SysUserController extends BaseController {
   @RequiresPermissions("system:user:remove")
   @ResponseBody
   @PostMapping("/remove")
-  public AjaxResult remove(String ids) {
+  public Result remove(String ids) {
     try {
-      return toAjax(userService.deleteUserByIds(ids));
+      return custom(userService.deleteUserByIds(ids));
     } catch (Exception e) {
       return error(e.getMessage());
     }
@@ -245,8 +245,8 @@ public class SysUserController extends BaseController {
   @RequiresPermissions("system:user:edit")
   @ResponseBody
   @PostMapping("/changeStatus")
-  public AjaxResult changeStatus(SysUser user) {
+  public Result changeStatus(SysUser user) {
     userService.checkUserAllowed(user);
-    return toAjax(userService.changeStatus(user));
+    return custom(userService.changeStatus(user));
   }
 }

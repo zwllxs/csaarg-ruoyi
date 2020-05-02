@@ -1,5 +1,7 @@
 package com.ruoyi.quartz.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ruoyi.common.constant.ScheduleConstants;
 import com.ruoyi.common.core.text.Convert;
@@ -44,6 +46,11 @@ public class SysJobServiceImpl extends ServiceImpl<SysJobMapper, SysJob> impleme
     for (SysJob job : jobList) {
       ScheduleUtils.createScheduleJob(scheduler, job);
     }
+  }
+
+  @Override
+  public IPage<SysJob> page(Page<SysJob> page, SysJob job) {
+    return page.setRecords(jobMapper.page(page, job));
   }
 
   /**

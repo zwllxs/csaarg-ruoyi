@@ -1,7 +1,9 @@
 package com.ruoyi.system.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ruoyi.system.domain.SysOperLog;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -17,6 +19,8 @@ public interface SysOperLogMapper extends BaseMapper<SysOperLog> {
    * @param operLog 操作日志对象
    */
   void insertOperlog(SysOperLog operLog);
+
+  List<SysOperLog> page(Page<SysOperLog> page, @Param("operLog") SysOperLog operLog);
 
   /**
    * 查询系统操作日志集合

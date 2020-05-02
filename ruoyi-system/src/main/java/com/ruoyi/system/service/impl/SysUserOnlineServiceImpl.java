@@ -1,5 +1,7 @@
 package com.ruoyi.system.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.StringUtils;
@@ -21,7 +23,7 @@ import java.util.List;
 public class SysUserOnlineServiceImpl extends ServiceImpl<SysUserOnlineMapper, SysUserOnline> implements ISysUserOnlineService {
 
   @Autowired
-  private SysUserOnlineMapper userOnlineDao;
+  private SysUserOnlineMapper userOnlineMapper;
 
   /**
    * 通过会话序号查询信息
@@ -31,7 +33,7 @@ public class SysUserOnlineServiceImpl extends ServiceImpl<SysUserOnlineMapper, S
    */
   @Override
   public SysUserOnline selectOnlineById(String sessionId) {
-    return userOnlineDao.selectOnlineById(sessionId);
+    return userOnlineMapper.selectOnlineById(sessionId);
   }
 
   /**
@@ -44,7 +46,7 @@ public class SysUserOnlineServiceImpl extends ServiceImpl<SysUserOnlineMapper, S
   public void deleteOnlineById(String sessionId) {
     SysUserOnline userOnline = selectOnlineById(sessionId);
     if (StringUtils.isNotNull(userOnline)) {
-      userOnlineDao.deleteOnlineById(sessionId);
+      userOnlineMapper.deleteOnlineById(sessionId);
     }
   }
 
@@ -59,7 +61,7 @@ public class SysUserOnlineServiceImpl extends ServiceImpl<SysUserOnlineMapper, S
     for (String sessionId : sessions) {
       SysUserOnline userOnline = selectOnlineById(sessionId);
       if (StringUtils.isNotNull(userOnline)) {
-        userOnlineDao.deleteOnlineById(sessionId);
+        userOnlineMapper.deleteOnlineById(sessionId);
       }
     }
   }
@@ -71,7 +73,12 @@ public class SysUserOnlineServiceImpl extends ServiceImpl<SysUserOnlineMapper, S
    */
   @Override
   public void saveOnline(SysUserOnline online) {
-    userOnlineDao.saveOnline(online);
+    userOnlineMapper.saveOnline(online);
+  }
+
+  @Override
+  public IPage<SysUserOnline> page(Page<SysUserOnline> page, SysUserOnline userOnline) {
+    return page.setRecords(userOnlineMapper.page(page, userOnline));
   }
 
   /**
@@ -81,7 +88,7 @@ public class SysUserOnlineServiceImpl extends ServiceImpl<SysUserOnlineMapper, S
    */
   @Override
   public List<SysUserOnline> selectUserOnlineList(SysUserOnline userOnline) {
-    return userOnlineDao.selectUserOnlineList(userOnline);
+    return userOnlineMapper.selectUserOnlineList(userOnline);
   }
 
   /**
@@ -91,7 +98,7 @@ public class SysUserOnlineServiceImpl extends ServiceImpl<SysUserOnlineMapper, S
    */
   @Override
   public void forceLogout(String sessionId) {
-    userOnlineDao.deleteOnlineById(sessionId);
+    userOnlineMapper.deleteOnlineById(sessionId);
   }
 
   /**
@@ -102,6 +109,6 @@ public class SysUserOnlineServiceImpl extends ServiceImpl<SysUserOnlineMapper, S
   @Override
   public List<SysUserOnline> selectOnlineByExpired(Date expiredDate) {
     String lastAccessTime = DateUtils.parseDateToStr(DateUtils.YYYY_MM_DD_HH_MM_SS, expiredDate);
-    return userOnlineDao.selectOnlineByExpired(lastAccessTime);
+    return userOnlineMapper.selectOnlineByExpired(lastAccessTime);
   }
 }

@@ -1,7 +1,7 @@
 package com.ruoyi.web.controller.system;
 
 import com.ruoyi.common.core.controller.BaseController;
-import com.ruoyi.common.core.domain.AjaxResult;
+import com.ruoyi.common.core.domain.Result;
 import com.ruoyi.common.utils.ServletUtils;
 import com.ruoyi.common.utils.StringUtils;
 import org.apache.shiro.SecurityUtils;
@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import static com.ruoyi.common.core.domain.Result.error;
+import static com.ruoyi.common.core.domain.Result.success;
 
 /**
  * 登录验证
@@ -36,7 +39,7 @@ public class SysLoginController extends BaseController {
 
   @ResponseBody
   @PostMapping("/login")
-  public AjaxResult ajaxLogin(String username, String password, Boolean rememberMe) {
+  public Result ajaxLogin(String username, String password, Boolean rememberMe) {
     UsernamePasswordToken token = new UsernamePasswordToken(username, password, rememberMe);
     Subject subject = SecurityUtils.getSubject();
     try {

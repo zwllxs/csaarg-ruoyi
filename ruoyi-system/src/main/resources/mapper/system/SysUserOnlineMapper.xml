@@ -49,6 +49,18 @@
     where sessionId = #{sessionId}
   </delete>
 
+  <select id="page" resultType="com.ruoyi.system.domain.SysUserOnline">
+    select suo.* from sys_user_online suo
+    <where>
+      <if test="userOnline.ipaddr != null and userOnline.ipaddr != ''">
+        and suo.ipaddr like concat('%', #{userOnline.ipaddr}, '%')
+      </if>
+      <if test="userOnline.loginName != null and userOnline.loginName != ''">
+        and suo.login_name like concat('%', #{userOnline.loginName}, '%')
+      </if>
+    </where>
+  </select>
+
   <select id="selectUserOnlineList" resultMap="SysUserOnlineResult">
     <include refid="selectOnlineVo"/>
     <where>

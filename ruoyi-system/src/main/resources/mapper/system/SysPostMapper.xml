@@ -29,6 +29,21 @@
     from sys_post
   </sql>
 
+  <select id="page" resultType="com.ruoyi.system.domain.SysPost">
+    select sp.* from sys_post sp
+    <where>
+      <if test="post.postCode != null and post.postCode != ''">
+        and sp.post_code like concat('%', #{post.postCode}, '%')
+      </if>
+      <if test="post.status != null and post.status != ''">
+        and sp.status = #{status}
+      </if>
+      <if test="post.postName != null and post.postName != ''">
+        and sp.post_name like concat('%', #{post.postName}, '%')
+      </if>
+    </where>
+  </select>
+
   <select id="selectPostList" resultMap="SysPostResult">
     <include refid="selectPostVo"/>
     <where>

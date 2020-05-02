@@ -1,5 +1,7 @@
 package com.ruoyi.quartz.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.ruoyi.quartz.domain.SysJobLog;
 
@@ -11,6 +13,9 @@ import java.util.List;
  * @author ruoyi
  */
 public interface ISysJobLogService extends IService<SysJobLog> {
+
+  IPage<SysJobLog> page(Page<SysJobLog> page, SysJobLog jobLog);
+
   /**
    * 获取quartz调度器日志的计划任务
    *

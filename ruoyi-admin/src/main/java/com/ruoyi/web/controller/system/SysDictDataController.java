@@ -1,9 +1,9 @@
 package com.ruoyi.web.controller.system;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
-import com.ruoyi.common.core.domain.AjaxResult;
-import com.ruoyi.common.core.page.TableDataInfo;
+import com.ruoyi.common.core.domain.Result;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.framework.util.ShiroUtils;
@@ -17,6 +17,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static com.ruoyi.common.core.domain.Result.custom;
 
 /**
  * 数据字典信息
@@ -41,17 +43,15 @@ public class SysDictDataController extends BaseController {
   @RequiresPermissions("system:dict:list")
   @ResponseBody
   @PostMapping("/list")
-  public TableDataInfo list(SysDictData dictData) {
-    startPage();
-    List<SysDictData> list = dictDataService.selectDictDataList(dictData);
-    return getDataTable(list);
+  public Result list(Page<SysDictData> page, SysDictData dictData) {
+    return Result.success(dictDataService.page(page, dictData));
   }
 
   @Log(title = "字典数据", businessType = BusinessType.EXPORT)
   @RequiresPermissions("system:dict:export")
   @ResponseBody
   @PostMapping("/export")
-  public AjaxResult export(SysDictData dictData) {
+  public Result export(SysDictData dictData) {
     List<SysDictData> list = dictDataService.selectDictDataList(dictData);
     ExcelUtil<SysDictData> util = new ExcelUtil<SysDictData>(SysDictData.class);
     return util.exportExcel(list, "字典数据");
@@ -73,9 +73,9 @@ public class SysDictDataController extends BaseController {
   @RequiresPermissions("system:dict:add")
   @ResponseBody
   @PostMapping("/add")
-  public AjaxResult addSave(@Validated SysDictData dict) {
+  public Result addSave(@Validated SysDictData dict) {
     dict.setCreateBy(ShiroUtils.getLoginName());
-    return toAjax(dictDataService.insertDictData(dict));
+    return custom(dictDataService.insertDictData(dict));
   }
 
   /**
@@ -94,16 +94,16 @@ public class SysDictDataController extends BaseController {
   @RequiresPermissions("system:dict:edit")
   @ResponseBody
   @PostMapping("/edit")
-  public AjaxResult editSave(@Validated SysDictData dict) {
+  public Result editSave(@Validated SysDictData dict) {
     dict.setUpdateBy(ShiroUtils.getLoginName());
-    return toAjax(dictDataService.updateDictData(dict));
+    return custom(dictDataService.updateDictData(dict));
   }
 
   @Log(title = "字典数据", businessType = BusinessType.DELETE)
   @RequiresPermissions("system:dict:remove")
   @ResponseBody
   @PostMapping("/remove")
-  public AjaxResult remove(String ids) {
-    return toAjax(dictDataService.deleteDictDataByIds(ids));
+  public Result remove(String ids) {
+    return custom(dictDataService.deleteDictDataByIds(ids));
   }
 }

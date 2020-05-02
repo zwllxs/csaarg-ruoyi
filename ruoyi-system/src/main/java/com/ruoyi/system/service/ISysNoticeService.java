@@ -1,5 +1,7 @@
 package com.ruoyi.system.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.ruoyi.system.domain.SysNotice;
 
@@ -18,6 +20,8 @@ public interface ISysNoticeService extends IService<SysNotice> {
    * @return 公告信息
    */
   SysNotice selectNoticeById(Long noticeId);
+
+  IPage<SysNotice> page(Page<SysNotice> page, SysNotice notice);
 
   /**
    * 查询公告列表

@@ -1,5 +1,7 @@
 package com.ruoyi.system.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ruoyi.common.core.text.Convert;
 import com.ruoyi.system.domain.SysOperLog;
@@ -29,6 +31,11 @@ public class SysOperLogServiceImpl extends ServiceImpl<SysOperLogMapper, SysOper
   @Override
   public void insertOperlog(SysOperLog operLog) {
     operLogMapper.insertOperlog(operLog);
+  }
+
+  @Override
+  public IPage<SysOperLog> page(Page<SysOperLog> page, SysOperLog operLog) {
+    return page.setRecords(operLogMapper.page(page, operLog));
   }
 
   /**

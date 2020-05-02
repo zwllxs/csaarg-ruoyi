@@ -1,10 +1,10 @@
 package com.ruoyi.web.controller.system;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.core.controller.BaseController;
-import com.ruoyi.common.core.domain.AjaxResult;
-import com.ruoyi.common.core.page.TableDataInfo;
+import com.ruoyi.common.core.domain.Result;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.framework.util.ShiroUtils;
@@ -18,6 +18,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static com.ruoyi.common.core.domain.Result.*;
 
 /**
  * 参数配置 信息操作处理
@@ -45,17 +47,15 @@ public class SysConfigController extends BaseController {
   @RequiresPermissions("system:config:list")
   @ResponseBody
   @PostMapping("/list")
-  public TableDataInfo list(SysConfig config) {
-    startPage();
-    List<SysConfig> list = configService.selectConfigList(config);
-    return getDataTable(list);
+  public Result list(Page<SysConfig> page, SysConfig config) {
+    return success(configService.page(page, config));
   }
 
   @Log(title = "参数管理", businessType = BusinessType.EXPORT)
   @RequiresPermissions("system:config:export")
   @ResponseBody
   @PostMapping("/export")
-  public AjaxResult export(SysConfig config) {
+  public Result export(SysConfig config) {
     List<SysConfig> list = configService.selectConfigList(config);
     ExcelUtil<SysConfig> util = new ExcelUtil<>(SysConfig.class);
     return util.exportExcel(list, "参数数据");
@@ -76,12 +76,12 @@ public class SysConfigController extends BaseController {
   @RequiresPermissions("system:config:add")
   @ResponseBody
   @PostMapping("/add")
-  public AjaxResult addSave(@Validated SysConfig config) {
+  public Result addSave(@Validated SysConfig config) {
     if (UserConstants.CONFIG_KEY_NOT_UNIQUE.equals(configService.checkConfigKeyUnique(config))) {
       return error("新增参数'" + config.getConfigName() + "'失败，参数键名已存在");
     }
     config.setCreateBy(ShiroUtils.getLoginName());
-    return toAjax(configService.insertConfig(config));
+    return custom(configService.insertConfig(config));
   }
 
   /**
@@ -100,12 +100,12 @@ public class SysConfigController extends BaseController {
   @RequiresPermissions("system:config:edit")
   @ResponseBody
   @PostMapping("/edit")
-  public AjaxResult editSave(@Validated SysConfig config) {
+  public Result editSave(@Validated SysConfig config) {
     if (UserConstants.CONFIG_KEY_NOT_UNIQUE.equals(configService.checkConfigKeyUnique(config))) {
       return error("修改参数'" + config.getConfigName() + "'失败，参数键名已存在");
     }
     config.setUpdateBy(ShiroUtils.getLoginName());
-    return toAjax(configService.updateConfig(config));
+    return custom(configService.updateConfig(config));
   }
 
   /**
@@ -115,8 +115,8 @@ public class SysConfigController extends BaseController {
   @RequiresPermissions("system:config:remove")
   @ResponseBody
   @PostMapping("/remove")
-  public AjaxResult remove(String ids) {
-    return toAjax(configService.deleteConfigByIds(ids));
+  public Result remove(String ids) {
+    return custom(configService.deleteConfigByIds(ids));
   }
 
   /**
@@ -126,7 +126,7 @@ public class SysConfigController extends BaseController {
   @RequiresPermissions("system:config:remove")
   @ResponseBody
   @GetMapping("/clearCache")
-  public AjaxResult clearCache() {
+  public Result clearCache() {
     configService.clearCache();
     return success();
   }

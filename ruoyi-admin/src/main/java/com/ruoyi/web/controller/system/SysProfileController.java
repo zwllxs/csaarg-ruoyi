@@ -3,7 +3,7 @@ package com.ruoyi.web.controller.system;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.config.Global;
 import com.ruoyi.common.core.controller.BaseController;
-import com.ruoyi.common.core.domain.AjaxResult;
+import com.ruoyi.common.core.domain.Result;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.file.FileUploadUtils;
@@ -17,6 +17,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import static com.ruoyi.common.core.domain.Result.error;
+import static com.ruoyi.common.core.domain.Result.success;
 
 /**
  * 个人信息 业务处理
@@ -67,7 +70,7 @@ public class SysProfileController extends BaseController {
   @Log(title = "重置密码", businessType = BusinessType.UPDATE)
   @ResponseBody
   @PostMapping("/resetPwd")
-  public AjaxResult resetPwd(String oldPassword, String newPassword) {
+  public Result resetPwd(String oldPassword, String newPassword) {
     SysUser user = ShiroUtils.getSysUser();
     if (StringUtils.isNotEmpty(newPassword) && passwordService.matches(user, oldPassword)) {
       user.setSalt(ShiroUtils.randomSalt());
@@ -108,7 +111,7 @@ public class SysProfileController extends BaseController {
   @Log(title = "个人信息", businessType = BusinessType.UPDATE)
   @ResponseBody
   @PostMapping("/update")
-  public AjaxResult update(SysUser user) {
+  public Result update(SysUser user) {
     SysUser currentUser = ShiroUtils.getSysUser();
     currentUser.setUserName(user.getUserName());
     currentUser.setEmail(user.getEmail());
@@ -127,7 +130,7 @@ public class SysProfileController extends BaseController {
   @Log(title = "个人信息", businessType = BusinessType.UPDATE)
   @ResponseBody
   @PostMapping("/updateAvatar")
-  public AjaxResult updateAvatar(@RequestParam("avatarfile") MultipartFile file) {
+  public Result updateAvatar(@RequestParam("avatarfile") MultipartFile file) {
     SysUser currentUser = ShiroUtils.getSysUser();
     try {
       if (!file.isEmpty()) {

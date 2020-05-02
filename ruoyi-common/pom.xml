@@ -35,10 +35,11 @@
       <artifactId>shiro-core</artifactId>
     </dependency>
 
-    <!-- pagehelper 分页插件 -->
+    <!-- MyBatis Plus -->
     <dependency>
-      <groupId>com.github.pagehelper</groupId>
-      <artifactId>pagehelper-spring-boot-starter</artifactId>
+      <groupId>com.baomidou</groupId>
+      <artifactId>mybatis-plus-boot-starter</artifactId>
+      <version>${mybatis.plus.version}</version>
     </dependency>
 
     <!-- 自定义验证注解 -->
