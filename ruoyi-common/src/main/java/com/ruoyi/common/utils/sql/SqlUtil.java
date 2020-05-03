@@ -1,6 +1,7 @@
 package com.ruoyi.common.utils.sql;
 
-import com.ruoyi.common.utils.StringUtils;
+
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * sql操作工具类

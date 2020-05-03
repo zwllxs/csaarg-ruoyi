@@ -2,7 +2,6 @@ package com.ruoyi.web.controller.system;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ruoyi.common.annotation.Log;
-import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.Result;
 import com.ruoyi.common.enums.BusinessType;
@@ -54,7 +53,7 @@ public class SysPostController extends BaseController {
   @ResponseBody
   @PostMapping("/export")
   public Result export(SysPost post) {
-    List<SysPost> list = postService.selectPostList(post);
+    List<SysPost> list = postService.list(post);
     ExcelUtil<SysPost> util = new ExcelUtil<>(SysPost.class);
     return util.exportExcel(list, "岗位数据");
   }
@@ -65,7 +64,7 @@ public class SysPostController extends BaseController {
   @PostMapping("/remove")
   public Result remove(String ids) {
     try {
-      return custom(postService.deletePostByIds(ids));
+      return custom(postService.removeByIds(ids));
     } catch (Exception e) {
       return error(e.getMessage());
     }
@@ -87,13 +86,13 @@ public class SysPostController extends BaseController {
   @ResponseBody
   @PostMapping("/add")
   public Result addSave(@Validated SysPost post) {
-    if (UserConstants.POST_NAME_NOT_UNIQUE.equals(postService.checkPostNameUnique(post))) {
+    if (postService.checkNameUnique(post)) {
       return error("新增岗位'" + post.getPostName() + "'失败，岗位名称已存在");
-    } else if (UserConstants.POST_CODE_NOT_UNIQUE.equals(postService.checkPostCodeUnique(post))) {
+    } else if (postService.checkCodeUnique(post)) {
       return error("新增岗位'" + post.getPostName() + "'失败，岗位编码已存在");
     }
     post.setCreateBy(ShiroUtils.getLoginName());
-    return custom(postService.insertPost(post));
+    return custom(postService.save(post));
   }
 
   /**
@@ -101,7 +100,7 @@ public class SysPostController extends BaseController {
    */
   @GetMapping("/edit/{postId}")
   public String edit(@PathVariable("postId") Long postId, ModelMap mmap) {
-    mmap.put("post", postService.selectPostById(postId));
+    mmap.put("post", postService.getById(postId));
     return PREFIX + "/edit";
   }
 
@@ -113,30 +112,32 @@ public class SysPostController extends BaseController {
   @ResponseBody
   @PostMapping("/edit")
   public Result editSave(@Validated SysPost post) {
-    if (UserConstants.POST_NAME_NOT_UNIQUE.equals(postService.checkPostNameUnique(post))) {
+    if (postService.checkNameUnique(post)) {
       return error("修改岗位'" + post.getPostName() + "'失败，岗位名称已存在");
-    } else if (UserConstants.POST_CODE_NOT_UNIQUE.equals(postService.checkPostCodeUnique(post))) {
+    } else if (postService.checkCodeUnique(post)) {
       return error("修改岗位'" + post.getPostName() + "'失败，岗位编码已存在");
     }
     post.setUpdateBy(ShiroUtils.getLoginName());
-    return custom(postService.updatePost(post));
+    return custom(postService.updateById(post));
   }
 
   /**
    * 校验岗位名称
+   * @return
    */
   @ResponseBody
   @PostMapping("/checkPostNameUnique")
-  public String checkPostNameUnique(SysPost post) {
-    return postService.checkPostNameUnique(post);
+  public boolean checkPostNameUnique(SysPost post) {
+    return postService.checkNameUnique(post);
   }
 
   /**
    * 校验岗位编码
+   * @return
    */
   @ResponseBody
   @PostMapping("/checkPostCodeUnique")
-  public String checkPostCodeUnique(SysPost post) {
-    return postService.checkPostCodeUnique(post);
+  public boolean checkPostCodeUnique(SysPost post) {
+    return postService.checkCodeUnique(post);
   }
 }

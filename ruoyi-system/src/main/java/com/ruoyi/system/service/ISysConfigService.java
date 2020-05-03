@@ -5,8 +5,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.ruoyi.system.domain.SysConfig;
 
-import java.util.List;
-
 /**
  * 参数配置 服务层
  *
@@ -14,29 +12,14 @@ import java.util.List;
  */
 public interface ISysConfigService extends IService<SysConfig> {
   /**
-   * 查询参数配置信息
-   *
-   * @param configId 参数配置ID
-   * @return 参数配置信息
-   */
-  SysConfig selectConfigById(Long configId);
-
-  /**
    * 根据键名查询参数配置信息
    *
    * @param configKey 参数键名
    * @return 参数键值
    */
-  String selectConfigByKey(String configKey);
+  String getValueByKey(String configKey);
 
   IPage<SysConfig> page(Page<SysConfig> page, SysConfig config);
-  /**
-   * 查询参数配置列表
-   *
-   * @param config 参数配置信息
-   * @return 参数配置集合
-   */
-  List<SysConfig> selectConfigList(SysConfig config);
 
   /**
    * 新增参数配置
@@ -44,7 +27,8 @@ public interface ISysConfigService extends IService<SysConfig> {
    * @param config 参数配置信息
    * @return 结果
    */
-  int insertConfig(SysConfig config);
+  @Override
+  boolean save(SysConfig config);
 
   /**
    * 修改参数配置
@@ -52,7 +36,7 @@ public interface ISysConfigService extends IService<SysConfig> {
    * @param config 参数配置信息
    * @return 结果
    */
-  int updateConfig(SysConfig config);
+  boolean update(SysConfig config);
 
   /**
    * 批量删除参数配置信息
@@ -60,7 +44,7 @@ public interface ISysConfigService extends IService<SysConfig> {
    * @param ids 需要删除的数据ID
    * @return 结果
    */
-  int deleteConfigByIds(String ids);
+  boolean removeByIds(String ids);
 
   /**
    * 清空缓存数据
@@ -73,5 +57,5 @@ public interface ISysConfigService extends IService<SysConfig> {
    * @param config 参数信息
    * @return 结果
    */
-  String checkConfigKeyUnique(SysConfig config);
+  boolean checkKeyUnique(SysConfig config);
 }

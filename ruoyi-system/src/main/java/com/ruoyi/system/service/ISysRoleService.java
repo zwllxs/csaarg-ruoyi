@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.ruoyi.system.domain.SysRole;
-import com.ruoyi.system.domain.SysUserRole;
 
 import java.util.List;
 import java.util.Set;
@@ -24,7 +23,7 @@ public interface ISysRoleService extends IService<SysRole> {
    * @param role 角色信息
    * @return 角色数据集合信息
    */
-  List<SysRole> selectRoleList(SysRole role);
+  List<SysRole> list(SysRole role);
 
   /**
    * 根据用户ID查询角色
@@ -32,7 +31,7 @@ public interface ISysRoleService extends IService<SysRole> {
    * @param userId 用户ID
    * @return 权限列表
    */
-  Set<String> selectRoleKeys(Long userId);
+  Set<String> listKeys(Long userId);
 
   /**
    * 根据用户ID查询角色
@@ -40,22 +39,14 @@ public interface ISysRoleService extends IService<SysRole> {
    * @param userId 用户ID
    * @return 角色列表
    */
-  List<SysRole> selectRolesByUserId(Long userId);
+  List<SysRole> listByUserId(Long userId);
 
   /**
    * 查询所有角色
    *
    * @return 角色列表
    */
-  List<SysRole> selectRoleAll();
-
-  /**
-   * 通过角色ID查询角色
-   *
-   * @param roleId 角色ID
-   * @return 角色对象信息
-   */
-  SysRole selectRoleById(Long roleId);
+  List<SysRole> listAll();
 
   /**
    * 通过角色ID删除角色
@@ -63,7 +54,7 @@ public interface ISysRoleService extends IService<SysRole> {
    * @param roleId 角色ID
    * @return 结果
    */
-  boolean deleteRoleById(Long roleId);
+  boolean deleteById(Long roleId);
 
   /**
    * 批量删除角色用户信息
@@ -72,7 +63,7 @@ public interface ISysRoleService extends IService<SysRole> {
    * @return 结果
    * @throws Exception 异常
    */
-  int deleteRoleByIds(String ids) throws Exception;
+  boolean deleteByIds(String ids) throws Exception;
 
   /**
    * 新增保存角色信息
@@ -80,7 +71,7 @@ public interface ISysRoleService extends IService<SysRole> {
    * @param role 角色信息
    * @return 结果
    */
-  int insertRole(SysRole role);
+  boolean insert(SysRole role);
 
   /**
    * 修改保存角色信息
@@ -88,7 +79,7 @@ public interface ISysRoleService extends IService<SysRole> {
    * @param role 角色信息
    * @return 结果
    */
-  int updateRole(SysRole role);
+  boolean update(SysRole role);
 
   /**
    * 修改数据权限信息
@@ -96,7 +87,7 @@ public interface ISysRoleService extends IService<SysRole> {
    * @param role 角色信息
    * @return 结果
    */
-  int authDataScope(SysRole role);
+  boolean authDataScope(SysRole role);
 
   /**
    * 校验角色名称是否唯一
@@ -104,7 +95,7 @@ public interface ISysRoleService extends IService<SysRole> {
    * @param role 角色信息
    * @return 结果
    */
-  String checkRoleNameUnique(SysRole role);
+  boolean checkNameUnique(SysRole role);
 
   /**
    * 校验角色权限是否唯一
@@ -112,22 +103,14 @@ public interface ISysRoleService extends IService<SysRole> {
    * @param role 角色信息
    * @return 结果
    */
-  String checkRoleKeyUnique(SysRole role);
+  boolean checkKeyUnique(SysRole role);
 
   /**
    * 校验角色是否允许操作
    *
    * @param role 角色信息
    */
-  void checkRoleAllowed(SysRole role);
-
-  /**
-   * 通过角色ID查询角色使用数量
-   *
-   * @param roleId 角色ID
-   * @return 结果
-   */
-  int countUserRoleByRoleId(Long roleId);
+  void checkAllowed(SysRole role);
 
   /**
    * 角色状态修改
@@ -135,15 +118,7 @@ public interface ISysRoleService extends IService<SysRole> {
    * @param role 角色信息
    * @return 结果
    */
-  int changeStatus(SysRole role);
-
-  /**
-   * 取消授权用户角色
-   *
-   * @param userRole 用户和角色关联信息
-   * @return 结果
-   */
-  int deleteAuthUser(SysUserRole userRole);
+  boolean changeStatus(SysRole role);
 
   /**
    * 批量取消授权用户角色
@@ -161,5 +136,5 @@ public interface ISysRoleService extends IService<SysRole> {
    * @param userIds 需要删除的用户数据ID
    * @return 结果
    */
-  int insertAuthUsers(Long roleId, String userIds);
+  boolean insertAuthUsers(Long roleId, String userIds);
 }

@@ -1,13 +1,11 @@
 package com.ruoyi.system.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ruoyi.common.annotation.DataScope;
-import com.ruoyi.common.constant.UserConstants;
-import com.ruoyi.common.core.text.Convert;
 import com.ruoyi.common.exception.BusinessException;
-import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.spring.SpringUtils;
 import com.ruoyi.system.domain.SysRole;
 import com.ruoyi.system.domain.SysRoleDept;
@@ -15,9 +13,12 @@ import com.ruoyi.system.domain.SysRoleMenu;
 import com.ruoyi.system.domain.SysUserRole;
 import com.ruoyi.system.mapper.SysRoleDeptMapper;
 import com.ruoyi.system.mapper.SysRoleMapper;
-import com.ruoyi.system.mapper.SysRoleMenuMapper;
 import com.ruoyi.system.mapper.SysUserRoleMapper;
+import com.ruoyi.system.service.ISysRoleDeptService;
+import com.ruoyi.system.service.ISysRoleMenuService;
 import com.ruoyi.system.service.ISysRoleService;
+import com.ruoyi.system.service.ISysUserRoleService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,11 +36,16 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
   @Autowired
   private SysRoleMapper roleMapper;
   @Autowired
-  private SysRoleMenuMapper roleMenuMapper;
-  @Autowired
   private SysUserRoleMapper userRoleMapper;
   @Autowired
   private SysRoleDeptMapper roleDeptMapper;
+
+  @Autowired
+  private ISysRoleDeptService roleDeptService;
+  @Autowired
+  private ISysRoleMenuService roleMenuService;
+  @Autowired
+  private ISysUserRoleService userRoleService;
 
   @Override
   public IPage<SysRole> page(Page<SysRole> page, SysRole role) {
@@ -52,10 +58,10 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
    * @param role 角色信息
    * @return 角色数据集合信息
    */
-  @DataScope(deptAlias = "d")
+  @DataScope
   @Override
-  public List<SysRole> selectRoleList(SysRole role) {
-    return roleMapper.selectRoleList(role);
+  public List<SysRole> list(SysRole role) {
+    return roleMapper.page(null, role);
   }
 
   /**
@@ -65,11 +71,11 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
    * @return 权限列表
    */
   @Override
-  public Set<String> selectRoleKeys(Long userId) {
-    List<SysRole> perms = roleMapper.selectRolesByUserId(userId);
+  public Set<String> listKeys(Long userId) {
+    List<SysRole> perms = roleMapper.listByUserId(userId);
     Set<String> permsSet = new HashSet<>();
     for (SysRole perm : perms) {
-      if (StringUtils.isNotNull(perm)) {
+      if (perm != null) {
         permsSet.addAll(Arrays.asList(perm.getRoleKey().trim().split(",")));
       }
     }
@@ -83,9 +89,9 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
    * @return 角色列表
    */
   @Override
-  public List<SysRole> selectRolesByUserId(Long userId) {
-    List<SysRole> userRoles = roleMapper.selectRolesByUserId(userId);
-    List<SysRole> roles = selectRoleAll();
+  public List<SysRole> listByUserId(Long userId) {
+    List<SysRole> userRoles = roleMapper.listByUserId(userId);
+    List<SysRole> roles = listAll();
     for (SysRole role : roles) {
       for (SysRole userRole : userRoles) {
         if (role.getRoleId().longValue() == userRole.getRoleId().longValue()) {
@@ -103,19 +109,8 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
    * @return 角色列表
    */
   @Override
-  public List<SysRole> selectRoleAll() {
-    return SpringUtils.getAopProxy(this).selectRoleList(new SysRole());
-  }
-
-  /**
-   * 通过角色ID查询角色
-   *
-   * @param roleId 角色ID
-   * @return 角色对象信息
-   */
-  @Override
-  public SysRole selectRoleById(Long roleId) {
-    return roleMapper.selectRoleById(roleId);
+  public List<SysRole> listAll() {
+    return SpringUtils.getAopProxy(this).list(new SysRole());
   }
 
   /**
@@ -125,27 +120,30 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
    * @return 结果
    */
   @Override
-  public boolean deleteRoleById(Long roleId) {
-    return roleMapper.deleteRoleById(roleId) > 0;
+  public boolean deleteById(Long roleId) {
+    return roleMapper.deleteById(roleId) > 0;
   }
 
   /**
    * 批量删除角色信息
    *
    * @param ids 需要删除的数据ID
+   * @return
    * @throws Exception
    */
   @Override
-  public int deleteRoleByIds(String ids) throws BusinessException {
-    Long[] roleIds = Convert.toLongArray(ids);
-    for (Long roleId : roleIds) {
-      checkRoleAllowed(new SysRole(roleId));
-      SysRole role = selectRoleById(roleId);
-      if (countUserRoleByRoleId(roleId) > 0) {
+  public boolean deleteByIds(String ids) throws BusinessException {
+    String[] roleIds = StringUtils.split(ids, ",");
+    for (String roleId : roleIds) {
+      checkAllowed(new SysRole(Long.valueOf(roleId)));
+      SysRole role = getById(roleId);
+      SysRole sysRoleQuerier = new SysRole();
+      sysRoleQuerier.setRoleId(Long.valueOf(roleId));
+      if (super.count(new QueryWrapper<>(sysRoleQuerier)) > 0) {
         throw new BusinessException(String.format("%1$s已分配,不能删除", role.getRoleName()));
       }
     }
-    return roleMapper.deleteRoleByIds(roleIds);
+    return super.removeByIds(Arrays.asList(StringUtils.split(ids, ",")));
   }
 
   /**
@@ -156,10 +154,9 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
    */
   @Transactional
   @Override
-  public int insertRole(SysRole role) {
+  public boolean insert(SysRole role) {
     // 新增角色信息
-    roleMapper.insertRole(role);
-    return insertRoleMenu(role);
+    return super.save(role);
   }
 
   /**
@@ -170,12 +167,14 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
    */
   @Transactional
   @Override
-  public int updateRole(SysRole role) {
+  public boolean update(SysRole role) {
     // 修改角色信息
-    roleMapper.updateRole(role);
+    roleMapper.updateById(role);
     // 删除角色与菜单关联
-    roleMenuMapper.deleteRoleMenuByRoleId(role.getRoleId());
-    return insertRoleMenu(role);
+    SysRoleMenu sysRoleMenuQuerier = new SysRoleMenu();
+    sysRoleMenuQuerier.setRoleId(role.getRoleId());
+    roleMenuService.remove(new QueryWrapper<>(sysRoleMenuQuerier));
+    return super.save(role);
   }
 
   /**
@@ -186,11 +185,13 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
    */
   @Transactional
   @Override
-  public int authDataScope(SysRole role) {
+  public boolean authDataScope(SysRole role) {
     // 修改角色信息
-    roleMapper.updateRole(role);
+    roleMapper.updateById(role);
     // 删除角色与部门关联
-    roleDeptMapper.deleteRoleDeptByRoleId(role.getRoleId());
+    SysRoleDept sysRoleDeptQuerier = new SysRoleDept();
+    sysRoleDeptQuerier.setRoleId(role.getRoleId());
+    roleDeptMapper.delete(new QueryWrapper<>(sysRoleDeptQuerier));
     // 新增角色和部门信息（数据权限）
     return insertRoleDept(role);
   }
@@ -199,11 +200,11 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
    * 新增角色菜单信息
    *
    * @param role 角色对象
+   * @return
    */
-  public int insertRoleMenu(SysRole role) {
-    int rows = 1;
+  public boolean insertRoleMenu(SysRole role) {
     // 新增用户与角色管理
-    List<SysRoleMenu> list = new ArrayList<SysRoleMenu>();
+    List<SysRoleMenu> list = new ArrayList<>();
     for (Long menuId : role.getMenuIds()) {
       SysRoleMenu rm = new SysRoleMenu();
       rm.setRoleId(role.getRoleId());
@@ -211,20 +212,20 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
       list.add(rm);
     }
     if (list.size() > 0) {
-      rows = roleMenuMapper.batchRoleMenu(list);
+      return roleMenuService.saveBatch(list);
     }
-    return rows;
+    return false;
   }
 
   /**
    * 新增角色部门信息(数据权限)
    *
    * @param role 角色对象
+   * @return
    */
-  public int insertRoleDept(SysRole role) {
-    int rows = 1;
+  public boolean insertRoleDept(SysRole role) {
     // 新增角色与部门（数据权限）管理
-    List<SysRoleDept> list = new ArrayList<SysRoleDept>();
+    List<SysRoleDept> list = new ArrayList<>();
     for (Long deptId : role.getDeptIds()) {
       SysRoleDept rd = new SysRoleDept();
       rd.setRoleId(role.getRoleId());
@@ -232,9 +233,9 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
       list.add(rd);
     }
     if (list.size() > 0) {
-      rows = roleDeptMapper.batchRoleDept(list);
+      return roleDeptService.saveBatch(list);
     }
-    return rows;
+    return false;
   }
 
   /**
@@ -244,13 +245,12 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
    * @return 结果
    */
   @Override
-  public String checkRoleNameUnique(SysRole role) {
-    Long roleId = StringUtils.isNull(role.getRoleId()) ? -1L : role.getRoleId();
-    SysRole info = roleMapper.checkRoleNameUnique(role.getRoleName());
-    if (StringUtils.isNotNull(info) && info.getRoleId().longValue() != roleId.longValue()) {
-      return UserConstants.ROLE_NAME_NOT_UNIQUE;
-    }
-    return UserConstants.ROLE_NAME_UNIQUE;
+  public boolean checkNameUnique(SysRole role) {
+    long roleId = role.getRoleId() == null ? -1L : role.getRoleId();
+    SysRole sysRoleQuerier = new SysRole();
+    sysRoleQuerier.setRoleName(role.getRoleName());
+    SysRole info = super.getOne(new QueryWrapper<>(sysRoleQuerier));
+    return info != null && info.getRoleId() != roleId;
   }
 
   /**
@@ -260,13 +260,12 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
    * @return 结果
    */
   @Override
-  public String checkRoleKeyUnique(SysRole role) {
-    long roleId = StringUtils.isNull(role.getRoleId()) ? -1L : role.getRoleId();
-    SysRole info = roleMapper.checkRoleKeyUnique(role.getRoleKey());
-    if (StringUtils.isNotNull(info) && info.getRoleId() != roleId) {
-      return UserConstants.ROLE_KEY_NOT_UNIQUE;
-    }
-    return UserConstants.ROLE_KEY_UNIQUE;
+  public boolean checkKeyUnique(SysRole role) {
+    long roleId = role.getRoleId() == null ? -1L : role.getRoleId();
+    SysRole sysRoleQuerier = new SysRole();
+    sysRoleQuerier.setRoleKey(role.getRoleKey());
+    SysRole info = super.getOne(new QueryWrapper<>(sysRoleQuerier));
+    return info != null && info.getRoleId() != roleId;
   }
 
   /**
@@ -275,21 +274,10 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
    * @param role 角色信息
    */
   @Override
-  public void checkRoleAllowed(SysRole role) {
-    if (StringUtils.isNotNull(role.getRoleId()) && role.isAdmin()) {
+  public void checkAllowed(SysRole role) {
+    if (role.getRoleId() != null && role.isAdmin()) {
       throw new BusinessException("不允许操作超级管理员角色");
     }
-  }
-
-  /**
-   * 通过角色ID查询角色使用数量
-   *
-   * @param roleId 角色ID
-   * @return 结果
-   */
-  @Override
-  public int countUserRoleByRoleId(Long roleId) {
-    return userRoleMapper.countUserRoleByRoleId(roleId);
   }
 
   /**
@@ -299,19 +287,11 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
    * @return 结果
    */
   @Override
-  public int changeStatus(SysRole role) {
-    return roleMapper.updateRole(role);
-  }
-
-  /**
-   * 取消授权用户角色
-   *
-   * @param userRole 用户和角色关联信息
-   * @return 结果
-   */
-  @Override
-  public int deleteAuthUser(SysUserRole userRole) {
-    return userRoleMapper.deleteUserRoleInfo(userRole);
+  public boolean changeStatus(SysRole role) {
+    SysRole sysRole = new SysRole();
+    sysRole.setRoleId(role.getRoleId());
+    sysRole.setStatus(role.getStatus());
+    return super.updateById(sysRole);
   }
 
   /**
@@ -323,7 +303,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
    */
   @Override
   public int deleteAuthUsers(Long roleId, String userIds) {
-    return userRoleMapper.deleteUserRoleInfos(roleId, Convert.toLongArray(userIds));
+    return userRoleMapper.deleteUserRoles(roleId, StringUtils.split(userIds, ","));
   }
 
   /**
@@ -334,16 +314,16 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
    * @return 结果
    */
   @Override
-  public int insertAuthUsers(Long roleId, String userIds) {
-    Long[] users = Convert.toLongArray(userIds);
+  public boolean insertAuthUsers(Long roleId, String userIds) {
+    String[] users = StringUtils.split(userIds, ",");
     // 新增用户与角色管理
     List<SysUserRole> list = new ArrayList<>();
-    for (Long userId : users) {
+    for (String userId : users) {
       SysUserRole ur = new SysUserRole();
-      ur.setUserId(userId);
+      ur.setUserId(Long.valueOf(userId));
       ur.setRoleId(roleId);
       list.add(ur);
     }
-    return userRoleMapper.batchUserRole(list);
+    return userRoleService.saveBatch(list);
   }
 }

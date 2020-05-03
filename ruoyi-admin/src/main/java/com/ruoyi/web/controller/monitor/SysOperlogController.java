@@ -51,7 +51,7 @@ public class SysOperlogController extends BaseController {
   @ResponseBody
   @PostMapping("/export")
   public Result export(SysOperLog operLog) {
-    List<SysOperLog> list = operLogService.selectOperLogList(operLog);
+    List<SysOperLog> list = operLogService.list(operLog);
     ExcelUtil<SysOperLog> util = new ExcelUtil<>(SysOperLog.class);
     return util.exportExcel(list, "操作日志");
   }
@@ -60,13 +60,13 @@ public class SysOperlogController extends BaseController {
   @ResponseBody
   @PostMapping("/remove")
   public Result remove(String ids) {
-    return custom(operLogService.deleteOperLogByIds(ids));
+    return custom(operLogService.removeByIds(ids));
   }
 
   @RequiresPermissions("monitor:operlog:detail")
   @GetMapping("/detail/{operId}")
   public String detail(@PathVariable("operId") Long operId, ModelMap mmap) {
-    mmap.put("operLog", operLogService.selectOperLogById(operId));
+    mmap.put("operLog", operLogService.getById(operId));
     return PREFIX + "/detail";
   }
 
@@ -75,7 +75,7 @@ public class SysOperlogController extends BaseController {
   @ResponseBody
   @PostMapping("/clean")
   public Result clean() {
-    operLogService.cleanOperLog();
+    operLogService.clean();
     return success();
   }
 }

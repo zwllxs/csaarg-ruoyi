@@ -2,6 +2,7 @@ package com.ruoyi.system.domain;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.ruoyi.common.core.domain.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -63,11 +64,12 @@ public class SysDept extends BaseEntity {
   /**
    * 部门状态:0正常,1停用
    */
-  private String status;
+  private Integer status;
   /**
    * 删除标志（0代表存在 2代表删除）
    */
-  private String delFlag;
+  @TableLogic
+  private Boolean delFlag;
   /**
    * 父部门名称
    */

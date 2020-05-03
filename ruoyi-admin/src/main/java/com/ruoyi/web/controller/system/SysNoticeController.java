@@ -63,7 +63,7 @@ public class SysNoticeController extends BaseController {
   @PostMapping("/add")
   public Result addSave(SysNotice notice) {
     notice.setCreateBy(ShiroUtils.getLoginName());
-    return custom(noticeService.insertNotice(notice));
+    return custom(noticeService.save(notice));
   }
 
   /**
@@ -71,7 +71,7 @@ public class SysNoticeController extends BaseController {
    */
   @GetMapping("/edit/{noticeId}")
   public String edit(@PathVariable("noticeId") Long noticeId, ModelMap mmap) {
-    mmap.put("notice", noticeService.selectNoticeById(noticeId));
+    mmap.put("notice", noticeService.getById(noticeId));
     return PREFIX + "/edit";
   }
 
@@ -84,7 +84,7 @@ public class SysNoticeController extends BaseController {
   @PostMapping("/edit")
   public Result editSave(SysNotice notice) {
     notice.setUpdateBy(ShiroUtils.getLoginName());
-    return custom(noticeService.updateNotice(notice));
+    return custom(noticeService.updateById(notice));
   }
 
   /**
@@ -95,6 +95,6 @@ public class SysNoticeController extends BaseController {
   @ResponseBody
   @PostMapping("/remove")
   public Result remove(String ids) {
-    return custom(noticeService.deleteNoticeByIds(ids));
+    return custom(noticeService.removeByIds(ids));
   }
 }

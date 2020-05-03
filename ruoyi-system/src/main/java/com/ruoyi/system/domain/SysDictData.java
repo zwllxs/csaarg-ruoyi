@@ -72,5 +72,5 @@ public class SysDictData extends BaseEntity {
    * 状态（0正常 1停用）
    */
   @Excel(name = "状态", readConverterExp = "0=正常,1=停用")
-  private String status;
+  private Integer status;
 }

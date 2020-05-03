@@ -1,6 +1,7 @@
 package com.ruoyi.common.xss;
 
-import com.ruoyi.common.utils.StringUtils;
+
+import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;

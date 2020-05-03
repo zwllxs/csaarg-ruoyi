@@ -1,7 +1,8 @@
 package com.ruoyi.framework.web.service;
 
-import com.ruoyi.common.utils.StringUtils;
+
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Service;
@@ -11,7 +12,7 @@ import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 
 /**
- * RuoYi首创 js调用 thymeleaf 实现按钮权限可见性
+ * RuoYi首创 js调用 thymeleaf 实现按钮权限可见性 —— 小朋友表示有很多问号
  *
  * @author ruoyi
  */

@@ -2,10 +2,8 @@ package com.ruoyi.system.domain;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.ruoyi.common.core.domain.BaseEntity;
 import com.ruoyi.common.enums.OnlineStatus;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import java.util.Date;
 
@@ -14,9 +12,8 @@ import java.util.Date;
  *
  * @author ruoyi
  */
-@EqualsAndHashCode(callSuper = true)
 @Data
-public class SysUserOnline extends BaseEntity {
+public class SysUserOnline {
 
   private static final long serialVersionUID = 1L;
 

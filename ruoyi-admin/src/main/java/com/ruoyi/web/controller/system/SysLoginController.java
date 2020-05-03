@@ -3,7 +3,7 @@ package com.ruoyi.web.controller.system;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.Result;
 import com.ruoyi.common.utils.ServletUtils;
-import com.ruoyi.common.utils.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;

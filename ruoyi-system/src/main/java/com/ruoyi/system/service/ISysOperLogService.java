@@ -18,7 +18,7 @@ public interface ISysOperLogService extends IService<SysOperLog> {
    *
    * @param operLog 操作日志对象
    */
-  void insertOperlog(SysOperLog operLog);
+  void insert(SysOperLog operLog);
 
   IPage<SysOperLog> page(Page<SysOperLog> page, SysOperLog operLog);
 
@@ -28,7 +28,7 @@ public interface ISysOperLogService extends IService<SysOperLog> {
    * @param operLog 操作日志对象
    * @return 操作日志集合
    */
-  List<SysOperLog> selectOperLogList(SysOperLog operLog);
+  List<SysOperLog> list(SysOperLog operLog);
 
   /**
    * 批量删除系统操作日志
@@ -36,18 +36,10 @@ public interface ISysOperLogService extends IService<SysOperLog> {
    * @param ids 需要删除的数据
    * @return 结果
    */
-  int deleteOperLogByIds(String ids);
-
-  /**
-   * 查询操作日志详细
-   *
-   * @param operId 操作ID
-   * @return 操作日志对象
-   */
-  SysOperLog selectOperLogById(Long operId);
+  boolean removeByIds(String ids);
 
   /**
    * 清空操作日志
    */
-  void cleanOperLog();
+  void clean();
 }

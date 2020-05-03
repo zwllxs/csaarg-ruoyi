@@ -1,6 +1,7 @@
 package com.ruoyi.common.utils.html;
 
-import com.ruoyi.common.utils.StringUtils;
+
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * 转义和反转义工具类

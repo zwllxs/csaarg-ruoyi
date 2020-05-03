@@ -54,7 +54,7 @@ public class SysUserOnlineController extends BaseController {
   @PostMapping("/batchForceLogout")
   public Result batchForceLogout(@RequestParam("ids[]") String[] ids) {
     for (String sessionId : ids) {
-      SysUserOnline online = userOnlineService.selectOnlineById(sessionId);
+      SysUserOnline online = userOnlineService.getById(sessionId);
       if (online == null) {
         return error("用户已下线");
       }
@@ -68,7 +68,7 @@ public class SysUserOnlineController extends BaseController {
       onlineSession.setStatus(OnlineStatus.off_line);
       onlineSessionDAO.update(onlineSession);
       online.setStatus(OnlineStatus.off_line);
-      userOnlineService.saveOnline(online);
+      userOnlineService.save(online);
     }
     return success();
   }
@@ -78,7 +78,7 @@ public class SysUserOnlineController extends BaseController {
   @ResponseBody
   @PostMapping("/forceLogout")
   public Result forceLogout(String sessionId) {
-    SysUserOnline online = userOnlineService.selectOnlineById(sessionId);
+    SysUserOnline online = userOnlineService.getById(sessionId);
     if (sessionId.equals(ShiroUtils.getSessionId())) {
       return error("当前登录用户无法强退");
     }
@@ -92,7 +92,7 @@ public class SysUserOnlineController extends BaseController {
     onlineSession.setStatus(OnlineStatus.off_line);
     onlineSessionDAO.update(onlineSession);
     online.setStatus(OnlineStatus.off_line);
-    userOnlineService.saveOnline(online);
+    userOnlineService.save(online);
     return success();
   }
 }

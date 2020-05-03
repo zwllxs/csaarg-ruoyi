@@ -3,13 +3,14 @@ package com.ruoyi.system.service.impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.ruoyi.common.core.text.Convert;
 import com.ruoyi.system.domain.SysOperLog;
 import com.ruoyi.system.mapper.SysOperLogMapper;
 import com.ruoyi.system.service.ISysOperLogService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -29,8 +30,8 @@ public class SysOperLogServiceImpl extends ServiceImpl<SysOperLogMapper, SysOper
    * @param operLog 操作日志对象
    */
   @Override
-  public void insertOperlog(SysOperLog operLog) {
-    operLogMapper.insertOperlog(operLog);
+  public void insert(SysOperLog operLog) {
+    super.save(operLog);
   }
 
   @Override
@@ -45,8 +46,8 @@ public class SysOperLogServiceImpl extends ServiceImpl<SysOperLogMapper, SysOper
    * @return 操作日志集合
    */
   @Override
-  public List<SysOperLog> selectOperLogList(SysOperLog operLog) {
-    return operLogMapper.selectOperLogList(operLog);
+  public List<SysOperLog> list(SysOperLog operLog) {
+    return operLogMapper.page(null, operLog);
   }
 
   /**
@@ -56,26 +57,15 @@ public class SysOperLogServiceImpl extends ServiceImpl<SysOperLogMapper, SysOper
    * @return
    */
   @Override
-  public int deleteOperLogByIds(String ids) {
-    return operLogMapper.deleteOperLogByIds(Convert.toStrArray(ids));
-  }
-
-  /**
-   * 查询操作日志详细
-   *
-   * @param operId 操作ID
-   * @return 操作日志对象
-   */
-  @Override
-  public SysOperLog selectOperLogById(Long operId) {
-    return operLogMapper.selectOperLogById(operId);
+  public boolean removeByIds(String ids) {
+    return super.removeByIds(Arrays.asList(StringUtils.split(ids, ",")));
   }
 
   /**
    * 清空操作日志
    */
   @Override
-  public void cleanOperLog() {
-    operLogMapper.cleanOperLog();
+  public void clean() {
+    operLogMapper.clean();
   }
 }

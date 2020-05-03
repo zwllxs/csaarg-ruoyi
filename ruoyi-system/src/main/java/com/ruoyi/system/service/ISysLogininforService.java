@@ -18,7 +18,7 @@ public interface ISysLogininforService extends IService<SysLogininfor> {
    *
    * @param logininfor 访问日志对象
    */
-  void insertLogininfor(SysLogininfor logininfor);
+  void insert(SysLogininfor logininfor);
 
   IPage<SysLogininfor> page(Page<SysLogininfor> page, SysLogininfor logininfor);
 
@@ -28,7 +28,7 @@ public interface ISysLogininforService extends IService<SysLogininfor> {
    * @param logininfor 访问日志对象
    * @return 登录记录集合
    */
-  List<SysLogininfor> selectLogininforList(SysLogininfor logininfor);
+  List<SysLogininfor> list(SysLogininfor logininfor);
 
   /**
    * 批量删除系统登录日志
@@ -36,7 +36,7 @@ public interface ISysLogininforService extends IService<SysLogininfor> {
    * @param ids 需要删除的数据
    * @return
    */
-  int deleteLogininforByIds(String ids);
+  boolean removeByIds(String ids);
 
   /**
    * 清空系统登录日志

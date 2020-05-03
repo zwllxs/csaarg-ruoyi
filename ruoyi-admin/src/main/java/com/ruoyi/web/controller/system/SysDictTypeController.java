@@ -1,8 +1,8 @@
 package com.ruoyi.web.controller.system;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ruoyi.common.annotation.Log;
-import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.Result;
 import com.ruoyi.common.core.domain.Ztree;
@@ -55,7 +55,7 @@ public class SysDictTypeController extends BaseController {
   @PostMapping("/export")
   public Result export(SysDictType dictType) {
 
-    List<SysDictType> list = dictTypeService.selectDictTypeList(dictType);
+    List<SysDictType> list = dictTypeService.list(dictType);
     ExcelUtil<SysDictType> util = new ExcelUtil<>(SysDictType.class);
     return util.exportExcel(list, "字典类型");
   }
@@ -76,11 +76,11 @@ public class SysDictTypeController extends BaseController {
   @ResponseBody
   @PostMapping("/add")
   public Result addSave(@Validated SysDictType dict) {
-    if (UserConstants.DICT_TYPE_NOT_UNIQUE.equals(dictTypeService.checkDictTypeUnique(dict))) {
+    if (dictTypeService.checkTypeUnique(dict)) {
       return error("新增字典'" + dict.getDictName() + "'失败，字典类型已存在");
     }
     dict.setCreateBy(ShiroUtils.getLoginName());
-    return custom(dictTypeService.insertDictType(dict));
+    return custom(dictTypeService.save(dict));
   }
 
   /**
@@ -88,7 +88,7 @@ public class SysDictTypeController extends BaseController {
    */
   @GetMapping("/edit/{dictId}")
   public String edit(@PathVariable("dictId") Long dictId, ModelMap mmap) {
-    mmap.put("dict", dictTypeService.selectDictTypeById(dictId));
+    mmap.put("dict", dictTypeService.getById(dictId));
     return PREFIX + "/edit";
   }
 
@@ -100,11 +100,11 @@ public class SysDictTypeController extends BaseController {
   @ResponseBody
   @PostMapping("/edit")
   public Result editSave(@Validated SysDictType dict) {
-    if (UserConstants.DICT_TYPE_NOT_UNIQUE.equals(dictTypeService.checkDictTypeUnique(dict))) {
+    if (dictTypeService.checkTypeUnique(dict)) {
       return error("修改字典'" + dict.getDictName() + "'失败，字典类型已存在");
     }
     dict.setUpdateBy(ShiroUtils.getLoginName());
-    return custom(dictTypeService.updateDictType(dict));
+    return custom(dictTypeService.update(dict));
   }
 
   @Log(title = "字典类型", businessType = BusinessType.DELETE)
@@ -112,7 +112,7 @@ public class SysDictTypeController extends BaseController {
   @ResponseBody
   @PostMapping("/remove")
   public Result remove(String ids) {
-    return custom(dictTypeService.deleteDictTypeByIds(ids));
+    return custom(dictTypeService.removeByIds(ids));
   }
 
   /**
@@ -133,18 +133,19 @@ public class SysDictTypeController extends BaseController {
   @RequiresPermissions("system:dict:list")
   @GetMapping("/detail/{dictId}")
   public String detail(@PathVariable("dictId") Long dictId, ModelMap mmap) {
-    mmap.put("dict", dictTypeService.selectDictTypeById(dictId));
-    mmap.put("dictList", dictTypeService.selectDictTypeAll());
+    mmap.put("dict", dictTypeService.getById(dictId));
+    mmap.put("dictList", dictTypeService.list());
     return "system/dict/data/data";
   }
 
   /**
    * 校验字典类型
+   * @return
    */
   @PostMapping("/checkDictTypeUnique")
   @ResponseBody
-  public String checkDictTypeUnique(SysDictType dictType) {
-    return dictTypeService.checkDictTypeUnique(dictType);
+  public boolean checkDictTypeUnique(SysDictType dictType) {
+    return dictTypeService.checkTypeUnique(dictType);
   }
 
   /**
@@ -153,7 +154,9 @@ public class SysDictTypeController extends BaseController {
   @GetMapping("/selectDictTree/{columnId}/{dictType}")
   public String selectDeptTree(@PathVariable("columnId") Long columnId, @PathVariable("dictType") String dictType, ModelMap mmap) {
     mmap.put("columnId", columnId);
-    mmap.put("dict", dictTypeService.selectDictTypeByType(dictType));
+    SysDictType sysDictTypeQuerier = new SysDictType();
+    sysDictTypeQuerier.setDictType(dictType);
+    mmap.put("dict", dictTypeService.getOne(new QueryWrapper<>(sysDictTypeQuerier)));
     return PREFIX + "/tree";
   }
 
@@ -163,7 +166,7 @@ public class SysDictTypeController extends BaseController {
   @ResponseBody
   @GetMapping("/treeData")
   public List<Ztree> treeData() {
-    List<Ztree> ztrees = dictTypeService.selectDictTree(new SysDictType());
+    List<Ztree> ztrees = dictTypeService.listTree(new SysDictType());
     return ztrees;
   }
 }

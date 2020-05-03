@@ -55,16 +55,16 @@
     <include refid="selectJobLogVo"/>
     <where>
       <if test="jobName != null and jobName != ''">
-        AND job_name like concat('%', #{jobName}, '%')
+        and job_name like concat('%', #{jobName}, '%')
       </if>
       <if test="jobGroup != null and jobGroup != ''">
-        AND job_group = #{jobGroup}
+        and job_group = #{jobGroup}
       </if>
       <if test="status != null and status != ''">
-        AND status = #{status}
+        and status = #{status}
       </if>
       <if test="invokeTarget != null and invokeTarget != ''">
-        AND invoke_target like concat('%', #{invokeTarget}, '%')
+        and invoke_target like concat('%', #{invokeTarget}, '%')
       </if>
       <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
         and date_format(create_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')

@@ -35,7 +35,7 @@ public class SysLogininfor extends BaseEntity {
    * 登录状态 0成功 1失败
    */
   @Excel(name = "登录状态", readConverterExp = "0=成功,1=失败")
-  private String status;
+  private Integer status;
   /**
    * 登录IP地址
    */

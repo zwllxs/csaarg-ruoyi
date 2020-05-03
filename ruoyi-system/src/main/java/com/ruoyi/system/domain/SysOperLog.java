@@ -4,20 +4,19 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.annotation.Excel.ColumnType;
-import com.ruoyi.common.core.domain.BaseEntity;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 操作日志记录表 oper_log
  *
  * @author ruoyi
  */
-@EqualsAndHashCode(callSuper = true)
 @Data
-public class SysOperLog extends BaseEntity {
+public class SysOperLog {
 
   private static final long serialVersionUID = 1L;
 
@@ -107,4 +106,16 @@ public class SysOperLog extends BaseEntity {
    */
   @Excel(name = "操作时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
   private Date operTime;
+  /**
+   * 请求参数
+   */
+  @TableField(exist = false)
+  private Map<String, Object> params;
+
+  public Map<String, Object> getParams() {
+    if (params == null) {
+      params = new HashMap<>();
+    }
+    return params;
+  }
 }

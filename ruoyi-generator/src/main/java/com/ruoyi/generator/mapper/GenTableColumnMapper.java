@@ -49,5 +49,5 @@ public interface GenTableColumnMapper extends BaseMapper<GenTableColumn> {
    * @param ids 需要删除的数据ID
    * @return 结果
    */
-  int deleteGenTableColumnByIds(Long[] ids);
+  int deleteGenTableColumnByIds(String[] ids);
 }

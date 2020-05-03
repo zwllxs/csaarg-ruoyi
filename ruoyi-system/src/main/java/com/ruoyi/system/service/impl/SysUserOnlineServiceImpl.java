@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ruoyi.common.utils.DateUtils;
-import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.system.domain.SysUserOnline;
 import com.ruoyi.system.mapper.SysUserOnlineMapper;
 import com.ruoyi.system.service.ISysUserOnlineService;
@@ -26,27 +25,16 @@ public class SysUserOnlineServiceImpl extends ServiceImpl<SysUserOnlineMapper, S
   private SysUserOnlineMapper userOnlineMapper;
 
   /**
-   * 通过会话序号查询信息
-   *
-   * @param sessionId 会话ID
-   * @return 在线用户信息
-   */
-  @Override
-  public SysUserOnline selectOnlineById(String sessionId) {
-    return userOnlineMapper.selectOnlineById(sessionId);
-  }
-
-  /**
    * 通过会话序号删除信息
    *
    * @param sessionId 会话ID
    * @return 在线用户信息
    */
   @Override
-  public void deleteOnlineById(String sessionId) {
-    SysUserOnline userOnline = selectOnlineById(sessionId);
-    if (StringUtils.isNotNull(userOnline)) {
-      userOnlineMapper.deleteOnlineById(sessionId);
+  public void deleteById(String sessionId) {
+    SysUserOnline userOnline = getById(sessionId);
+    if (userOnline != null) {
+      userOnlineMapper.deleteById(sessionId);
     }
   }
 
@@ -59,21 +47,11 @@ public class SysUserOnlineServiceImpl extends ServiceImpl<SysUserOnlineMapper, S
   @Override
   public void batchDeleteOnline(List<String> sessions) {
     for (String sessionId : sessions) {
-      SysUserOnline userOnline = selectOnlineById(sessionId);
-      if (StringUtils.isNotNull(userOnline)) {
-        userOnlineMapper.deleteOnlineById(sessionId);
+      SysUserOnline userOnline = getById(sessionId);
+      if (userOnline != null) {
+        userOnlineMapper.deleteById(sessionId);
       }
     }
-  }
-
-  /**
-   * 保存会话信息
-   *
-   * @param online 会话信息
-   */
-  @Override
-  public void saveOnline(SysUserOnline online) {
-    userOnlineMapper.saveOnline(online);
   }
 
   @Override
@@ -88,7 +66,7 @@ public class SysUserOnlineServiceImpl extends ServiceImpl<SysUserOnlineMapper, S
    */
   @Override
   public List<SysUserOnline> selectUserOnlineList(SysUserOnline userOnline) {
-    return userOnlineMapper.selectUserOnlineList(userOnline);
+    return userOnlineMapper.page(null, userOnline);
   }
 
   /**
@@ -98,7 +76,7 @@ public class SysUserOnlineServiceImpl extends ServiceImpl<SysUserOnlineMapper, S
    */
   @Override
   public void forceLogout(String sessionId) {
-    userOnlineMapper.deleteOnlineById(sessionId);
+    userOnlineMapper.deleteById(sessionId);
   }
 
   /**

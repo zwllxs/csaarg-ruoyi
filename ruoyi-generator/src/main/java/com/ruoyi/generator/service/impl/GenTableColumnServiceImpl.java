@@ -1,10 +1,10 @@
 package com.ruoyi.generator.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.ruoyi.common.core.text.Convert;
 import com.ruoyi.generator.domain.GenTableColumn;
 import com.ruoyi.generator.mapper.GenTableColumnMapper;
 import com.ruoyi.generator.service.IGenTableColumnService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -62,6 +62,6 @@ public class GenTableColumnServiceImpl extends ServiceImpl<GenTableColumnMapper,
    */
   @Override
   public int deleteGenTableColumnByIds(String ids) {
-    return genTableColumnMapper.deleteGenTableColumnByIds(Convert.toLongArray(ids));
+    return genTableColumnMapper.deleteGenTableColumnByIds(StringUtils.split(ids, ","));
   }
 }

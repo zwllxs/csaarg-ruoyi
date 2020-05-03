@@ -56,7 +56,7 @@ public class SysLogininforController extends BaseController {
   @ResponseBody
   @PostMapping("/export")
   public Result export(SysLogininfor logininfor) {
-    List<SysLogininfor> list = logininforService.selectLogininforList(logininfor);
+    List<SysLogininfor> list = logininforService.list(logininfor);
     ExcelUtil<SysLogininfor> util = new ExcelUtil<>(SysLogininfor.class);
     return util.exportExcel(list, "登录日志");
   }
@@ -66,7 +66,7 @@ public class SysLogininforController extends BaseController {
   @ResponseBody
   @PostMapping("/remove")
   public Result remove(String ids) {
-    return custom(logininforService.deleteLogininforByIds(ids));
+    return custom(logininforService.removeByIds(ids));
   }
 
   @Log(title = "登录日志", businessType = BusinessType.CLEAN)

@@ -1,7 +1,8 @@
 package com.ruoyi.framework.config;
 
-import com.ruoyi.common.utils.StringUtils;
+
 import com.ruoyi.common.xss.XssFilter;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;

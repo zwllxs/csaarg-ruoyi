@@ -42,7 +42,7 @@ public class IpUtils {
   }
 
   private static boolean internalIp(byte[] addr) {
-    if (StringUtils.isNull(addr) || addr.length < 2) {
+    if (addr == null || addr.length < 2) {
       return true;
     }
 

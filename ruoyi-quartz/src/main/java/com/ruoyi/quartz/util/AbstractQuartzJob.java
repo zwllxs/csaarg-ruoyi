@@ -3,13 +3,14 @@ package com.ruoyi.quartz.util;
 import com.ruoyi.common.constant.Constants;
 import com.ruoyi.common.constant.ScheduleConstants;
 import com.ruoyi.common.utils.ExceptionUtil;
-import com.ruoyi.common.utils.StringUtils;
+
 import com.ruoyi.common.utils.bean.BeanUtils;
 import com.ruoyi.common.utils.spring.SpringUtils;
 import com.ruoyi.quartz.domain.SysJob;
 import com.ruoyi.quartz.domain.SysJobLog;
 import com.ruoyi.quartz.service.ISysJobLogService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;

@@ -1,7 +1,6 @@
 package com.ruoyi.framework.config;
 
 import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
-import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.spring.SpringUtils;
 import com.ruoyi.framework.shiro.realm.UserRealm;
 import com.ruoyi.framework.shiro.session.OnlineSessionDAO;
@@ -114,7 +113,7 @@ public class ShiroConfig {
   public EhCacheManager getEhCacheManager() {
     net.sf.ehcache.CacheManager cacheManager = net.sf.ehcache.CacheManager.getCacheManager("ruoyi");
     EhCacheManager em = new EhCacheManager();
-    if (StringUtils.isNull(cacheManager)) {
+    if (cacheManager == null) {
       em.setCacheManager(new net.sf.ehcache.CacheManager(getCacheManagerConfigFileInputStream()));
       return em;
     } else {

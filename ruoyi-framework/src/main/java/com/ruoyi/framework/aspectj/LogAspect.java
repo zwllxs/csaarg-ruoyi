@@ -4,13 +4,13 @@ import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.enums.BusinessStatus;
 import com.ruoyi.common.json.JSON;
 import com.ruoyi.common.utils.ServletUtils;
-import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.framework.manager.AsyncManager;
 import com.ruoyi.framework.manager.factory.AsyncFactory;
 import com.ruoyi.framework.util.ShiroUtils;
 import com.ruoyi.system.domain.SysOperLog;
 import com.ruoyi.system.domain.SysUser;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -84,8 +84,7 @@ public class LogAspect {
       operLog.setOperUrl(ServletUtils.getRequest().getRequestURI());
       if (currentUser != null) {
         operLog.setOperName(currentUser.getLoginName());
-        if (StringUtils.isNotNull(currentUser.getDept())
-          && StringUtils.isNotEmpty(currentUser.getDept().getDeptName())) {
+        if (currentUser.getDept() != null && StringUtils.isNotEmpty(currentUser.getDept().getDeptName())) {
           operLog.setDeptName(currentUser.getDept().getDeptName());
         }
       }

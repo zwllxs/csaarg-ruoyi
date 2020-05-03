@@ -9,9 +9,9 @@ import com.ruoyi.common.core.domain.Result;
 import com.ruoyi.common.core.text.Convert;
 import com.ruoyi.common.exception.BusinessException;
 import com.ruoyi.common.utils.DateUtils;
-import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.reflect.ReflectUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddressList;
@@ -127,7 +127,7 @@ public class ExcelUtil<T> {
       Row heard = sheet.getRow(0);
       for (int i = 0; i < heard.getPhysicalNumberOfCells(); i++) {
         Cell cell = heard.getCell(i);
-        if (StringUtils.isNotNull(cell)) {
+        if (cell != null) {
           String value = this.getCellValue(heard, i).toString();
           cellMap.put(value, i);
         } else {
@@ -190,7 +190,7 @@ public class ExcelUtil<T> {
               val = DateUtil.getJavaDate((Double) val);
             }
           }
-          if (StringUtils.isNotNull(fieldType)) {
+          if (fieldType != null) {
             Excel attr = field.getAnnotation(Excel.class);
             String propertyName = field.getName();
             if (StringUtils.isNotEmpty(attr.targetAttr())) {
@@ -370,7 +370,7 @@ public class ExcelUtil<T> {
   public void setCellVo(Object value, Excel attr, Cell cell) {
     if (ColumnType.STRING == attr.cellType()) {
       cell.setCellType(CellType.NUMERIC);
-      cell.setCellValue(StringUtils.isNull(value) ? attr.defaultValue() : value + attr.suffix());
+      cell.setCellValue(value == null ? attr.defaultValue() : value + attr.suffix());
     } else if (ColumnType.NUMERIC == attr.cellType()) {
       cell.setCellType(CellType.NUMERIC);
       cell.setCellValue(Integer.parseInt(value + ""));
@@ -418,9 +418,9 @@ public class ExcelUtil<T> {
         Object value = getTargetValue(vo, field, attr);
         String dateFormat = attr.dateFormat();
         String readConverterExp = attr.readConverterExp();
-        if (StringUtils.isNotEmpty(dateFormat) && StringUtils.isNotNull(value)) {
+        if (StringUtils.isNotEmpty(dateFormat) && value != null) {
           cell.setCellValue(DateUtils.parseDateToStr(dateFormat, (Date) value));
-        } else if (StringUtils.isNotEmpty(readConverterExp) && StringUtils.isNotNull(value)) {
+        } else if (StringUtils.isNotEmpty(readConverterExp) && value != null) {
           cell.setCellValue(convertByExp(String.valueOf(value), readConverterExp));
         } else {
           // 设置列类型

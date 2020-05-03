@@ -1,16 +1,18 @@
 package com.ruoyi.system.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.ruoyi.common.core.text.Convert;
 import com.ruoyi.system.domain.SysDictData;
 import com.ruoyi.system.mapper.SysDictDataMapper;
 import com.ruoyi.system.service.ISysDictDataService;
 import com.ruoyi.system.utils.DictUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -36,8 +38,32 @@ public class SysDictDataServiceImpl extends ServiceImpl<SysDictDataMapper, SysDi
    * @return 字典数据集合信息
    */
   @Override
-  public List<SysDictData> selectDictDataList(SysDictData dictData) {
-    return dictDataMapper.selectDictDataList(dictData);
+  public List<SysDictData> list(SysDictData dictData) {
+    return dictDataMapper.page(null, dictData);
+  }
+
+  /**
+   * 根据字典类型查询字典数据
+   *
+   * @param dictType 字典类型
+   * @return 字典数据集合信息
+   */
+  @Override
+  public List<SysDictData> listByType(String dictType) {
+    List<SysDictData> dictDatas = DictUtils.getDictCache(dictType);
+    if (dictDatas != null) {
+      return dictDatas;
+    }
+
+    SysDictData sysDictDataQuerier = new SysDictData();
+    sysDictDataQuerier.setStatus(0);
+    sysDictDataQuerier.setDictType(dictType);
+    dictDatas = super.list(new QueryWrapper<>(sysDictDataQuerier).orderByAsc("dict_sort"));
+    if (dictDatas != null) {
+      DictUtils.setDictCache(dictType, dictDatas);
+      return dictDatas;
+    }
+    return null;
   }
 
   /**
@@ -48,19 +74,17 @@ public class SysDictDataServiceImpl extends ServiceImpl<SysDictDataMapper, SysDi
    * @return 字典标签
    */
   @Override
-  public String selectDictLabel(String dictType, String dictValue) {
-    return dictDataMapper.selectDictLabel(dictType, dictValue);
-  }
+  public String getLabel(String dictType, String dictValue) {
+    String result = null;
 
-  /**
-   * 根据字典数据ID查询信息
-   *
-   * @param dictCode 字典数据ID
-   * @return 字典数据
-   */
-  @Override
-  public SysDictData selectDictDataById(Long dictCode) {
-    return dictDataMapper.selectDictDataById(dictCode);
+    SysDictData sysDictDataQuerier = new SysDictData();
+    sysDictDataQuerier.setDictType(dictType);
+    sysDictDataQuerier.setDictValue(dictValue);
+    SysDictData dictData = super.getOne(new QueryWrapper<>(sysDictDataQuerier));
+    if (dictData != null) {
+      result = dictData.getDictLabel();
+    }
+    return result;
   }
 
   /**
@@ -70,12 +94,12 @@ public class SysDictDataServiceImpl extends ServiceImpl<SysDictDataMapper, SysDi
    * @return 结果
    */
   @Override
-  public int deleteDictDataByIds(String ids) {
-    int row = dictDataMapper.deleteDictDataByIds(Convert.toStrArray(ids));
-    if (row > 0) {
+  public boolean removeByIds(String ids) {
+    boolean result = super.removeByIds(Arrays.asList(StringUtils.split(ids, ",")));
+    if (result) {
       DictUtils.clearDictCache();
     }
-    return row;
+    return result;
   }
 
   /**
@@ -85,12 +109,12 @@ public class SysDictDataServiceImpl extends ServiceImpl<SysDictDataMapper, SysDi
    * @return 结果
    */
   @Override
-  public int insertDictData(SysDictData dictData) {
-    int row = dictDataMapper.insertDictData(dictData);
-    if (row > 0) {
+  public boolean save(SysDictData dictData) {
+    boolean result = super.save(dictData);
+    if (result) {
       DictUtils.clearDictCache();
     }
-    return row;
+    return result;
   }
 
   /**
@@ -100,8 +124,8 @@ public class SysDictDataServiceImpl extends ServiceImpl<SysDictDataMapper, SysDi
    * @return 结果
    */
   @Override
-  public int updateDictData(SysDictData dictData) {
-    int row = dictDataMapper.updateDictData(dictData);
+  public int update(SysDictData dictData) {
+    int row = dictDataMapper.updateById(dictData);
     if (row > 0) {
       DictUtils.clearDictCache();
     }

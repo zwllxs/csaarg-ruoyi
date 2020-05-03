@@ -3,13 +3,14 @@ package com.ruoyi.system.service.impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.ruoyi.common.core.text.Convert;
 import com.ruoyi.system.domain.SysLogininfor;
 import com.ruoyi.system.mapper.SysLogininforMapper;
 import com.ruoyi.system.service.ISysLogininforService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -29,8 +30,8 @@ public class SysLogininforServiceImpl extends ServiceImpl<SysLogininforMapper, S
    * @param logininfor 访问日志对象
    */
   @Override
-  public void insertLogininfor(SysLogininfor logininfor) {
-    logininforMapper.insertLogininfor(logininfor);
+  public void insert(SysLogininfor logininfor) {
+    super.save(logininfor);
   }
 
   @Override
@@ -45,8 +46,8 @@ public class SysLogininforServiceImpl extends ServiceImpl<SysLogininforMapper, S
    * @return 登录记录集合
    */
   @Override
-  public List<SysLogininfor> selectLogininforList(SysLogininfor logininfor) {
-    return logininforMapper.selectLogininforList(logininfor);
+  public List<SysLogininfor> list(SysLogininfor logininfor) {
+    return logininforMapper.page(null, logininfor);
   }
 
   /**
@@ -56,8 +57,8 @@ public class SysLogininforServiceImpl extends ServiceImpl<SysLogininforMapper, S
    * @return
    */
   @Override
-  public int deleteLogininforByIds(String ids) {
-    return logininforMapper.deleteLogininforByIds(Convert.toStrArray(ids));
+  public boolean removeByIds(String ids) {
+    return super.removeByIds(Arrays.asList(StringUtils.split(ids, ",")));
   }
 
   /**

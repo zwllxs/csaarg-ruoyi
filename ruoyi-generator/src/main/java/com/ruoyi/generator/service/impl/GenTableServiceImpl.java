@@ -6,9 +6,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ruoyi.common.constant.GenConstants;
-import com.ruoyi.common.core.text.Convert;
 import com.ruoyi.common.exception.BusinessException;
-import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.generator.domain.GenTable;
 import com.ruoyi.generator.domain.GenTableColumn;
 import com.ruoyi.generator.mapper.GenTableColumnMapper;
@@ -19,6 +17,7 @@ import com.ruoyi.generator.util.VelocityInitializer;
 import com.ruoyi.generator.util.VelocityUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
@@ -136,8 +135,8 @@ public class GenTableServiceImpl extends ServiceImpl<GenTableMapper, GenTable> i
   @Transactional
   @Override
   public void deleteGenTableByIds(String ids) {
-    genTableMapper.deleteGenTableByIds(Convert.toLongArray(ids));
-    genTableColumnMapper.deleteGenTableColumnByIds(Convert.toLongArray(ids));
+    genTableMapper.deleteGenTableByIds(StringUtils.split(ids, ","));
+    genTableColumnMapper.deleteGenTableColumnByIds(StringUtils.split(ids, ","));
   }
 
   /**
@@ -297,7 +296,7 @@ public class GenTableServiceImpl extends ServiceImpl<GenTableMapper, GenTable> i
         break;
       }
     }
-    if (StringUtils.isNull(table.getPkColumn())) {
+    if (table.getPkColumn() == null) {
       table.setPkColumn(columns.get(0));
     }
   }
@@ -309,7 +308,7 @@ public class GenTableServiceImpl extends ServiceImpl<GenTableMapper, GenTable> i
    */
   public void setTableFromOptions(GenTable genTable) {
     JSONObject paramsObj = JSONObject.parseObject(genTable.getOptions());
-    if (StringUtils.isNotNull(paramsObj)) {
+    if (paramsObj != null) {
       String treeCode = paramsObj.getString(GenConstants.TREE_CODE);
       String treeParentCode = paramsObj.getString(GenConstants.TREE_PARENT_CODE);
       String treeName = paramsObj.getString(GenConstants.TREE_NAME);

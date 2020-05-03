@@ -1,8 +1,8 @@
 package com.ruoyi.web.controller.system;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ruoyi.common.annotation.Log;
-import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.Result;
 import com.ruoyi.common.enums.BusinessType;
@@ -56,7 +56,7 @@ public class SysConfigController extends BaseController {
   @ResponseBody
   @PostMapping("/export")
   public Result export(SysConfig config) {
-    List<SysConfig> list = configService.selectConfigList(config);
+    List<SysConfig> list = configService.list(new QueryWrapper<>(config));
     ExcelUtil<SysConfig> util = new ExcelUtil<>(SysConfig.class);
     return util.exportExcel(list, "参数数据");
   }
@@ -77,11 +77,11 @@ public class SysConfigController extends BaseController {
   @ResponseBody
   @PostMapping("/add")
   public Result addSave(@Validated SysConfig config) {
-    if (UserConstants.CONFIG_KEY_NOT_UNIQUE.equals(configService.checkConfigKeyUnique(config))) {
+    if (configService.checkKeyUnique(config)) {
       return error("新增参数'" + config.getConfigName() + "'失败，参数键名已存在");
     }
     config.setCreateBy(ShiroUtils.getLoginName());
-    return custom(configService.insertConfig(config));
+    return custom(configService.save(config));
   }
 
   /**
@@ -89,7 +89,7 @@ public class SysConfigController extends BaseController {
    */
   @GetMapping("/edit/{configId}")
   public String edit(@PathVariable("configId") Long configId, ModelMap mmap) {
-    mmap.put("config", configService.selectConfigById(configId));
+    mmap.put("config", configService.getById(configId));
     return PREFIX + "/edit";
   }
 
@@ -101,11 +101,11 @@ public class SysConfigController extends BaseController {
   @ResponseBody
   @PostMapping("/edit")
   public Result editSave(@Validated SysConfig config) {
-    if (UserConstants.CONFIG_KEY_NOT_UNIQUE.equals(configService.checkConfigKeyUnique(config))) {
+    if (configService.checkKeyUnique(config)) {
       return error("修改参数'" + config.getConfigName() + "'失败，参数键名已存在");
     }
     config.setUpdateBy(ShiroUtils.getLoginName());
-    return custom(configService.updateConfig(config));
+    return custom(configService.update(config));
   }
 
   /**
@@ -116,7 +116,7 @@ public class SysConfigController extends BaseController {
   @ResponseBody
   @PostMapping("/remove")
   public Result remove(String ids) {
-    return custom(configService.deleteConfigByIds(ids));
+    return custom(configService.removeByIds(ids));
   }
 
   /**
@@ -133,10 +133,11 @@ public class SysConfigController extends BaseController {
 
   /**
    * 校验参数键名
+   * @return
    */
   @ResponseBody
   @PostMapping("/checkConfigKeyUnique")
-  public String checkConfigKeyUnique(SysConfig config) {
-    return configService.checkConfigKeyUnique(config);
+  public boolean checkConfigKeyUnique(SysConfig config) {
+    return configService.checkKeyUnique(config);
   }
 }

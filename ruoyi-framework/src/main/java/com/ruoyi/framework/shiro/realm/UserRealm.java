@@ -48,8 +48,8 @@ public class UserRealm extends AuthorizingRealm {
       info.addRole("admin");
       info.addStringPermission("*:*:*");
     } else {
-      roles = roleService.selectRoleKeys(user.getUserId());
-      menus = menuService.selectPermsByUserId(user.getUserId());
+      roles = roleService.listKeys(user.getUserId());
+      menus = menuService.listPerms(user.getUserId());
       // 角色加入AuthorizationInfo认证对象
       info.setRoles(roles);
       // 权限加入AuthorizationInfo认证对象
@@ -70,7 +70,7 @@ public class UserRealm extends AuthorizingRealm {
       password = new String(upToken.getPassword());
     }
 
-    SysUser user = null;
+    SysUser user;
     try {
       user = loginService.login(username, password);
     } catch (CaptchaException e) {

@@ -1,7 +1,8 @@
 package com.ruoyi.common.exception.base;
 
 import com.ruoyi.common.utils.MessageUtils;
-import com.ruoyi.common.utils.StringUtils;
+import org.apache.commons.lang3.StringUtils;
+
 
 /**
  * 基础异常
@@ -55,7 +56,7 @@ public class BaseException extends RuntimeException {
   @Override
   public String getMessage() {
     String message = null;
-    if (!StringUtils.isEmpty(code)) {
+    if (StringUtils.isNotEmpty(code)) {
       message = MessageUtils.message(code, args);
     }
     if (message == null) {

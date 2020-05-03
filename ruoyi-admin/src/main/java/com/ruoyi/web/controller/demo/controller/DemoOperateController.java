@@ -7,9 +7,9 @@ import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.core.page.TableSupport;
 import com.ruoyi.common.core.text.Convert;
 import com.ruoyi.common.exception.BusinessException;
-import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.web.controller.demo.domain.UserOperateModel;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -110,8 +110,8 @@ public class DemoOperateController extends BaseController {
       rspData.setTotal(userList.size());
       return rspData;
     }
-    Integer pageNum = (pageDomain.getPageNum() - 1) * 10;
-    Integer pageSize = pageDomain.getPageNum() * 10;
+    int pageNum = (pageDomain.getPageNum() - 1) * 10;
+    int pageSize = pageDomain.getPageNum() * 10;
     if (pageSize > userList.size()) {
       pageSize = userList.size();
     }
@@ -134,7 +134,7 @@ public class DemoOperateController extends BaseController {
   @ResponseBody
   @PostMapping("/add")
   public Result addSave(UserOperateModel user) {
-    Integer userId = USERS.size() + 1;
+    int userId = USERS.size() + 1;
     user.setUserId(userId);
     return success(USERS.put(userId, user));
   }
@@ -227,7 +227,7 @@ public class DemoOperateController extends BaseController {
    * @return 结果
    */
   public String importUser(List<UserOperateModel> userList, Boolean isUpdateSupport) {
-    if (StringUtils.isNull(userList) || userList.size() == 0) {
+    if (userList == null || userList.size() == 0) {
       throw new BusinessException("导入用户数据不能为空！");
     }
     int successNum = 0;

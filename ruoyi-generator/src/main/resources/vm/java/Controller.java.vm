@@ -21,7 +21,7 @@ import com.ruoyi.common.utils.poi.ExcelUtil;
 #if($table.crud)
 import com.ruoyi.common.core.page.TableDataInfo;
 #elseif($table.tree)
-import com.ruoyi.common.utils.StringUtils;
+
 import com.ruoyi.common.core.domain.Ztree;
 #end
 

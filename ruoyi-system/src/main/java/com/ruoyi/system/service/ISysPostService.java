@@ -22,14 +22,7 @@ public interface ISysPostService extends IService<SysPost> {
    * @param post 岗位信息
    * @return 岗位信息集合
    */
-  List<SysPost> selectPostList(SysPost post);
-
-  /**
-   * 查询所有岗位
-   *
-   * @return 岗位列表
-   */
-  List<SysPost> selectPostAll();
+  List<SysPost> list(SysPost post);
 
   /**
    * 根据用户ID查询岗位
@@ -37,15 +30,7 @@ public interface ISysPostService extends IService<SysPost> {
    * @param userId 用户ID
    * @return 岗位列表
    */
-  List<SysPost> selectPostsByUserId(Long userId);
-
-  /**
-   * 通过岗位ID查询岗位信息
-   *
-   * @param postId 岗位ID
-   * @return 角色对象信息
-   */
-  SysPost selectPostById(Long postId);
+  List<SysPost> listByUser(Long userId);
 
   /**
    * 批量删除岗位信息
@@ -54,31 +39,7 @@ public interface ISysPostService extends IService<SysPost> {
    * @return 结果
    * @throws Exception 异常
    */
-  int deletePostByIds(String ids) throws Exception;
-
-  /**
-   * 新增保存岗位信息
-   *
-   * @param post 岗位信息
-   * @return 结果
-   */
-  int insertPost(SysPost post);
-
-  /**
-   * 修改保存岗位信息
-   *
-   * @param post 岗位信息
-   * @return 结果
-   */
-  int updatePost(SysPost post);
-
-  /**
-   * 通过岗位ID查询岗位使用数量
-   *
-   * @param postId 岗位ID
-   * @return 结果
-   */
-  int countUserPostById(Long postId);
+  boolean removeByIds(String ids) throws Exception;
 
   /**
    * 校验岗位名称
@@ -86,7 +47,7 @@ public interface ISysPostService extends IService<SysPost> {
    * @param post 岗位信息
    * @return 结果
    */
-  String checkPostNameUnique(SysPost post);
+  boolean checkNameUnique(SysPost post);
 
   /**
    * 校验岗位编码
@@ -94,5 +55,5 @@ public interface ISysPostService extends IService<SysPost> {
    * @param post 岗位信息
    * @return 结果
    */
-  String checkPostCodeUnique(SysPost post);
+  boolean checkCodeUnique(SysPost post);
 }

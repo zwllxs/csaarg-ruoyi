@@ -9,11 +9,11 @@ public class Constants {
   /**
    * 通用成功标识
    */
-  public static final String SUCCESS = "0";
+  public static final int SUCCESS = 0;
   /**
    * 通用失败标识
    */
-  public static final String FAIL = "1";
+  public static final int FAIL = 1;
   /**
    * 登录成功
    */
@@ -47,23 +47,15 @@ public class Constants {
    */
   public static final String IS_ASC = "isAsc";
   /**
-   * 参数管理 cache name
-   */
-  public static final String SYS_CONFIG_CACHE = "sys-config";
-  /**
-   * 参数管理 cache key
-   */
-  public static final String SYS_CONFIG_KEY = "sys_config:";
-  /**
-   * 字典管理 cache name
-   */
-  public static final String SYS_DICT_CACHE = "sys-dict";
-  /**
-   * 字典管理 cache key
-   */
-  public static final String SYS_DICT_KEY = "sys_dict:";
-  /**
    * 资源映射路径 前缀
    */
   public static final String RESOURCE_PREFIX = "/profile";
+  /**
+   * 数据权限名称
+   */
+  public static final String DATA_SCOPE = "dataScope";
+  /**
+   * 数据权限 SQL
+   */
+  public static final String DATA_SCOPE_SQL = "${params.dataScope}";
 }

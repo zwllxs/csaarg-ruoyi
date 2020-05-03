@@ -27,23 +27,23 @@ public class DataScopeAspect {
   /**
    * 全部数据权限
    */
-  public static final String DATA_SCOPE_ALL = "1";
+  public static final Integer DATA_SCOPE_ALL = 1;
   /**
    * 自定数据权限
    */
-  public static final String DATA_SCOPE_CUSTOM = "2";
+  public static final Integer DATA_SCOPE_CUSTOM = 2;
   /**
    * 部门数据权限
    */
-  public static final String DATA_SCOPE_DEPT = "3";
+  public static final Integer DATA_SCOPE_DEPT = 3;
   /**
    * 部门及以下数据权限
    */
-  public static final String DATA_SCOPE_DEPT_AND_CHILD = "4";
+  public static final Integer DATA_SCOPE_DEPT_AND_CHILD = 4;
   /**
    * 仅本人数据权限
    */
-  public static final String DATA_SCOPE_SELF = "5";
+  public static final Integer DATA_SCOPE_SELF = 5;
   /**
    * 数据权限过滤关键字
    */
@@ -87,10 +87,16 @@ public class DataScopeAspect {
    * @param userAlias 用户别名
    */
   public static void dataScopeFilter(JoinPoint joinPoint, SysUser user, String deptAlias, String userAlias) {
+    if (StringUtils.isBlank(deptAlias)) {
+      deptAlias = "sys_dept";
+    }
+    if (StringUtils.isBlank(userAlias)) {
+      userAlias = "sys_user";
+    }
     StringBuilder sqlString = new StringBuilder();
 
     for (SysRole role : user.getRoles()) {
-      String dataScope = role.getDataScope();
+      Integer dataScope = role.getDataScope();
       if (DATA_SCOPE_ALL.equals(dataScope)) {
         sqlString = new StringBuilder();
         break;

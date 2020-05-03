@@ -5,13 +5,13 @@ import com.ruoyi.common.config.Global;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.Result;
 import com.ruoyi.common.enums.BusinessType;
-import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.file.FileUploadUtils;
 import com.ruoyi.framework.shiro.service.SysPasswordService;
 import com.ruoyi.framework.util.ShiroUtils;
 import com.ruoyi.system.domain.SysUser;
 import com.ruoyi.system.service.ISysUserService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -45,8 +45,8 @@ public class SysProfileController extends BaseController {
   public String profile(ModelMap mmap) {
     SysUser user = ShiroUtils.getSysUser();
     mmap.put("user", user);
-    mmap.put("roleGroup", userService.selectUserRoleGroup(user.getUserId()));
-    mmap.put("postGroup", userService.selectUserPostGroup(user.getUserId()));
+    mmap.put("roleGroup", userService.getUserRoleGroup(user.getUserId()));
+    mmap.put("postGroup", userService.getUserPostGroup(user.getUserId()));
     return PREFIX + "/profile";
   }
 
@@ -63,7 +63,7 @@ public class SysProfileController extends BaseController {
   @GetMapping("/resetPwd")
   public String resetPwd(ModelMap mmap) {
     SysUser user = ShiroUtils.getSysUser();
-    mmap.put("user", userService.selectUserById(user.getUserId()));
+    mmap.put("user", userService.getById(user.getUserId()));
     return PREFIX + "/resetPwd";
   }
 
@@ -75,8 +75,8 @@ public class SysProfileController extends BaseController {
     if (StringUtils.isNotEmpty(newPassword) && passwordService.matches(user, oldPassword)) {
       user.setSalt(ShiroUtils.randomSalt());
       user.setPassword(passwordService.encryptPassword(user.getLoginName(), newPassword, user.getSalt()));
-      if (userService.resetUserPwd(user) > 0) {
-        ShiroUtils.setSysUser(userService.selectUserById(user.getUserId()));
+      if (userService.updateById(user)) {
+        ShiroUtils.setSysUser(userService.getById(user.getUserId()));
         return success();
       }
       return error();
@@ -91,7 +91,7 @@ public class SysProfileController extends BaseController {
   @GetMapping("/edit")
   public String edit(ModelMap mmap) {
     SysUser user = ShiroUtils.getSysUser();
-    mmap.put("user", userService.selectUserById(user.getUserId()));
+    mmap.put("user", userService.getById(user.getUserId()));
     return PREFIX + "/edit";
   }
 
@@ -101,7 +101,7 @@ public class SysProfileController extends BaseController {
   @GetMapping("/avatar")
   public String avatar(ModelMap mmap) {
     SysUser user = ShiroUtils.getSysUser();
-    mmap.put("user", userService.selectUserById(user.getUserId()));
+    mmap.put("user", userService.getById(user.getUserId()));
     return PREFIX + "/avatar";
   }
 
@@ -117,8 +117,8 @@ public class SysProfileController extends BaseController {
     currentUser.setEmail(user.getEmail());
     currentUser.setPhonenumber(user.getPhonenumber());
     currentUser.setSex(user.getSex());
-    if (userService.updateUserInfo(currentUser) > 0) {
-      ShiroUtils.setSysUser(userService.selectUserById(currentUser.getUserId()));
+    if (userService.updateById(currentUser)) {
+      ShiroUtils.setSysUser(userService.getById(currentUser.getUserId()));
       return success();
     }
     return error();
@@ -136,8 +136,8 @@ public class SysProfileController extends BaseController {
       if (!file.isEmpty()) {
         String avatar = FileUploadUtils.upload(Global.getAvatarPath(), file);
         currentUser.setAvatar(avatar);
-        if (userService.updateUserInfo(currentUser) > 0) {
-          ShiroUtils.setSysUser(userService.selectUserById(currentUser.getUserId()));
+        if (userService.updateById(currentUser)) {
+          ShiroUtils.setSysUser(userService.getById(currentUser.getUserId()));
           return success();
         }
       }

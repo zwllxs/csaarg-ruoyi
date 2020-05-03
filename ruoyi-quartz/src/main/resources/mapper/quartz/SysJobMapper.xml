@@ -57,16 +57,16 @@ select sj.* from sys_job sj
     <include refid="selectJobVo"/>
     <where>
       <if test="jobName != null and jobName != ''">
-        AND job_name like concat('%', #{jobName}, '%')
+        and job_name like concat('%', #{jobName}, '%')
       </if>
       <if test="jobGroup != null and jobGroup != ''">
-        AND job_group = #{jobGroup}
+        and job_group = #{jobGroup}
       </if>
       <if test="status != null and status != ''">
-        AND status = #{status}
+        and status = #{status}
       </if>
       <if test="invokeTarget != null and invokeTarget != ''">
-        AND invoke_target like concat('%', #{invokeTarget}, '%')
+        and invoke_target like concat('%', #{invokeTarget}, '%')
       </if>
     </where>
   </select>

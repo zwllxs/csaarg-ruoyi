@@ -15,20 +15,12 @@ import java.util.List;
  */
 public interface ISysUserOnlineService extends IService<SysUserOnline> {
   /**
-   * 通过会话序号查询信息
-   *
-   * @param sessionId 会话ID
-   * @return 在线用户信息
-   */
-  SysUserOnline selectOnlineById(String sessionId);
-
-  /**
    * 通过会话序号删除信息
    *
    * @param sessionId 会话ID
    * @return 在线用户信息
    */
-  void deleteOnlineById(String sessionId);
+  void deleteById(String sessionId);
 
   /**
    * 通过会话序号删除信息
@@ -37,13 +29,6 @@ public interface ISysUserOnlineService extends IService<SysUserOnline> {
    * @return 在线用户信息
    */
   void batchDeleteOnline(List<String> sessions);
-
-  /**
-   * 保存会话信息
-   *
-   * @param online 会话信息
-   */
-  void saveOnline(SysUserOnline online);
 
   IPage<SysUserOnline> page(Page<SysUserOnline> page, SysUserOnline userOnline);
 

@@ -1,19 +1,20 @@
 package com.ruoyi.system.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.ruoyi.common.constant.UserConstants;
-import com.ruoyi.common.core.text.Convert;
 import com.ruoyi.common.exception.BusinessException;
-import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.system.domain.SysPost;
+import com.ruoyi.system.domain.SysUserPost;
 import com.ruoyi.system.mapper.SysPostMapper;
-import com.ruoyi.system.mapper.SysUserPostMapper;
 import com.ruoyi.system.service.ISysPostService;
+import com.ruoyi.system.service.ISysUserPostService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -27,7 +28,7 @@ public class SysPostServiceImpl extends ServiceImpl<SysPostMapper, SysPost> impl
   @Autowired
   private SysPostMapper postMapper;
   @Autowired
-  private SysUserPostMapper userPostMapper;
+  private ISysUserPostService userPostService;
 
   @Override
   public IPage<SysPost> page(Page<SysPost> page, SysPost post) {
@@ -41,18 +42,8 @@ public class SysPostServiceImpl extends ServiceImpl<SysPostMapper, SysPost> impl
    * @return 岗位信息集合
    */
   @Override
-  public List<SysPost> selectPostList(SysPost post) {
-    return postMapper.selectPostList(post);
-  }
-
-  /**
-   * 查询所有岗位
-   *
-   * @return 岗位列表
-   */
-  @Override
-  public List<SysPost> selectPostAll() {
-    return postMapper.selectPostAll();
+  public List<SysPost> list(SysPost post) {
+    return postMapper.page(null, post);
   }
 
   /**
@@ -62,9 +53,9 @@ public class SysPostServiceImpl extends ServiceImpl<SysPostMapper, SysPost> impl
    * @return 岗位列表
    */
   @Override
-  public List<SysPost> selectPostsByUserId(Long userId) {
-    List<SysPost> userPosts = postMapper.selectPostsByUserId(userId);
-    List<SysPost> posts = postMapper.selectPostAll();
+  public List<SysPost> listByUser(Long userId) {
+    List<SysPost> userPosts = postMapper.listByUser(userId);
+    List<SysPost> posts = super.list();
     for (SysPost post : posts) {
       for (SysPost userRole : userPosts) {
         if (post.getPostId().longValue() == userRole.getPostId().longValue()) {
@@ -77,65 +68,24 @@ public class SysPostServiceImpl extends ServiceImpl<SysPostMapper, SysPost> impl
   }
 
   /**
-   * 通过岗位ID查询岗位信息
-   *
-   * @param postId 岗位ID
-   * @return 角色对象信息
-   */
-  @Override
-  public SysPost selectPostById(Long postId) {
-    return postMapper.selectPostById(postId);
-  }
-
-  /**
    * 批量删除岗位信息
    *
    * @param ids 需要删除的数据ID
+   * @return
    * @throws Exception
    */
   @Override
-  public int deletePostByIds(String ids) throws BusinessException {
-    Long[] postIds = Convert.toLongArray(ids);
-    for (Long postId : postIds) {
-      SysPost post = selectPostById(postId);
-      if (countUserPostById(postId) > 0) {
+  public boolean removeByIds(String ids) throws BusinessException {
+    String[] postIds = StringUtils.split(ids, ",");
+    for (String postId : postIds) {
+      SysPost post = getById(postId);
+      SysUserPost sysUserPostQuerier = new SysUserPost();
+      sysUserPostQuerier.setPostId(Long.valueOf(postId));
+      if (userPostService.count(new QueryWrapper<>(sysUserPostQuerier)) > 0) {
         throw new BusinessException(String.format("%1$s已分配,不能删除", post.getPostName()));
       }
     }
-    return postMapper.deletePostByIds(postIds);
-  }
-
-  /**
-   * 新增保存岗位信息
-   *
-   * @param post 岗位信息
-   * @return 结果
-   */
-  @Override
-  public int insertPost(SysPost post) {
-    return postMapper.insertPost(post);
-  }
-
-  /**
-   * 修改保存岗位信息
-   *
-   * @param post 岗位信息
-   * @return 结果
-   */
-  @Override
-  public int updatePost(SysPost post) {
-    return postMapper.updatePost(post);
-  }
-
-  /**
-   * 通过岗位ID查询岗位使用数量
-   *
-   * @param postId 岗位ID
-   * @return 结果
-   */
-  @Override
-  public int countUserPostById(Long postId) {
-    return userPostMapper.countUserPostById(postId);
+    return super.removeByIds(Arrays.asList(StringUtils.split(ids, ",")));
   }
 
   /**
@@ -145,13 +95,12 @@ public class SysPostServiceImpl extends ServiceImpl<SysPostMapper, SysPost> impl
    * @return 结果
    */
   @Override
-  public String checkPostNameUnique(SysPost post) {
-    long postId = StringUtils.isNull(post.getPostId()) ? -1L : post.getPostId();
-    SysPost info = postMapper.checkPostNameUnique(post.getPostName());
-    if (StringUtils.isNotNull(info) && info.getPostId() != postId) {
-      return UserConstants.POST_NAME_NOT_UNIQUE;
-    }
-    return UserConstants.POST_NAME_UNIQUE;
+  public boolean checkNameUnique(SysPost post) {
+    long postId = post.getPostId() == null ? -1L : post.getPostId();
+    SysPost sysPostQuerier = new SysPost();
+    sysPostQuerier.setPostName(post.getPostName());
+    SysPost info = super.getOne(new QueryWrapper<>(sysPostQuerier));
+    return info != null && info.getPostId() != postId;
   }
 
   /**
@@ -161,12 +110,12 @@ public class SysPostServiceImpl extends ServiceImpl<SysPostMapper, SysPost> impl
    * @return 结果
    */
   @Override
-  public String checkPostCodeUnique(SysPost post) {
-    long postId = StringUtils.isNull(post.getPostId()) ? -1L : post.getPostId();
-    SysPost info = postMapper.checkPostCodeUnique(post.getPostCode());
-    if (StringUtils.isNotNull(info) && info.getPostId() != postId) {
-      return UserConstants.POST_CODE_NOT_UNIQUE;
-    }
-    return UserConstants.POST_CODE_UNIQUE;
+  public boolean checkCodeUnique(SysPost post) {
+    long postId = post.getPostId() == null ? -1L : post.getPostId();
+
+    SysPost sysPostQuerier = new SysPost();
+    sysPostQuerier.setPostCode(post.getPostCode());
+    SysPost info = super.getOne(new QueryWrapper<>(sysPostQuerier));
+    return info != null && info.getPostId() != postId;
   }
 }

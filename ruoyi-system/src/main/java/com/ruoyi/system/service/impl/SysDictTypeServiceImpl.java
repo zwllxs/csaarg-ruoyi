@@ -1,25 +1,26 @@
 package com.ruoyi.system.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.core.domain.Ztree;
-import com.ruoyi.common.core.text.Convert;
 import com.ruoyi.common.exception.BusinessException;
-import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.system.domain.SysDictData;
 import com.ruoyi.system.domain.SysDictType;
+import com.ruoyi.system.enums.SysDictTypeStatus;
 import com.ruoyi.system.mapper.SysDictDataMapper;
 import com.ruoyi.system.mapper.SysDictTypeMapper;
 import com.ruoyi.system.service.ISysDictTypeService;
 import com.ruoyi.system.utils.DictUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -40,16 +41,20 @@ public class SysDictTypeServiceImpl extends ServiceImpl<SysDictTypeMapper, SysDi
    */
   @PostConstruct
   public void init() {
-    List<SysDictType> dictTypeList = dictTypeMapper.selectDictTypeAll();
+    List<SysDictType> dictTypeList = super.list();
     for (SysDictType dictType : dictTypeList) {
-      List<SysDictData> dictDatas = dictDataMapper.selectDictDataByType(dictType.getDictType());
+
+      SysDictData dictDataQuerier = new SysDictData();
+      dictDataQuerier.setStatus(0);
+      dictDataQuerier.setDictType(dictType.getDictType());
+      List<SysDictData> dictDatas = dictDataMapper.selectList(new QueryWrapper<>(dictDataQuerier).orderByAsc("dict_sort"));
       DictUtils.setDictCache(dictType.getDictType(), dictDatas);
     }
   }
 
   @Override
   public IPage<SysDictType> page(Page<SysDictType> page, SysDictType dictType) {
-    return page.setRecords(dictTypeMapper.page(page,dictType));
+    return page.setRecords(dictTypeMapper.page(page, dictType));
   }
 
   /**
@@ -59,60 +64,8 @@ public class SysDictTypeServiceImpl extends ServiceImpl<SysDictTypeMapper, SysDi
    * @return 字典类型集合信息
    */
   @Override
-  public List<SysDictType> selectDictTypeList(SysDictType dictType) {
-    return dictTypeMapper.selectDictTypeList(dictType);
-  }
-
-  /**
-   * 根据所有字典类型
-   *
-   * @return 字典类型集合信息
-   */
-  @Override
-  public List<SysDictType> selectDictTypeAll() {
-    return dictTypeMapper.selectDictTypeAll();
-  }
-
-  /**
-   * 根据字典类型查询字典数据
-   *
-   * @param dictType 字典类型
-   * @return 字典数据集合信息
-   */
-  @Override
-  public List<SysDictData> selectDictDataByType(String dictType) {
-    List<SysDictData> dictDatas = DictUtils.getDictCache(dictType);
-    if (StringUtils.isNotNull(dictDatas)) {
-      return dictDatas;
-    }
-    dictDatas = dictDataMapper.selectDictDataByType(dictType);
-    if (StringUtils.isNotNull(dictDatas)) {
-      DictUtils.setDictCache(dictType, dictDatas);
-      return dictDatas;
-    }
-    return null;
-  }
-
-  /**
-   * 根据字典类型ID查询信息
-   *
-   * @param dictId 字典类型ID
-   * @return 字典类型
-   */
-  @Override
-  public SysDictType selectDictTypeById(Long dictId) {
-    return dictTypeMapper.selectDictTypeById(dictId);
-  }
-
-  /**
-   * 根据字典类型查询信息
-   *
-   * @param dictType 字典类型
-   * @return 字典类型
-   */
-  @Override
-  public SysDictType selectDictTypeByType(String dictType) {
-    return dictTypeMapper.selectDictTypeByType(dictType);
+  public List<SysDictType> list(SysDictType dictType) {
+    return dictTypeMapper.page(null, dictType);
   }
 
   /**
@@ -122,19 +75,21 @@ public class SysDictTypeServiceImpl extends ServiceImpl<SysDictTypeMapper, SysDi
    * @return 结果
    */
   @Override
-  public int deleteDictTypeByIds(String ids) {
-    Long[] dictIds = Convert.toLongArray(ids);
-    for (Long dictId : dictIds) {
-      SysDictType dictType = selectDictTypeById(dictId);
-      if (dictDataMapper.countDictDataByType(dictType.getDictType()) > 0) {
+  public boolean removeByIds(String ids) {
+    String[] dictIds = StringUtils.split(ids, ",");
+    for (String dictId : dictIds) {
+      SysDictType dictType = getById(dictId);
+      SysDictType sysDictTypeQuerier = new SysDictType();
+      sysDictTypeQuerier.setDictType(dictType.getDictType());
+      if (super.count(new QueryWrapper<>(sysDictTypeQuerier)) > 0) {
         throw new BusinessException(String.format("%1$s已分配,不能删除", dictType.getDictName()));
       }
     }
-    int count = dictTypeMapper.deleteDictTypeByIds(dictIds);
-    if (count > 0) {
+    boolean result = super.removeByIds(Arrays.asList(dictIds));
+    if (result) {
       DictUtils.clearDictCache();
     }
-    return count;
+    return result;
   }
 
   /**
@@ -152,12 +107,12 @@ public class SysDictTypeServiceImpl extends ServiceImpl<SysDictTypeMapper, SysDi
    * @return 结果
    */
   @Override
-  public int insertDictType(SysDictType dictType) {
-    int row = dictTypeMapper.insertDictType(dictType);
-    if (row > 0) {
+  public boolean save(SysDictType dictType) {
+    boolean result = super.save(dictType);
+    if (result) {
       DictUtils.clearDictCache();
     }
-    return row;
+    return result;
   }
 
   /**
@@ -168,14 +123,12 @@ public class SysDictTypeServiceImpl extends ServiceImpl<SysDictTypeMapper, SysDi
    */
   @Transactional
   @Override
-  public int updateDictType(SysDictType dictType) {
-    SysDictType oldDict = dictTypeMapper.selectDictTypeById(dictType.getDictId());
-    dictDataMapper.updateDictDataType(oldDict.getDictType(), dictType.getDictType());
-    int row = dictTypeMapper.updateDictType(dictType);
-    if (row > 0) {
+  public boolean update(SysDictType dictType) {
+    boolean result = super.updateById(dictType);
+    if (result) {
       DictUtils.clearDictCache();
     }
-    return row;
+    return result;
   }
 
   /**
@@ -185,13 +138,13 @@ public class SysDictTypeServiceImpl extends ServiceImpl<SysDictTypeMapper, SysDi
    * @return 结果
    */
   @Override
-  public String checkDictTypeUnique(SysDictType dict) {
-    long dictId = StringUtils.isNull(dict.getDictId()) ? -1L : dict.getDictId();
-    SysDictType dictType = dictTypeMapper.checkDictTypeUnique(dict.getDictType());
-    if (StringUtils.isNotNull(dictType) && dictType.getDictId() != dictId) {
-      return UserConstants.DICT_TYPE_NOT_UNIQUE;
-    }
-    return UserConstants.DICT_TYPE_UNIQUE;
+  public boolean checkTypeUnique(SysDictType dict) {
+    long dictId = dict.getDictId() == null ? -1L : dict.getDictId();
+
+    SysDictType sysDictTypeQuerier = new SysDictType();
+    sysDictTypeQuerier.setDictType(dict.getDictType());
+    SysDictType dictType = super.getOne(new QueryWrapper<>(sysDictTypeQuerier));
+    return dictType != null && dictType.getDictId() != dictId;
   }
 
   /**
@@ -201,14 +154,14 @@ public class SysDictTypeServiceImpl extends ServiceImpl<SysDictTypeMapper, SysDi
    * @return 所有字典类型
    */
   @Override
-  public List<Ztree> selectDictTree(SysDictType dictType) {
-    List<Ztree> ztrees = new ArrayList<Ztree>();
-    List<SysDictType> dictList = dictTypeMapper.selectDictTypeList(dictType);
+  public List<Ztree> listTree(SysDictType dictType) {
+    List<Ztree> ztrees = new ArrayList<>();
+    List<SysDictType> dictList = dictTypeMapper.page(null, dictType);
     for (SysDictType dict : dictList) {
-      if (UserConstants.DICT_NORMAL.equals(dict.getStatus())) {
+      if (SysDictTypeStatus.NORMAL.getValue().equals(dict.getStatus())) {
         Ztree ztree = new Ztree();
         ztree.setId(dict.getDictId());
-        ztree.setName(transDictName(dict));
+        ztree.setName(transName(dict));
         ztree.setTitle(dict.getDictType());
         ztrees.add(ztree);
       }
@@ -216,7 +169,7 @@ public class SysDictTypeServiceImpl extends ServiceImpl<SysDictTypeMapper, SysDi
     return ztrees;
   }
 
-  public String transDictName(SysDictType dictType) {
+  public String transName(SysDictType dictType) {
     return "(" + dictType.getDictName() + ")" + "&nbsp;&nbsp;&nbsp;" + dictType.getDictType();
   }
 }

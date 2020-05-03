@@ -1,6 +1,5 @@
 package com.ruoyi.framework.datasource;
 
-import com.ruoyi.common.config.datasource.DynamicDataSourceContextHolder;
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 
 import javax.sql.DataSource;

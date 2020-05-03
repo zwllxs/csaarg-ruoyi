@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * RuoYi首创 html调用 thymeleaf 实现字典读取
+ * RuoYi首创 html调用 thymeleaf 实现字典读取 —— 小朋友表示有很多问号
  *
  * @author ruoyi
  */
@@ -28,7 +28,7 @@ public class DictService {
    * @return 参数键值
    */
   public List<SysDictData> getType(String dictType) {
-    return dictTypeService.selectDictDataByType(dictType);
+    return dictDataService.listByType(dictType);
   }
 
   /**
@@ -39,6 +39,6 @@ public class DictService {
    * @return 字典标签
    */
   public String getLabel(String dictType, String dictValue) {
-    return dictDataService.selectDictLabel(dictType, dictValue);
+    return dictDataService.getLabel(dictType, dictValue);
   }
 }

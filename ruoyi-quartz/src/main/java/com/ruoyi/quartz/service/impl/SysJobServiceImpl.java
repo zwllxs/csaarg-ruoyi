@@ -4,13 +4,13 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ruoyi.common.constant.ScheduleConstants;
-import com.ruoyi.common.core.text.Convert;
 import com.ruoyi.common.exception.job.TaskException;
 import com.ruoyi.quartz.domain.SysJob;
 import com.ruoyi.quartz.mapper.SysJobMapper;
 import com.ruoyi.quartz.service.ISysJobService;
 import com.ruoyi.quartz.util.CronUtils;
 import com.ruoyi.quartz.util.ScheduleUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.quartz.JobDataMap;
 import org.quartz.JobKey;
 import org.quartz.Scheduler;
@@ -137,9 +137,9 @@ public class SysJobServiceImpl extends ServiceImpl<SysJobMapper, SysJob> impleme
   @Transactional
   @Override
   public void deleteJobByIds(String ids) throws SchedulerException {
-    Long[] jobIds = Convert.toLongArray(ids);
-    for (Long jobId : jobIds) {
-      SysJob job = jobMapper.selectJobById(jobId);
+    String[] jobIds = StringUtils.split(ids,",");
+    for (String jobId : jobIds) {
+      SysJob job = jobMapper.selectJobById(Long.valueOf(jobId));
       deleteJob(job);
     }
   }

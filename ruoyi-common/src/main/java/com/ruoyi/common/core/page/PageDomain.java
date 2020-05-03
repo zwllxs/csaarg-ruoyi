@@ -31,6 +31,7 @@ public class PageDomain {
     if (StringUtils.isEmpty(orderByColumn)) {
       return "";
     }
+
     return StringUtils.toUnderScoreCase(orderByColumn) + " " + isAsc;
   }
 }

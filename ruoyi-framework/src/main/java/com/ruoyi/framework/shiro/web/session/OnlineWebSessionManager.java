@@ -1,7 +1,6 @@
 package com.ruoyi.framework.shiro.web.session;
 
 import com.ruoyi.common.constant.ShiroConstants;
-import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.bean.BeanUtils;
 import com.ruoyi.common.utils.spring.SpringUtils;
 import com.ruoyi.framework.shiro.session.OnlineSession;
@@ -70,7 +69,7 @@ public class OnlineWebSessionManager extends DefaultWebSessionManager {
   public OnlineSession getOnlineSession(SessionKey sessionKey) {
     OnlineSession session = null;
     Object obj = doGetSession(sessionKey);
-    if (StringUtils.isNotNull(obj)) {
+    if (obj != null) {
       session = new OnlineSession();
       BeanUtils.copyBeanProp(session, obj);
     }

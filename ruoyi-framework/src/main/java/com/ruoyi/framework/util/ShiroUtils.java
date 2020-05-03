@@ -1,6 +1,6 @@
 package com.ruoyi.framework.util;
 
-import com.ruoyi.common.utils.StringUtils;
+
 import com.ruoyi.common.utils.bean.BeanUtils;
 import com.ruoyi.framework.shiro.realm.UserRealm;
 import com.ruoyi.system.domain.SysUser;
@@ -34,7 +34,7 @@ public class ShiroUtils {
   public static SysUser getSysUser() {
     SysUser user = null;
     Object obj = getSubject().getPrincipal();
-    if (StringUtils.isNotNull(obj)) {
+    if (obj != null) {
       user = new SysUser();
       BeanUtils.copyBeanProp(user, obj);
     }

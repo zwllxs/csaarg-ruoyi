@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.ruoyi.common.core.domain.Ztree;
-import com.ruoyi.system.domain.SysDictData;
 import com.ruoyi.system.domain.SysDictType;
 
 import java.util.List;
@@ -24,38 +23,7 @@ public interface ISysDictTypeService extends IService<SysDictType> {
    * @param dictType 字典类型信息
    * @return 字典类型集合信息
    */
-  List<SysDictType> selectDictTypeList(SysDictType dictType);
-
-  /**
-   * 根据所有字典类型
-   *
-   * @return 字典类型集合信息
-   */
-  List<SysDictType> selectDictTypeAll();
-
-  /**
-   * 根据字典类型查询字典数据
-   *
-   * @param dictType 字典类型
-   * @return 字典数据集合信息
-   */
-  List<SysDictData> selectDictDataByType(String dictType);
-
-  /**
-   * 根据字典类型ID查询信息
-   *
-   * @param dictId 字典类型ID
-   * @return 字典类型
-   */
-  SysDictType selectDictTypeById(Long dictId);
-
-  /**
-   * 根据字典类型查询信息
-   *
-   * @param dictType 字典类型
-   * @return 字典类型
-   */
-  SysDictType selectDictTypeByType(String dictType);
+  List<SysDictType> list(SysDictType dictType);
 
   /**
    * 批量删除字典类型
@@ -64,7 +32,7 @@ public interface ISysDictTypeService extends IService<SysDictType> {
    * @return 结果
    * @throws Exception 异常
    */
-  int deleteDictTypeByIds(String ids);
+  boolean removeByIds(String ids);
 
   /**
    * 清空缓存数据
@@ -77,7 +45,8 @@ public interface ISysDictTypeService extends IService<SysDictType> {
    * @param dictType 字典类型信息
    * @return 结果
    */
-  int insertDictType(SysDictType dictType);
+  @Override
+  boolean save(SysDictType dictType);
 
   /**
    * 修改保存字典类型信息
@@ -85,7 +54,7 @@ public interface ISysDictTypeService extends IService<SysDictType> {
    * @param dictType 字典类型信息
    * @return 结果
    */
-  int updateDictType(SysDictType dictType);
+  boolean update(SysDictType dictType);
 
   /**
    * 校验字典类型称是否唯一
@@ -93,7 +62,7 @@ public interface ISysDictTypeService extends IService<SysDictType> {
    * @param dictType 字典类型
    * @return 结果
    */
-  String checkDictTypeUnique(SysDictType dictType);
+  boolean checkTypeUnique(SysDictType dictType);
 
   /**
    * 查询字典类型树
@@ -101,5 +70,5 @@ public interface ISysDictTypeService extends IService<SysDictType> {
    * @param dictType 字典类型
    * @return 所有字典类型
    */
-  List<Ztree> selectDictTree(SysDictType dictType);
+  List<Ztree> listTree(SysDictType dictType);
 }

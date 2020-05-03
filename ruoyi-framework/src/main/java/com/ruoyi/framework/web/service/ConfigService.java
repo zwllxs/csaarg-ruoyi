@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- * RuoYi首创 html调用 thymeleaf 实现参数管理
+ * RuoYi首创 html调用 thymeleaf 实现参数管理 —— 小朋友表示有很多问号
  *
  * @author ruoyi
  */
@@ -22,6 +22,6 @@ public class ConfigService {
    * @return 参数键值
    */
   public String getKey(String configKey) {
-    return configService.selectConfigByKey(configKey);
+    return configService.getValueByKey(configKey);
   }
 }

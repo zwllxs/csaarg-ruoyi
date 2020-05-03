@@ -45,12 +45,12 @@ public class SysRegisterService {
     } else if (username.length() < UserConstants.USERNAME_MIN_LENGTH
       || username.length() > UserConstants.USERNAME_MAX_LENGTH) {
       msg = "账户长度必须在2到20个字符之间";
-    } else if (UserConstants.USER_NAME_NOT_UNIQUE.equals(userService.checkLoginNameUnique(username))) {
+    } else if (userService.checkLoginNameUnique(username)) {
       msg = "保存用户'" + username + "'失败，注册账号已存在";
     } else {
       user.setSalt(ShiroUtils.randomSalt());
       user.setPassword(passwordService.encryptPassword(user.getLoginName(), user.getPassword(), user.getSalt()));
-      boolean regFlag = userService.registerUser(user);
+      boolean regFlag = userService.register(user);
       if (!regFlag) {
         msg = "注册失败,请联系系统管理人员";
       } else {

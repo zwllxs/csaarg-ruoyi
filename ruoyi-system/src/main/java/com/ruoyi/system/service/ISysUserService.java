@@ -23,7 +23,7 @@ public interface ISysUserService extends IService<SysUser> {
    * @param user 用户信息
    * @return 用户信息集合信息
    */
-  List<SysUser> selectUserList(SysUser user);
+  List<SysUser> list(SysUser user);
 
   IPage<SysUser> pageByAllocated(Page<SysUser> page, SysUser user);
 
@@ -33,7 +33,7 @@ public interface ISysUserService extends IService<SysUser> {
    * @param user 用户信息
    * @return 用户信息集合信息
    */
-  List<SysUser> selectAllocatedList(SysUser user);
+  List<SysUser> listAllocated(SysUser user);
 
   /**
    * 根据条件分页查询未分配用户角色列表
@@ -41,7 +41,7 @@ public interface ISysUserService extends IService<SysUser> {
    * @param user 用户信息
    * @return 用户信息集合信息
    */
-  List<SysUser> selectUnallocatedList(SysUser user);
+  List<SysUser> listUnallocated(SysUser user);
 
   /**
    * 通过用户名查询用户
@@ -49,7 +49,7 @@ public interface ISysUserService extends IService<SysUser> {
    * @param userName 用户名
    * @return 用户对象信息
    */
-  SysUser selectUserByLoginName(String userName);
+  SysUser getByLoginName(String userName);
 
   /**
    * 通过手机号码查询用户
@@ -57,7 +57,7 @@ public interface ISysUserService extends IService<SysUser> {
    * @param phoneNumber 手机号码
    * @return 用户对象信息
    */
-  SysUser selectUserByPhoneNumber(String phoneNumber);
+  SysUser getByPhoneNumber(String phoneNumber);
 
   /**
    * 通过邮箱查询用户
@@ -65,7 +65,7 @@ public interface ISysUserService extends IService<SysUser> {
    * @param email 邮箱
    * @return 用户对象信息
    */
-  SysUser selectUserByEmail(String email);
+  SysUser getByEmail(String email);
 
   /**
    * 通过用户ID查询用户
@@ -73,7 +73,7 @@ public interface ISysUserService extends IService<SysUser> {
    * @param userId 用户ID
    * @return 用户对象信息
    */
-  SysUser selectUserById(Long userId);
+  SysUser getById(Long userId);
 
   /**
    * 通过用户ID查询用户和角色关联
@@ -81,7 +81,7 @@ public interface ISysUserService extends IService<SysUser> {
    * @param userId 用户ID
    * @return 用户和角色关联列表
    */
-  List<SysUserRole> selectUserRoleByUserId(Long userId);
+  List<SysUserRole> listUserRoleByUserId(Long userId);
 
   /**
    * 通过用户ID删除用户
@@ -89,7 +89,7 @@ public interface ISysUserService extends IService<SysUser> {
    * @param userId 用户ID
    * @return 结果
    */
-  int deleteUserById(Long userId);
+  int deleteById(Long userId);
 
   /**
    * 批量删除用户信息
@@ -98,7 +98,7 @@ public interface ISysUserService extends IService<SysUser> {
    * @return 结果
    * @throws Exception 异常
    */
-  int deleteUserByIds(String ids) throws Exception;
+  boolean deleteByIds(String ids) throws Exception;
 
   /**
    * 保存用户信息
@@ -106,7 +106,7 @@ public interface ISysUserService extends IService<SysUser> {
    * @param user 用户信息
    * @return 结果
    */
-  int insertUser(SysUser user);
+  boolean insert(SysUser user);
 
   /**
    * 注册用户信息
@@ -114,7 +114,7 @@ public interface ISysUserService extends IService<SysUser> {
    * @param user 用户信息
    * @return 结果
    */
-  boolean registerUser(SysUser user);
+  boolean register(SysUser user);
 
   /**
    * 保存用户信息
@@ -122,15 +122,7 @@ public interface ISysUserService extends IService<SysUser> {
    * @param user 用户信息
    * @return 结果
    */
-  int updateUser(SysUser user);
-
-  /**
-   * 修改用户详细信息
-   *
-   * @param user 用户信息
-   * @return 结果
-   */
-  int updateUserInfo(SysUser user);
+  boolean update(SysUser user);
 
   /**
    * 用户授权角色
@@ -141,20 +133,12 @@ public interface ISysUserService extends IService<SysUser> {
   void insertUserAuth(Long userId, Long[] roleIds);
 
   /**
-   * 修改用户密码信息
-   *
-   * @param user 用户信息
-   * @return 结果
-   */
-  int resetUserPwd(SysUser user);
-
-  /**
    * 校验用户名称是否唯一
    *
    * @param loginName 登录名称
    * @return 结果
    */
-  String checkLoginNameUnique(String loginName);
+  boolean checkLoginNameUnique(String loginName);
 
   /**
    * 校验手机号码是否唯一
@@ -162,7 +146,7 @@ public interface ISysUserService extends IService<SysUser> {
    * @param user 用户信息
    * @return 结果
    */
-  String checkPhoneUnique(SysUser user);
+  boolean checkPhoneUnique(SysUser user);
 
   /**
    * 校验email是否唯一
@@ -170,14 +154,14 @@ public interface ISysUserService extends IService<SysUser> {
    * @param user 用户信息
    * @return 结果
    */
-  String checkEmailUnique(SysUser user);
+  boolean checkEmailUnique(SysUser user);
 
   /**
    * 校验用户是否允许操作
    *
    * @param user 用户信息
    */
-  void checkUserAllowed(SysUser user);
+  void checkAllowed(SysUser user);
 
   /**
    * 根据用户ID查询用户所属角色组
@@ -185,7 +169,7 @@ public interface ISysUserService extends IService<SysUser> {
    * @param userId 用户ID
    * @return 结果
    */
-  String selectUserRoleGroup(Long userId);
+  String getUserRoleGroup(Long userId);
 
   /**
    * 根据用户ID查询用户所属岗位组
@@ -193,7 +177,7 @@ public interface ISysUserService extends IService<SysUser> {
    * @param userId 用户ID
    * @return 结果
    */
-  String selectUserPostGroup(Long userId);
+  String getUserPostGroup(Long userId);
 
   /**
    * 导入用户数据

@@ -1,20 +1,21 @@
 package com.ruoyi.system.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.ruoyi.common.constant.Constants;
-import com.ruoyi.common.constant.UserConstants;
+import com.ruoyi.common.constant.CacheConstants;
 import com.ruoyi.common.core.text.Convert;
 import com.ruoyi.common.utils.CacheUtils;
-import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.system.domain.SysConfig;
 import com.ruoyi.system.mapper.SysConfigMapper;
 import com.ruoyi.system.service.ISysConfigService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -33,23 +34,10 @@ public class SysConfigServiceImpl extends ServiceImpl<SysConfigMapper, SysConfig
    */
   @PostConstruct
   public void init() {
-    List<SysConfig> configsList = configMapper.selectConfigList(new SysConfig());
+    List<SysConfig> configsList = super.list();
     for (SysConfig config : configsList) {
       CacheUtils.put(getCacheName(), getCacheKey(config.getConfigKey()), config.getConfigValue());
     }
-  }
-
-  /**
-   * 查询参数配置信息
-   *
-   * @param configId 参数配置ID
-   * @return 参数配置信息
-   */
-  @Override
-  public SysConfig selectConfigById(Long configId) {
-    SysConfig config = new SysConfig();
-    config.setConfigId(configId);
-    return configMapper.selectConfig(config);
   }
 
   /**
@@ -59,15 +47,15 @@ public class SysConfigServiceImpl extends ServiceImpl<SysConfigMapper, SysConfig
    * @return 参数键值
    */
   @Override
-  public String selectConfigByKey(String configKey) {
+  public String getValueByKey(String configKey) {
     String configValue = Convert.toStr(CacheUtils.get(getCacheName(), getCacheKey(configKey)));
     if (StringUtils.isNotEmpty(configValue)) {
       return configValue;
     }
-    SysConfig config = new SysConfig();
-    config.setConfigKey(configKey);
-    SysConfig retConfig = configMapper.selectConfig(config);
-    if (StringUtils.isNotNull(retConfig)) {
+    SysConfig configQuerier = new SysConfig();
+    configQuerier.setConfigKey(configKey);
+    SysConfig retConfig = super.getOne(new QueryWrapper<>(configQuerier));
+    if (retConfig != null) {
       CacheUtils.put(getCacheName(), getCacheKey(configKey), retConfig.getConfigValue());
       return retConfig.getConfigValue();
     }
@@ -80,29 +68,18 @@ public class SysConfigServiceImpl extends ServiceImpl<SysConfigMapper, SysConfig
   }
 
   /**
-   * 查询参数配置列表
-   *
-   * @param config 参数配置信息
-   * @return 参数配置集合
-   */
-  @Override
-  public List<SysConfig> selectConfigList(SysConfig config) {
-    return configMapper.selectConfigList(config);
-  }
-
-  /**
    * 新增参数配置
    *
    * @param config 参数配置信息
    * @return 结果
    */
   @Override
-  public int insertConfig(SysConfig config) {
-    int row = configMapper.insertConfig(config);
-    if (row > 0) {
+  public boolean save(SysConfig config) {
+    boolean result = super.save(config);
+    if (result) {
       CacheUtils.put(getCacheName(), getCacheKey(config.getConfigKey()), config.getConfigValue());
     }
-    return row;
+    return result;
   }
 
   /**
@@ -112,12 +89,12 @@ public class SysConfigServiceImpl extends ServiceImpl<SysConfigMapper, SysConfig
    * @return 结果
    */
   @Override
-  public int updateConfig(SysConfig config) {
-    int row = configMapper.updateConfig(config);
-    if (row > 0) {
+  public boolean update(SysConfig config) {
+    boolean result = super.updateById(config);
+    if (result) {
       CacheUtils.put(getCacheName(), getCacheKey(config.getConfigKey()), config.getConfigValue());
     }
-    return row;
+    return result;
   }
 
   /**
@@ -127,13 +104,12 @@ public class SysConfigServiceImpl extends ServiceImpl<SysConfigMapper, SysConfig
    * @return 结果
    */
   @Override
-  public int deleteConfigByIds(String ids) {
-    int count = configMapper.deleteConfigByIds(Convert.toStrArray(ids));
-    if (count > 0) {
-
+  public boolean removeByIds(String ids) {
+    boolean result = super.removeByIds(Arrays.asList(StringUtils.split(ids, ",")));
+    if (result) {
       CacheUtils.removeAll(getCacheName());
     }
-    return count;
+    return result;
   }
 
   /**
@@ -151,13 +127,13 @@ public class SysConfigServiceImpl extends ServiceImpl<SysConfigMapper, SysConfig
    * @return 结果
    */
   @Override
-  public String checkConfigKeyUnique(SysConfig config) {
-    long configId = StringUtils.isNull(config.getConfigId()) ? -1L : config.getConfigId();
-    SysConfig info = configMapper.checkConfigKeyUnique(config.getConfigKey());
-    if (StringUtils.isNotNull(info) && info.getConfigId() != configId) {
-      return UserConstants.CONFIG_KEY_NOT_UNIQUE;
-    }
-    return UserConstants.CONFIG_KEY_UNIQUE;
+  public boolean checkKeyUnique(SysConfig config) {
+    long configId = config.getConfigId() == null ? -1L : config.getConfigId();
+
+    SysConfig sysConfigQuerier = new SysConfig();
+    sysConfigQuerier.setConfigKey(config.getConfigKey());
+    SysConfig info = super.getOne(new QueryWrapper<>(sysConfigQuerier));
+    return info != null && info.getConfigId() != configId;
   }
 
   /**
@@ -166,7 +142,7 @@ public class SysConfigServiceImpl extends ServiceImpl<SysConfigMapper, SysConfig
    * @return 缓存名
    */
   private String getCacheName() {
-    return Constants.SYS_CONFIG_CACHE;
+    return CacheConstants.SYS_CONFIG_NAME;
   }
 
   /**
@@ -176,6 +152,6 @@ public class SysConfigServiceImpl extends ServiceImpl<SysConfigMapper, SysConfig
    * @return 缓存键key
    */
   private String getCacheKey(String configKey) {
-    return Constants.SYS_CONFIG_KEY + configKey;
+    return CacheConstants.SYS_CONFIG_KEY + configKey;
   }
 }

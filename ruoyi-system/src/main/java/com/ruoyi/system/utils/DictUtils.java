@@ -1,6 +1,6 @@
 package com.ruoyi.system.utils;
 
-import com.ruoyi.common.constant.Constants;
+import com.ruoyi.common.constant.CacheConstants;
 import com.ruoyi.common.utils.CacheUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.system.domain.SysDictData;
@@ -31,7 +31,7 @@ public class DictUtils {
    */
   public static List<SysDictData> getDictCache(String key) {
     Object cacheObj = CacheUtils.get(getCacheName(), getCacheKey(key));
-    if (StringUtils.isNotNull(cacheObj)) {
+    if (cacheObj != null) {
       return StringUtils.cast(cacheObj);
     }
     return null;
@@ -50,7 +50,7 @@ public class DictUtils {
    * @return 缓存名
    */
   public static String getCacheName() {
-    return Constants.SYS_DICT_CACHE;
+    return CacheConstants.SYS_DICT_NAME;
   }
 
   /**
@@ -60,6 +60,6 @@ public class DictUtils {
    * @return 缓存键key
    */
   public static String getCacheKey(String configKey) {
-    return Constants.SYS_DICT_KEY + configKey;
+    return CacheConstants.SYS_DICT_KEY + configKey;
   }
 }

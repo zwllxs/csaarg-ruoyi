@@ -1,6 +1,7 @@
 package com.ruoyi.common.core.text;
 
-import com.ruoyi.common.utils.StringUtils;
+
+import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;

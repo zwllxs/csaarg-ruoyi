@@ -80,5 +80,5 @@ public interface GenTableMapper extends BaseMapper<GenTable> {
    * @param ids 需要删除的数据ID
    * @return 结果
    */
-  int deleteGenTableByIds(Long[] ids);
+  int deleteGenTableByIds(String[] ids);
 }

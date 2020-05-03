@@ -1,7 +1,7 @@
 package com.ruoyi.web.controller.system;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.ruoyi.common.annotation.Log;
-import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.Result;
 import com.ruoyi.common.core.domain.Ztree;
@@ -47,7 +47,7 @@ public class SysMenuController extends BaseController {
   @PostMapping("/list")
   public List<SysMenu> list(SysMenu menu) {
     Long userId = ShiroUtils.getUserId();
-    return menuService.selectMenuList(menu, userId);
+    return menuService.list(menu, userId);
   }
 
   /**
@@ -58,14 +58,21 @@ public class SysMenuController extends BaseController {
   @ResponseBody
   @GetMapping("/remove/{menuId}")
   public Result remove(@PathVariable("menuId") Long menuId) {
-    if (menuService.selectCountMenuByParentId(menuId) > 0) {
+    SysMenu sysMenuQuerier = new SysMenu();
+    sysMenuQuerier.setParentId(menuId);
+    if (menuService.count(new QueryWrapper<>(sysMenuQuerier)) > 0) {
       return Result.error("存在子菜单,不允许删除");
     }
-    if (menuService.selectCountRoleMenuByMenuId(menuId) > 0) {
+
+    sysMenuQuerier = new SysMenu();
+    sysMenuQuerier.setMenuId(menuId);
+    if (menuService.count(new QueryWrapper<>(sysMenuQuerier)) > 0) {
       return Result.error("菜单已分配,不允许删除");
     }
+
     ShiroUtils.clearCachedAuthorizationInfo();
-    return custom(menuService.deleteMenuById(menuId));
+    sysMenuQuerier.setParentId(menuId);
+    return custom(menuService.remove(new QueryWrapper<>(sysMenuQuerier)));
   }
 
   /**
@@ -75,7 +82,7 @@ public class SysMenuController extends BaseController {
   public String add(@PathVariable("parentId") Long parentId, ModelMap mmap) {
     SysMenu menu = null;
     if (0L != parentId) {
-      menu = menuService.selectMenuById(parentId);
+      menu = menuService.getById(parentId);
     } else {
       menu = new SysMenu();
       menu.setMenuId(0L);
@@ -93,12 +100,12 @@ public class SysMenuController extends BaseController {
   @ResponseBody
   @PostMapping("/add")
   public Result addSave(@Validated SysMenu menu) {
-    if (UserConstants.MENU_NAME_NOT_UNIQUE.equals(menuService.checkMenuNameUnique(menu))) {
+    if (menuService.checkNameUnique(menu)) {
       return error("新增菜单'" + menu.getMenuName() + "'失败，菜单名称已存在");
     }
     menu.setCreateBy(ShiroUtils.getLoginName());
     ShiroUtils.clearCachedAuthorizationInfo();
-    return custom(menuService.insertMenu(menu));
+    return custom(menuService.save(menu));
   }
 
   /**
@@ -106,7 +113,7 @@ public class SysMenuController extends BaseController {
    */
   @GetMapping("/edit/{menuId}")
   public String edit(@PathVariable("menuId") Long menuId, ModelMap mmap) {
-    mmap.put("menu", menuService.selectMenuById(menuId));
+    mmap.put("menu", menuService.getById(menuId));
     return PREFIX + "/edit";
   }
 
@@ -118,12 +125,12 @@ public class SysMenuController extends BaseController {
   @ResponseBody
   @PostMapping("/edit")
   public Result editSave(@Validated SysMenu menu) {
-    if (UserConstants.MENU_NAME_NOT_UNIQUE.equals(menuService.checkMenuNameUnique(menu))) {
+    if (menuService.checkNameUnique(menu)) {
       return error("修改菜单'" + menu.getMenuName() + "'失败，菜单名称已存在");
     }
     menu.setUpdateBy(ShiroUtils.getLoginName());
     ShiroUtils.clearCachedAuthorizationInfo();
-    return custom(menuService.updateMenu(menu));
+    return custom(menuService.updateById(menu));
   }
 
   /**
@@ -136,11 +143,12 @@ public class SysMenuController extends BaseController {
 
   /**
    * 校验菜单名称
+   * @return
    */
   @ResponseBody
   @PostMapping("/checkMenuNameUnique")
-  public String checkMenuNameUnique(SysMenu menu) {
-    return menuService.checkMenuNameUnique(menu);
+  public boolean checkMenuNameUnique(SysMenu menu) {
+    return menuService.checkNameUnique(menu);
   }
 
   /**
@@ -150,7 +158,7 @@ public class SysMenuController extends BaseController {
   @GetMapping("/roleMenuTreeData")
   public List<Ztree> roleMenuTreeData(SysRole role) {
     Long userId = ShiroUtils.getUserId();
-    return menuService.roleMenuTreeData(role, userId);
+    return menuService.listRoleMenuTree(role, userId);
   }
 
   /**
@@ -160,8 +168,7 @@ public class SysMenuController extends BaseController {
   @GetMapping("/menuTreeData")
   public List<Ztree> menuTreeData() {
     Long userId = ShiroUtils.getUserId();
-    List<Ztree> ztrees = menuService.menuTreeData(userId);
-    return ztrees;
+    return menuService.listMenuTree(userId);
   }
 
   /**
@@ -169,7 +176,7 @@ public class SysMenuController extends BaseController {
    */
   @GetMapping("/selectMenuTree/{menuId}")
   public String selectMenuTree(@PathVariable("menuId") Long menuId, ModelMap mmap) {
-    mmap.put("menu", menuService.selectMenuById(menuId));
+    mmap.put("menu", menuService.getById(menuId));
     return PREFIX + "/tree";
   }
 }

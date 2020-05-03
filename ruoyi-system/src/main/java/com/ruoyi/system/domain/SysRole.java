@@ -2,6 +2,7 @@ package com.ruoyi.system.domain;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.annotation.Excel.ColumnType;
 import com.ruoyi.common.core.domain.BaseEntity;
@@ -52,16 +53,17 @@ public class SysRole extends BaseEntity {
    * 数据范围（1：所有数据权限；2：自定义数据权限；3：本部门数据权限；4：本部门及以下数据权限）
    */
   @Excel(name = "数据范围", readConverterExp = "1=所有数据权限,2=自定义数据权限,3=本部门数据权限,4=本部门及以下数据权限")
-  private String dataScope;
+  private Integer dataScope;
   /**
    * 角色状态（0正常 1停用）
    */
   @Excel(name = "角色状态", readConverterExp = "0=正常,1=停用")
-  private String status;
+  private Integer status;
   /**
    * 删除标志（0代表存在 2代表删除）
    */
-  private String delFlag;
+  @TableLogic
+  private Boolean delFlag;
   /**
    * 用户是否存在此角色标识 默认不存在
    */

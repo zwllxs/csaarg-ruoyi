@@ -2,7 +2,6 @@ package com.ruoyi.web.controller.tool;
 
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.Result;
-import com.ruoyi.common.utils.StringUtils;
 import io.swagger.annotations.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -56,7 +55,7 @@ public class TestController extends BaseController {
   @ApiOperation("新增用户")
   @PostMapping("/save")
   public Result save(UserEntity user) {
-    if (StringUtils.isNull(user) || StringUtils.isNull(user.getUserId())) {
+    if (user == null || user.getUserId() == null) {
       return error("用户ID不能为空");
     }
     return success(USERS.put(user.getUserId(), user));
@@ -66,7 +65,7 @@ public class TestController extends BaseController {
   @ApiOperation("更新用户")
   @PutMapping("/update")
   public Result update(UserEntity user) {
-    if (StringUtils.isNull(user) || StringUtils.isNull(user.getUserId())) {
+    if (user == null || user.getUserId() == null) {
       return error("用户ID不能为空");
     }
     if (USERS.isEmpty() || !USERS.containsKey(user.getUserId())) {

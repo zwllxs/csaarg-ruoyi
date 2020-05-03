@@ -1,4 +1,4 @@
-package com.ruoyi.common.config.datasource;
+package com.ruoyi.framework.datasource;
 
 import lombok.extern.slf4j.Slf4j;
 

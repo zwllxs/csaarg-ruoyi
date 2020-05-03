@@ -56,10 +56,10 @@ public class SysMenu extends BaseEntity {
    */
   private String target;
   /**
-   * 类型:0目录,1菜单,2按钮
+   * 类型（1: 目录, 2: 菜单, 3: 按钮）
    */
   @NotBlank(message = "菜单类型不能为空")
-  private String menuType;
+  private Integer menuType;
   /**
    * 菜单状态:0显示,1隐藏
    */

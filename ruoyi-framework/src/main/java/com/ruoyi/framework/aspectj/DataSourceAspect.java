@@ -1,8 +1,7 @@
 package com.ruoyi.framework.aspectj;
 
 import com.ruoyi.common.annotation.DataSource;
-import com.ruoyi.common.config.datasource.DynamicDataSourceContextHolder;
-import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.framework.datasource.DynamicDataSourceContextHolder;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -36,7 +35,7 @@ public class DataSourceAspect {
   public Object around(ProceedingJoinPoint point) throws Throwable {
     DataSource dataSource = getDataSource(point);
 
-    if (StringUtils.isNotNull(dataSource)) {
+    if (dataSource != null) {
       DynamicDataSourceContextHolder.setDataSourceType(dataSource.value().name());
     }
 
@@ -55,7 +54,7 @@ public class DataSourceAspect {
     MethodSignature signature = (MethodSignature) point.getSignature();
     Class<? extends Object> targetClass = point.getTarget().getClass();
     DataSource targetDataSource = targetClass.getAnnotation(DataSource.class);
-    if (StringUtils.isNotNull(targetDataSource)) {
+    if (targetDataSource != null) {
       return targetDataSource;
     } else {
       Method method = signature.getMethod();

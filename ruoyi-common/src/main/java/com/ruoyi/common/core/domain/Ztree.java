@@ -1,7 +1,5 @@
 package com.ruoyi.common.core.domain;
 
-import lombok.Data;
-
 import java.io.Serializable;
 
 /**
@@ -9,7 +7,6 @@ import java.io.Serializable;
  *
  * @author ruoyi
  */
-@Data
 public class Ztree implements Serializable {
 
   private static final long serialVersionUID = 1L;
@@ -42,4 +39,65 @@ public class Ztree implements Serializable {
    * 是否能勾选
    */
   private boolean nocheck = false;
+
+  public Long getId() {
+    return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
+  }
+
+  /**
+   * 不使用 Lombok，否则 Jackson 会将其解析为 pid
+   *
+   * @return 节点父 ID
+   */
+  public Long getpId() {
+    return pId;
+  }
+
+  public void setpId(Long pId) {
+    this.pId = pId;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public String getTitle() {
+    return title;
+  }
+
+  public void setTitle(String title) {
+    this.title = title;
+  }
+
+  public boolean isChecked() {
+    return checked;
+  }
+
+  public void setChecked(boolean checked) {
+    this.checked = checked;
+  }
+
+  public boolean isOpen() {
+    return open;
+  }
+
+  public void setOpen(boolean open) {
+    this.open = open;
+  }
+
+  public boolean isNocheck() {
+    return nocheck;
+  }
+
+  public void setNocheck(boolean nocheck) {
+    this.nocheck = nocheck;
+  }
 }

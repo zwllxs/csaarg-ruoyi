@@ -1204,7 +1204,7 @@ var table = {
     validate: {
       // 判断返回标识是否唯一 false 不存在 true 存在
       unique: function (value) {
-        if (value == "0") {
+        if (value == "0" || value) {
           return true;
         }
         return false;

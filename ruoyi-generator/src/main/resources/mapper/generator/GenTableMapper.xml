@@ -86,10 +86,10 @@
     <include refid="selectGenTableVo"/>
     <where>
       <if test="tableName != null and tableName != ''">
-        AND lower(table_name) like lower(concat('%', #{tableName}, '%'))
+        and lower(table_name) like lower(concat('%', #{tableName}, '%'))
       </if>
       <if test="tableComment != null and tableComment != ''">
-        AND lower(table_comment) like lower(concat('%', #{tableComment}, '%'))
+        and lower(table_comment) like lower(concat('%', #{tableComment}, '%'))
       </if>
     </where>
   </select>
@@ -110,13 +110,13 @@
   <select id="selectDbTableList" resultMap="GenTableResult">
     select table_name, table_comment, create_time, update_time from information_schema.tables
     where table_schema = (select database())
-    AND table_name NOT LIKE 'qrtz_%' AND table_name NOT LIKE 'gen_%'
-    AND table_name NOT IN (select table_name from gen_table)
+    and table_name NOT LIKE 'qrtz_%' and table_name NOT LIKE 'gen_%'
+    and table_name NOT IN (select table_name from gen_table)
     <if test="tableName != null and tableName != ''">
-      AND lower(table_name) like lower(concat('%', #{tableName}, '%'))
+      and lower(table_name) like lower(concat('%', #{tableName}, '%'))
     </if>
     <if test="tableComment != null and tableComment != ''">
-      AND lower(table_comment) like lower(concat('%', #{tableComment}, '%'))
+      and lower(table_comment) like lower(concat('%', #{tableComment}, '%'))
     </if>
   </select>
 
@@ -138,7 +138,7 @@
   </select>
 
   <select id="selectGenTableById" resultMap="GenTableResult">
-    SELECT t.table_id,
+    select t.table_id,
            t.table_name,
            t.table_comment,
            t.class_name,
@@ -167,14 +167,14 @@
            c.html_type,
            c.dict_type,
            c.sort
-    FROM gen_table t
+    from gen_table t
            LEFT JOIN gen_table_column c ON t.table_id = c.table_id
     where t.table_id = #{tableId}
     order by c.sort
   </select>
 
   <select id="selectGenTableByName" resultMap="GenTableResult">
-    SELECT t.table_id,
+    select t.table_id,
            t.table_name,
            t.table_comment,
            t.class_name,
@@ -203,7 +203,7 @@
            c.html_type,
            c.dict_type,
            c.sort
-    FROM gen_table t
+    from gen_table t
            LEFT JOIN gen_table_column c ON t.table_id = c.table_id
     where t.table_name = #{tableName}
     order by c.sort

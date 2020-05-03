@@ -52,7 +52,7 @@ public class SysDictDataController extends BaseController {
   @ResponseBody
   @PostMapping("/export")
   public Result export(SysDictData dictData) {
-    List<SysDictData> list = dictDataService.selectDictDataList(dictData);
+    List<SysDictData> list = dictDataService.list(dictData);
     ExcelUtil<SysDictData> util = new ExcelUtil<SysDictData>(SysDictData.class);
     return util.exportExcel(list, "字典数据");
   }
@@ -75,7 +75,7 @@ public class SysDictDataController extends BaseController {
   @PostMapping("/add")
   public Result addSave(@Validated SysDictData dict) {
     dict.setCreateBy(ShiroUtils.getLoginName());
-    return custom(dictDataService.insertDictData(dict));
+    return custom(dictDataService.save(dict));
   }
 
   /**
@@ -83,7 +83,7 @@ public class SysDictDataController extends BaseController {
    */
   @GetMapping("/edit/{dictCode}")
   public String edit(@PathVariable("dictCode") Long dictCode, ModelMap mmap) {
-    mmap.put("dict", dictDataService.selectDictDataById(dictCode));
+    mmap.put("dict", dictDataService.getById(dictCode));
     return PREFIX + "/edit";
   }
 
@@ -96,7 +96,7 @@ public class SysDictDataController extends BaseController {
   @PostMapping("/edit")
   public Result editSave(@Validated SysDictData dict) {
     dict.setUpdateBy(ShiroUtils.getLoginName());
-    return custom(dictDataService.updateDictData(dict));
+    return custom(dictDataService.update(dict));
   }
 
   @Log(title = "字典数据", businessType = BusinessType.DELETE)
@@ -104,6 +104,6 @@ public class SysDictDataController extends BaseController {
   @ResponseBody
   @PostMapping("/remove")
   public Result remove(String ids) {
-    return custom(dictDataService.deleteDictDataByIds(ids));
+    return custom(dictDataService.removeByIds(ids));
   }
 }

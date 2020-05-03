@@ -5,7 +5,6 @@ import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.Result;
 import com.ruoyi.common.enums.BusinessType;
-import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.quartz.domain.SysJob;
 import com.ruoyi.quartz.domain.SysJobLog;
@@ -41,7 +40,7 @@ public class SysJobLogController extends BaseController {
   @RequiresPermissions("monitor:job:view")
   @GetMapping
   public String jobLog(@RequestParam(value = "jobId", required = false) Long jobId, ModelMap mmap) {
-    if (StringUtils.isNotNull(jobId)) {
+    if (jobId != null) {
       SysJob job = jobService.selectJobById(jobId);
       mmap.put("job", job);
     }

@@ -3,13 +3,14 @@ package com.ruoyi.system.service.impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.ruoyi.common.core.text.Convert;
 import com.ruoyi.system.domain.SysNotice;
 import com.ruoyi.system.mapper.SysNoticeMapper;
 import com.ruoyi.system.service.ISysNoticeService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -24,17 +25,6 @@ public class SysNoticeServiceImpl extends ServiceImpl<SysNoticeMapper, SysNotice
   @Autowired
   private SysNoticeMapper noticeMapper;
 
-  /**
-   * 查询公告信息
-   *
-   * @param noticeId 公告ID
-   * @return 公告信息
-   */
-  @Override
-  public SysNotice selectNoticeById(Long noticeId) {
-    return noticeMapper.selectNoticeById(noticeId);
-  }
-
   @Override
   public IPage<SysNotice> page(Page<SysNotice> page, SysNotice notice) {
     return page.setRecords(noticeMapper.page(page, notice));
@@ -47,30 +37,8 @@ public class SysNoticeServiceImpl extends ServiceImpl<SysNoticeMapper, SysNotice
    * @return 公告集合
    */
   @Override
-  public List<SysNotice> selectNoticeList(SysNotice notice) {
-    return noticeMapper.selectNoticeList(notice);
-  }
-
-  /**
-   * 新增公告
-   *
-   * @param notice 公告信息
-   * @return 结果
-   */
-  @Override
-  public int insertNotice(SysNotice notice) {
-    return noticeMapper.insertNotice(notice);
-  }
-
-  /**
-   * 修改公告
-   *
-   * @param notice 公告信息
-   * @return 结果
-   */
-  @Override
-  public int updateNotice(SysNotice notice) {
-    return noticeMapper.updateNotice(notice);
+  public List<SysNotice> list(SysNotice notice) {
+    return noticeMapper.page(null, notice);
   }
 
   /**
@@ -80,7 +48,7 @@ public class SysNoticeServiceImpl extends ServiceImpl<SysNoticeMapper, SysNotice
    * @return 结果
    */
   @Override
-  public int deleteNoticeByIds(String ids) {
-    return noticeMapper.deleteNoticeByIds(Convert.toStrArray(ids));
+  public boolean removeByIds(String ids) {
+    return super.removeByIds(Arrays.asList(StringUtils.split(ids)));
   }
 }
