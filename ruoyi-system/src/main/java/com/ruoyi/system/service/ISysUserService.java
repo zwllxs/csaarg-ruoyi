@@ -14,7 +14,13 @@ import java.util.List;
  * @author ruoyi
  */
 public interface ISysUserService extends IService<SysUser> {
-
+  /**
+   * 分页列出用户
+   *
+   * @param page 分页对象
+   * @param user 用户
+   * @return
+   */
   IPage<SysUser> page(Page<SysUser> page, SysUser user);
 
   /**
@@ -25,6 +31,13 @@ public interface ISysUserService extends IService<SysUser> {
    */
   List<SysUser> list(SysUser user);
 
+  /**
+   * 分页列出已分配角色用户
+   *
+   * @param page 分页对象
+   * @param user 用户
+   * @return
+   */
   IPage<SysUser> pageByAllocated(Page<SysUser> page, SysUser user);
 
   /**

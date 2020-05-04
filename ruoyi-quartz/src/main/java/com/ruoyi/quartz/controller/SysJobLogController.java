@@ -41,7 +41,7 @@ public class SysJobLogController extends BaseController {
   @GetMapping
   public String jobLog(@RequestParam(value = "jobId", required = false) Long jobId, ModelMap mmap) {
     if (jobId != null) {
-      SysJob job = jobService.selectJobById(jobId);
+      SysJob job = jobService.getById(jobId);
       mmap.put("job", job);
     }
     return PREFIX + "/jobLog";
@@ -59,7 +59,7 @@ public class SysJobLogController extends BaseController {
   @PostMapping("/export")
   @ResponseBody
   public Result export(SysJobLog jobLog) {
-    List<SysJobLog> list = jobLogService.selectJobLogList(jobLog);
+    List<SysJobLog> list = jobLogService.list(jobLog);
     ExcelUtil<SysJobLog> util = new ExcelUtil<SysJobLog>(SysJobLog.class);
     return util.exportExcel(list, "调度日志");
   }
@@ -69,14 +69,14 @@ public class SysJobLogController extends BaseController {
   @PostMapping("/remove")
   @ResponseBody
   public Result remove(String ids) {
-    return custom(jobLogService.deleteJobLogByIds(ids));
+    return custom(jobLogService.removeByIds(ids));
   }
 
   @RequiresPermissions("monitor:job:detail")
   @GetMapping("/detail/{jobLogId}")
   public String detail(@PathVariable("jobLogId") Long jobLogId, ModelMap mmap) {
     mmap.put("name", "jobLog");
-    mmap.put("jobLog", jobLogService.selectJobLogById(jobLogId));
+    mmap.put("jobLog", jobLogService.getById(jobLogId));
     return PREFIX + "/detail";
   }
 

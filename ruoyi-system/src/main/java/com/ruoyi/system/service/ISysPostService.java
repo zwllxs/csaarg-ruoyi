@@ -13,7 +13,13 @@ import java.util.List;
  * @author ruoyi
  */
 public interface ISysPostService extends IService<SysPost> {
-
+  /**
+   * 分页列出岗位
+   *
+   * @param page 分页对象
+   * @param post 岗位
+   * @return
+   */
   IPage<SysPost> page(Page<SysPost> page, SysPost post);
 
   /**

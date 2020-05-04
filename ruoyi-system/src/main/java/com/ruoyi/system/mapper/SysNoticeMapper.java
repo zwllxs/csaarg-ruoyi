@@ -13,6 +13,12 @@ import java.util.List;
  * @author ruoyi
  */
 public interface SysNoticeMapper extends BaseMapper<SysNotice> {
-
+  /**
+   * 分页列出公告
+   *
+   * @param page   分页对象
+   * @param notice 公告
+   * @return
+   */
   List<SysNotice> page(Page<SysNotice> page, @Param("notice") SysNotice notice);
 }

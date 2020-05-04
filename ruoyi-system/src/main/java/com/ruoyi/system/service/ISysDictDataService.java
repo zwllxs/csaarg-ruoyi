@@ -13,7 +13,13 @@ import java.util.List;
  * @author ruoyi
  */
 public interface ISysDictDataService extends IService<SysDictData> {
-
+  /**
+   * 分页列出字典数据
+   *
+   * @param page     分页对象
+   * @param dictData 字典数据
+   * @return
+   */
   IPage<SysDictData> page(Page<SysDictData> page, SysDictData dictData);
 
   /**

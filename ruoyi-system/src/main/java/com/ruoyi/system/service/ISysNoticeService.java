@@ -13,7 +13,13 @@ import java.util.List;
  * @author ruoyi
  */
 public interface ISysNoticeService extends IService<SysNotice> {
-
+  /**
+   * 分页列出公告
+   *
+   * @param page   分页对象
+   * @param notice 公告
+   * @return
+   */
   IPage<SysNotice> page(Page<SysNotice> page, SysNotice notice);
 
   /**

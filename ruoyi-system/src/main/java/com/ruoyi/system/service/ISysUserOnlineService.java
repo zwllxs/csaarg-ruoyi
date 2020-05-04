@@ -30,6 +30,13 @@ public interface ISysUserOnlineService extends IService<SysUserOnline> {
    */
   void batchDeleteOnline(List<String> sessions);
 
+  /**
+   * 分页列出在线用户
+   *
+   * @param page       分页对象
+   * @param userOnline 在线用户
+   * @return
+   */
   IPage<SysUserOnline> page(Page<SysUserOnline> page, SysUserOnline userOnline);
 
   /**

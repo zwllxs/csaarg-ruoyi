@@ -15,11 +15,17 @@ import java.util.List;
  * @author ruoyi
  */
 public interface ISysDeptService extends IService<SysDept> {
-
+  /**
+   * 分页列出部门
+   *
+   * @param page    分页对象
+   * @param sysDept 部门
+   * @return
+   */
   IPage<SysDept> page(Page<SysDept> page, SysDept sysDept);
+
   /**
    * 查询部门管理数据
-   *
    *
    * @param dept 部门信息
    * @return 部门信息集合

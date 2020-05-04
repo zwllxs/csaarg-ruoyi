@@ -15,6 +15,13 @@ import java.util.Map;
  */
 public interface IGenTableService extends IService<GenTable> {
 
+  /**
+   * 查询业务列表
+   *
+   * @param page     分页对象
+   * @param genTable 业务信息
+   * @return 业务集合
+   */
   IPage<GenTable> page(Page<GenTable> page, GenTable genTable);
 
   /**
@@ -23,9 +30,16 @@ public interface IGenTableService extends IService<GenTable> {
    * @param genTable 业务信息
    * @return 业务集合
    */
-  List<GenTable> selectGenTableList(GenTable genTable);
+  List<GenTable> list(GenTable genTable);
 
-  IPage<GenTable> pageByDbTable(Page<GenTable> page, GenTable genTable);
+  /**
+   * 查询据库列表
+   *
+   * @param page     分页对象
+   * @param genTable 业务信息
+   * @return 数据库表集合
+   */
+  IPage<GenTable> pageDbTable(Page<GenTable> page, GenTable genTable);
 
   /**
    * 查询据库列表
@@ -33,7 +47,7 @@ public interface IGenTableService extends IService<GenTable> {
    * @param genTable 业务信息
    * @return 数据库表集合
    */
-  List<GenTable> selectDbTableList(GenTable genTable);
+  List<GenTable> listDbTable(GenTable genTable);
 
   /**
    * 查询据库列表
@@ -41,7 +55,7 @@ public interface IGenTableService extends IService<GenTable> {
    * @param tableNames 表名称组
    * @return 数据库表集合
    */
-  List<GenTable> selectDbTableListByNames(String[] tableNames);
+  List<GenTable> listDbTableByNames(String[] tableNames);
 
   /**
    * 查询业务信息
@@ -49,7 +63,7 @@ public interface IGenTableService extends IService<GenTable> {
    * @param id 业务ID
    * @return 业务信息
    */
-  GenTable selectGenTableById(Long id);
+  GenTable getById(Long id);
 
   /**
    * 修改业务
@@ -65,7 +79,7 @@ public interface IGenTableService extends IService<GenTable> {
    * @param ids 需要删除的数据ID
    * @return 结果
    */
-  void deleteGenTableByIds(String ids);
+  void removeByIds(String ids);
 
   /**
    * 导入表结构

@@ -65,7 +65,12 @@
     <dependency>
       <groupId>com.baomidou</groupId>
       <artifactId>mybatis-plus-boot-starter</artifactId>
-      <version>${mybatis.plus.version}</version>
+    </dependency>
+
+    <!-- 多数据源 -->
+    <dependency>
+      <groupId>com.baomidou</groupId>
+      <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
     </dependency>
 
     <dependency>

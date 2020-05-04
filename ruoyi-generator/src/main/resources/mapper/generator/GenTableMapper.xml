@@ -69,7 +69,7 @@
     from gen_table
   </sql>
 
-  <select id="page" resultType="com.ruoyi.generator.domain.GenTable">
+  <select id="page" resultMap="GenTableResult">
     select gt.*
     from gen_table gt
     <where>
@@ -82,19 +82,7 @@
     </where>
   </select>
 
-  <select id="selectGenTableList" resultMap="GenTableResult">
-    <include refid="selectGenTableVo"/>
-    <where>
-      <if test="tableName != null and tableName != ''">
-        and lower(table_name) like lower(concat('%', #{tableName}, '%'))
-      </if>
-      <if test="tableComment != null and tableComment != ''">
-        and lower(table_comment) like lower(concat('%', #{tableComment}, '%'))
-      </if>
-    </where>
-  </select>
-
-  <select id="pageByDbTable" resultType="com.ruoyi.generator.domain.GenTable">
+  <select id="pageDbTable" resultMap="GenTableResult">
     select table_name, table_comment, create_time, update_time from information_schema.tables
     where table_schema = (select database())
     and table_name not like 'qrtz_%' and table_name not like 'gen_%'
@@ -107,20 +95,7 @@
     </if>
   </select>
 
-  <select id="selectDbTableList" resultMap="GenTableResult">
-    select table_name, table_comment, create_time, update_time from information_schema.tables
-    where table_schema = (select database())
-    and table_name NOT LIKE 'qrtz_%' and table_name NOT LIKE 'gen_%'
-    and table_name NOT IN (select table_name from gen_table)
-    <if test="tableName != null and tableName != ''">
-      and lower(table_name) like lower(concat('%', #{tableName}, '%'))
-    </if>
-    <if test="tableComment != null and tableComment != ''">
-      and lower(table_comment) like lower(concat('%', #{tableComment}, '%'))
-    </if>
-  </select>
-
-  <select id="selectDbTableListByNames" resultMap="GenTableResult">
+  <select id="listByNames" resultMap="GenTableResult">
     select table_name, table_comment, create_time, update_time from information_schema.tables
     where table_name NOT LIKE 'qrtz_%' and table_name NOT LIKE 'gen_%' and table_schema = (select database())
     and table_name in
@@ -129,15 +104,7 @@
     </foreach>
   </select>
 
-  <select id="selectTableByName" resultMap="GenTableResult">
-    select table_name, table_comment, create_time, update_time
-    from information_schema.tables
-    where table_comment <![CDATA[ <> ]]> ''
-      and table_schema = (select database())
-      and table_name = #{tableName}
-  </select>
-
-  <select id="selectGenTableById" resultMap="GenTableResult">
+  <select id="getById" resultMap="GenTableResult">
     select t.table_id,
            t.table_name,
            t.table_comment,
@@ -173,7 +140,7 @@
     order by c.sort
   </select>
 
-  <select id="selectGenTableByName" resultMap="GenTableResult">
+  <select id="getByName" resultMap="GenTableResult">
     select t.table_id,
            t.table_name,
            t.table_comment,
@@ -208,62 +175,4 @@
     where t.table_name = #{tableName}
     order by c.sort
   </select>
-
-  <insert id="insertGenTable" useGeneratedKeys="true" keyProperty="tableId">
-    insert into gen_table (
-    <if test="tableName != null">table_name,</if>
-    <if test="tableComment != null and tableComment != ''">table_comment,</if>
-    <if test="className != null and className != ''">class_name,</if>
-    <if test="tplCategory != null and tplCategory != ''">tpl_category,</if>
-    <if test="packageName != null and packageName != ''">package_name,</if>
-    <if test="moduleName != null and moduleName != ''">module_name,</if>
-    <if test="businessName != null and businessName != ''">business_name,</if>
-    <if test="functionName != null and functionName != ''">function_name,</if>
-    <if test="functionAuthor != null and functionAuthor != ''">function_author,</if>
-    <if test="remark != null and remark != ''">remark,</if>
-    <if test="createBy != null and createBy != ''">create_by,</if>
-    create_time
-    )values(
-    <if test="tableName != null">#{tableName},</if>
-    <if test="tableComment != null and tableComment != ''">#{tableComment},</if>
-    <if test="className != null and className != ''">#{className},</if>
-    <if test="tplCategory != null and tplCategory != ''">#{tplCategory},</if>
-    <if test="packageName != null and packageName != ''">#{packageName},</if>
-    <if test="moduleName != null and moduleName != ''">#{moduleName},</if>
-    <if test="businessName != null and businessName != ''">#{businessName},</if>
-    <if test="functionName != null and functionName != ''">#{functionName},</if>
-    <if test="functionAuthor != null and functionAuthor != ''">#{functionAuthor},</if>
-    <if test="remark != null and remark != ''">#{remark},</if>
-    <if test="createBy != null and createBy != ''">#{createBy},</if>
-    sysdate()
-    )
-  </insert>
-
-  <update id="updateGenTable">
-    update gen_table
-    <set>
-      <if test="tableName != null">table_name = #{tableName},</if>
-      <if test="tableComment != null and tableComment != ''">table_comment = #{tableComment},</if>
-      <if test="className != null and className != ''">class_name = #{className},</if>
-      <if test="functionAuthor != null and functionAuthor != ''">function_author = #{functionAuthor},</if>
-      <if test="tplCategory != null and tplCategory != ''">tpl_category = #{tplCategory},</if>
-      <if test="packageName != null and packageName != ''">package_name = #{packageName},</if>
-      <if test="moduleName != null and moduleName != ''">module_name = #{moduleName},</if>
-      <if test="businessName != null and businessName != ''">business_name = #{businessName},</if>
-      <if test="functionName != null and functionName != ''">function_name = #{functionName},</if>
-      <if test="options != null and options != ''">options = #{options},</if>
-      <if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
-      <if test="remark != null">remark = #{remark},</if>
-      update_time = sysdate()
-    </set>
-    where table_id = #{tableId}
-  </update>
-
-  <delete id="deleteGenTableByIds">
-    delete from gen_table where table_id in
-    <foreach collection="array" item="tableId" open="(" separator="," close=")">
-      #{tableId}
-    </foreach>
-  </delete>
-
 </mapper> 

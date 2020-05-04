@@ -9,6 +9,9 @@ import lombok.EqualsAndHashCode;
 
 import java.util.Date;
 
+/**
+ * @author ry
+ */
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class UserOperateModel extends BaseEntity {

@@ -13,8 +13,14 @@ import java.util.List;
  * @author ruoyi
  */
 public interface SysDeptMapper extends BaseMapper<SysDept> {
-
-  List<SysDept> page(Page<SysDept> page, @Param("sysDept") SysDept sysDept);
+  /**
+   * 分页列出部门
+   *
+   * @param page    分页对象
+   * @param dept 部门
+   * @return
+   */
+  List<SysDept> page(Page<SysDept> page, @Param("dept") SysDept dept);
 
   /**
    * 修改子元素关系

@@ -15,7 +15,13 @@ import java.util.List;
  * @author ruoyi
  */
 public interface ISysJobService extends IService<SysJob> {
-
+  /**
+   * 分页列出任务
+   *
+   * @param page 分页对象
+   * @param job  任务
+   * @return
+   */
   IPage<SysJob> page(Page<SysJob> page, SysJob job);
 
   /**
@@ -24,15 +30,7 @@ public interface ISysJobService extends IService<SysJob> {
    * @param job 调度信息
    * @return 调度任务集合
    */
-  List<SysJob> selectJobList(SysJob job);
-
-  /**
-   * 通过调度任务ID查询调度信息
-   *
-   * @param jobId 调度任务ID
-   * @return 调度任务对象信息
-   */
-  SysJob selectJobById(Long jobId);
+  List<SysJob> list(SysJob job);
 
   /**
    * 暂停任务
@@ -41,7 +39,7 @@ public interface ISysJobService extends IService<SysJob> {
    * @return 结果
    * @throws SchedulerException
    */
-  int pauseJob(SysJob job) throws SchedulerException;
+  boolean pauseJob(SysJob job) throws SchedulerException;
 
   /**
    * 恢复任务
@@ -50,7 +48,7 @@ public interface ISysJobService extends IService<SysJob> {
    * @return 结果
    * @throws SchedulerException
    */
-  int resumeJob(SysJob job) throws SchedulerException;
+  boolean resumeJob(SysJob job) throws SchedulerException;
 
   /**
    * 删除任务后，所对应的trigger也将被删除
@@ -59,7 +57,7 @@ public interface ISysJobService extends IService<SysJob> {
    * @return 结果
    * @throws SchedulerException
    */
-  int deleteJob(SysJob job) throws SchedulerException;
+  boolean deleteJob(SysJob job) throws SchedulerException;
 
   /**
    * 批量删除调度信息
@@ -76,7 +74,7 @@ public interface ISysJobService extends IService<SysJob> {
    * @return 结果
    * @throws SchedulerException
    */
-  int changeStatus(SysJob job) throws SchedulerException;
+  boolean changeStatus(SysJob job) throws SchedulerException;
 
   /**
    * 立即运行任务
@@ -94,7 +92,7 @@ public interface ISysJobService extends IService<SysJob> {
    * @throws SchedulerException
    * @throws TaskException
    */
-  int insertJob(SysJob job) throws SchedulerException, TaskException;
+  boolean insertJob(SysJob job) throws SchedulerException, TaskException;
 
   /**
    * 更新任务
@@ -104,7 +102,7 @@ public interface ISysJobService extends IService<SysJob> {
    * @throws SchedulerException
    * @throws TaskException
    */
-  int updateJob(SysJob job) throws SchedulerException, TaskException;
+  boolean updateJob(SysJob job) throws SchedulerException, TaskException;
 
   /**
    * 校验cron表达式是否有效

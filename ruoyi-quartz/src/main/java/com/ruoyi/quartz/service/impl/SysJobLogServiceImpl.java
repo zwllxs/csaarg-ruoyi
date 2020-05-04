@@ -3,13 +3,14 @@ package com.ruoyi.quartz.service.impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.ruoyi.common.core.text.Convert;
 import com.ruoyi.quartz.domain.SysJobLog;
 import com.ruoyi.quartz.mapper.SysJobLogMapper;
 import com.ruoyi.quartz.service.ISysJobLogService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -35,50 +36,8 @@ public class SysJobLogServiceImpl extends ServiceImpl<SysJobLogMapper, SysJobLog
    * @return 调度任务日志集合
    */
   @Override
-  public List<SysJobLog> selectJobLogList(SysJobLog jobLog) {
-    return jobLogMapper.selectJobLogList(jobLog);
-  }
-
-  /**
-   * 通过调度任务日志ID查询调度信息
-   *
-   * @param jobLogId 调度任务日志ID
-   * @return 调度任务日志对象信息
-   */
-  @Override
-  public SysJobLog selectJobLogById(Long jobLogId) {
-    return jobLogMapper.selectJobLogById(jobLogId);
-  }
-
-  /**
-   * 新增任务日志
-   *
-   * @param jobLog 调度日志信息
-   */
-  @Override
-  public void addJobLog(SysJobLog jobLog) {
-    jobLogMapper.insertJobLog(jobLog);
-  }
-
-  /**
-   * 批量删除调度日志信息
-   *
-   * @param ids 需要删除的数据ID
-   * @return 结果
-   */
-  @Override
-  public int deleteJobLogByIds(String ids) {
-    return jobLogMapper.deleteJobLogByIds(Convert.toStrArray(ids));
-  }
-
-  /**
-   * 删除任务日志
-   *
-   * @param jobId 调度日志ID
-   */
-  @Override
-  public int deleteJobLogById(Long jobId) {
-    return jobLogMapper.deleteJobLogById(jobId);
+  public List<SysJobLog> list(SysJobLog jobLog) {
+    return jobLogMapper.page(null, jobLog);
   }
 
   /**
@@ -87,5 +46,10 @@ public class SysJobLogServiceImpl extends ServiceImpl<SysJobLogMapper, SysJobLog
   @Override
   public void cleanJobLog() {
     jobLogMapper.cleanJobLog();
+  }
+
+  @Override
+  public boolean removeByIds(String ids) {
+    return super.removeByIds(Arrays.asList(StringUtils.split(ids, ",")));
   }
 }

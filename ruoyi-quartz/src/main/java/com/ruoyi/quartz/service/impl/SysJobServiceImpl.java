@@ -42,7 +42,7 @@ public class SysJobServiceImpl extends ServiceImpl<SysJobMapper, SysJob> impleme
   @PostConstruct
   public void init() throws SchedulerException, TaskException {
     scheduler.clear();
-    List<SysJob> jobList = jobMapper.selectJobAll();
+    List<SysJob> jobList = super.list();
     for (SysJob job : jobList) {
       ScheduleUtils.createScheduleJob(scheduler, job);
     }
@@ -60,72 +60,64 @@ public class SysJobServiceImpl extends ServiceImpl<SysJobMapper, SysJob> impleme
    * @return
    */
   @Override
-  public List<SysJob> selectJobList(SysJob job) {
-    return jobMapper.selectJobList(job);
-  }
-
-  /**
-   * 通过调度任务ID查询调度信息
-   *
-   * @param jobId 调度任务ID
-   * @return 调度任务对象信息
-   */
-  @Override
-  public SysJob selectJobById(Long jobId) {
-    return jobMapper.selectJobById(jobId);
+  public List<SysJob> list(SysJob job) {
+    return jobMapper.page(null, job);
   }
 
   /**
    * 暂停任务
    *
    * @param job 调度信息
+   * @return
    */
   @Transactional
   @Override
-  public int pauseJob(SysJob job) throws SchedulerException {
+  public boolean pauseJob(SysJob job) throws SchedulerException {
     Long jobId = job.getJobId();
     String jobGroup = job.getJobGroup();
     job.setStatus(ScheduleConstants.Status.PAUSE.getValue());
-    int rows = jobMapper.updateJob(job);
-    if (rows > 0) {
+    boolean result = super.updateById(job);
+    if (result) {
       scheduler.pauseJob(ScheduleUtils.getJobKey(jobId, jobGroup));
     }
-    return rows;
+    return result;
   }
 
   /**
    * 恢复任务
    *
    * @param job 调度信息
+   * @return
    */
   @Transactional
   @Override
-  public int resumeJob(SysJob job) throws SchedulerException {
+  public boolean resumeJob(SysJob job) throws SchedulerException {
     Long jobId = job.getJobId();
     String jobGroup = job.getJobGroup();
     job.setStatus(ScheduleConstants.Status.NORMAL.getValue());
-    int rows = jobMapper.updateJob(job);
-    if (rows > 0) {
+    boolean result = super.updateById(job);
+    if (result) {
       scheduler.resumeJob(ScheduleUtils.getJobKey(jobId, jobGroup));
     }
-    return rows;
+    return result;
   }
 
   /**
    * 删除任务后，所对应的trigger也将被删除
    *
    * @param job 调度信息
+   * @return
    */
   @Transactional
   @Override
-  public int deleteJob(SysJob job) throws SchedulerException {
+  public boolean deleteJob(SysJob job) throws SchedulerException {
     Long jobId = job.getJobId();
     String jobGroup = job.getJobGroup();
-    int rows = jobMapper.deleteJobById(jobId);
-    if (rows > 0) {
+    boolean result = super.removeById(jobId);
+    if (result) {
       scheduler.deleteJob(ScheduleUtils.getJobKey(jobId, jobGroup));
     }
-    return rows;
+    return result;
   }
 
   /**
@@ -139,7 +131,7 @@ public class SysJobServiceImpl extends ServiceImpl<SysJobMapper, SysJob> impleme
   public void deleteJobByIds(String ids) throws SchedulerException {
     String[] jobIds = StringUtils.split(ids,",");
     for (String jobId : jobIds) {
-      SysJob job = jobMapper.selectJobById(Long.valueOf(jobId));
+      SysJob job = super.getById(Long.valueOf(jobId));
       deleteJob(job);
     }
   }
@@ -148,11 +140,12 @@ public class SysJobServiceImpl extends ServiceImpl<SysJobMapper, SysJob> impleme
    * 任务调度状态修改
    *
    * @param job 调度信息
+   * @return
    */
   @Transactional
   @Override
-  public int changeStatus(SysJob job) throws SchedulerException {
-    int rows = 0;
+  public boolean changeStatus(SysJob job) throws SchedulerException {
+    boolean rows = false;
     String status = job.getStatus();
     if (ScheduleConstants.Status.NORMAL.getValue().equals(status)) {
       rows = resumeJob(job);
@@ -171,7 +164,7 @@ public class SysJobServiceImpl extends ServiceImpl<SysJobMapper, SysJob> impleme
   @Override
   public void run(SysJob job) throws SchedulerException {
     Long jobId = job.getJobId();
-    SysJob tmpObj = selectJobById(job.getJobId());
+    SysJob tmpObj = getById(job.getJobId());
     // 参数
     JobDataMap dataMap = new JobDataMap();
     dataMap.put(ScheduleConstants.TASK_PROPERTIES, tmpObj);
@@ -182,32 +175,34 @@ public class SysJobServiceImpl extends ServiceImpl<SysJobMapper, SysJob> impleme
    * 新增任务
    *
    * @param job 调度信息 调度信息
+   * @return
    */
   @Transactional
   @Override
-  public int insertJob(SysJob job) throws SchedulerException, TaskException {
+  public boolean insertJob(SysJob job) throws SchedulerException, TaskException {
     job.setStatus(ScheduleConstants.Status.PAUSE.getValue());
-    int rows = jobMapper.insertJob(job);
-    if (rows > 0) {
+    boolean result = super.save(job);
+    if (result) {
       ScheduleUtils.createScheduleJob(scheduler, job);
     }
-    return rows;
+    return result;
   }
 
   /**
    * 更新任务的时间表达式
    *
    * @param job 调度信息
+   * @return
    */
   @Transactional
   @Override
-  public int updateJob(SysJob job) throws SchedulerException, TaskException {
-    SysJob properties = selectJobById(job.getJobId());
-    int rows = jobMapper.updateJob(job);
-    if (rows > 0) {
+  public boolean updateJob(SysJob job) throws SchedulerException, TaskException {
+    SysJob properties = getById(job.getJobId());
+    boolean result = super.updateById(job);
+    if (result) {
       updateSchedulerJob(job, properties.getJobGroup());
     }
-    return rows;
+    return result;
   }
 
   /**

@@ -1,5 +1,6 @@
 package com.ruoyi.generator.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
@@ -64,7 +65,7 @@ public class GenController extends BaseController {
   @PostMapping("/db/list")
   @ResponseBody
   public Result dataList(Page<GenTable> page, GenTable genTable) {
-    return Result.success(genTableService.pageByDbTable(page, genTable));
+    return Result.success(genTableService.pageDbTable(page, genTable));
   }
 
   /**
@@ -75,7 +76,9 @@ public class GenController extends BaseController {
   @ResponseBody
   public TableDataInfo columnList(GenTableColumn genTableColumn) {
     TableDataInfo dataInfo = new TableDataInfo();
-    List<GenTableColumn> list = genTableColumnService.selectGenTableColumnListByTableId(genTableColumn);
+    GenTableColumn genTableColumnQuerier = new GenTableColumn();
+    genTableColumnQuerier.setTableId(genTableColumn.getTableId());
+    List<GenTableColumn> list = genTableColumnService.list(new QueryWrapper<>(genTableColumnQuerier));
     dataInfo.setRows(list);
     dataInfo.setTotal(list.size());
     return dataInfo;
@@ -100,7 +103,7 @@ public class GenController extends BaseController {
   public Result importTableSave(String tables) {
     String[] tableNames = Convert.toStrArray(tables);
     // 查询表信息
-    List<GenTable> tableList = genTableService.selectDbTableListByNames(tableNames);
+    List<GenTable> tableList = genTableService.listDbTableByNames(tableNames);
     String operName = (String) PermissionUtils.getPrincipalProperty("loginName");
     genTableService.importGenTable(tableList, operName);
     return Result.success();
@@ -111,7 +114,7 @@ public class GenController extends BaseController {
    */
   @GetMapping("/edit/{tableId}")
   public String edit(@PathVariable("tableId") Long tableId, ModelMap mmap) {
-    GenTable table = genTableService.selectGenTableById(tableId);
+    GenTable table = genTableService.getById(tableId);
     mmap.put("table", table);
     return PREFIX + "/edit";
   }
@@ -134,7 +137,7 @@ public class GenController extends BaseController {
   @PostMapping("/remove")
   @ResponseBody
   public Result remove(String ids) {
-    genTableService.deleteGenTableByIds(ids);
+    genTableService.removeByIds(ids);
     return Result.success();
   }
 

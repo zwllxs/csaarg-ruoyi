@@ -56,7 +56,7 @@ spring:
     time-zone: GMT+8
     date-format: yyyy-MM-dd HH:mm:ss
   profiles:
-    active: druid
+    active: dev
   # 文件上传
   servlet:
     multipart:
@@ -98,21 +98,21 @@ mybatis-plus:
     # 指定所用日志的具体实现
     log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
 
-# MyBatis
-mybatis:
-  # 搜索指定包别名
-  typeAliasesPackage: com.ruoyi.**.domain
-  # 配置mapper的扫描，找到所有的mapper.xml映射文件
-  mapperLocations: classpath*:mapper/**/*Mapper.xml
-  # 加载全局的配置文件
-  configLocation: classpath:mybatis/mybatis-config.xml
-
-# PageHelper分页插件
-pagehelper:
-  helperDialect: mysql
-  reasonable: true
-  supportMethodsArguments: true
-  params: count=countSql
+## MyBatis
+#mybatis:
+#  # 搜索指定包别名
+#  typeAliasesPackage: com.ruoyi.**.domain
+#  # 配置mapper的扫描，找到所有的mapper.xml映射文件
+#  mapperLocations: classpath*:mapper/**/*Mapper.xml
+#  # 加载全局的配置文件
+#  configLocation: classpath:mybatis/mybatis-config.xml
+#
+## PageHelper分页插件
+#pagehelper:
+#  helperDialect: mysql
+#  reasonable: true
+#  supportMethodsArguments: true
+#  params: count=countSql
 
 # Shiro
 shiro:

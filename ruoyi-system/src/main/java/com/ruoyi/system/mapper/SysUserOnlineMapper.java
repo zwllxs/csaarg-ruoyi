@@ -13,7 +13,13 @@ import java.util.List;
  * @author ruoyi
  */
 public interface SysUserOnlineMapper extends BaseMapper<SysUserOnline> {
-
+  /**
+   * 分页列出在线用户
+   *
+   * @param page       分页对象
+   * @param userOnline 在线用户
+   * @return
+   */
   List<SysUserOnline> page(Page<SysUserOnline> page, @Param("userOnline") SysUserOnline userOnline);
 
   /**

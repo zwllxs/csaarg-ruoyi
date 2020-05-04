@@ -14,12 +14,12 @@ import java.util.List;
  */
 public interface ISysLogininforService extends IService<SysLogininfor> {
   /**
-   * 新增系统登录日志
+   * 分页列出登录日志
    *
-   * @param logininfor 访问日志对象
+   * @param page       分页对象
+   * @param logininfor 登录日志
+   * @return
    */
-  void insert(SysLogininfor logininfor);
-
   IPage<SysLogininfor> page(Page<SysLogininfor> page, SysLogininfor logininfor);
 
   /**

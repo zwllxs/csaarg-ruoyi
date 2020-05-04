@@ -672,7 +672,8 @@ public class ExcelUtil<T> {
         if (cell.getCellTypeEnum() == CellType.NUMERIC || cell.getCellTypeEnum() == CellType.FORMULA) {
           val = cell.getNumericCellValue();
           if (HSSFDateUtil.isCellDateFormatted(cell)) {
-            val = DateUtil.getJavaDate((Double) val); // POI Excel 日期格式转换
+            // POI Excel 日期格式转换
+            val = DateUtil.getJavaDate((Double) val);
           } else {
             if ((Double) val % 1 > 0) {
               val = new DecimalFormat("0.00").format(val);

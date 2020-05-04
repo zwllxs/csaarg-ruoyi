@@ -20,6 +20,7 @@
     <shiro.version>1.4.2</shiro.version>
     <thymeleaf.extras.shiro.version>2.0.0</thymeleaf.extras.shiro.version>
     <mybatis.plus.version>3.3.1</mybatis.plus.version>
+    <dynamic.datasource.version>3.1.0</dynamic.datasource.version>
     <druid.version>1.1.14</druid.version>
     <bitwalker.version>1.19</bitwalker.version>
     <kaptcha.version>2.3.2</kaptcha.version>
@@ -101,6 +102,13 @@
         <groupId>com.baomidou</groupId>
         <artifactId>mybatis-plus-boot-starter</artifactId>
         <version>${mybatis.plus.version}</version>
+      </dependency>
+
+      <!-- 多数据源 -->
+      <dependency>
+        <groupId>com.baomidou</groupId>
+        <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
+        <version>${dynamic.datasource.version}</version>
       </dependency>
 
       <!-- 获取系统信息 -->

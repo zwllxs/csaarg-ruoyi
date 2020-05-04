@@ -15,17 +15,17 @@
 
   <select id="page" resultType="com.ruoyi.system.domain.SysDept">
     select * from sys_dept where del_flag = 0
-    <if test="sysDept.parentId != null and sysDept.parentId > 0">
-      and parent_id = #{sysDept.parentId}
+    <if test="dept.parentId != null and dept.parentId > 0">
+      and parent_id = #{dept.parentId}
     </if>
-    <if test="sysDept.deptName != null and sysDept.deptName != ''">
-      and dept_name like concat('%', #{sysDept.deptName}, '%')
+    <if test="dept.deptName != null and dept.deptName != ''">
+      and dept_name like concat('%', #{dept.deptName}, '%')
     </if>
-    <if test="sysDept.status != null">
-      and status = #{sysDept.status}
+    <if test="dept.status != null">
+      and status = #{dept.status}
     </if>
     <!-- 数据范围过滤 -->
-    ${sysDept.params.dataScope}
+    ${dept.params.dataScope}
     order by parent_id, order_num
   </select>
 

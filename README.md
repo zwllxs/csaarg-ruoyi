@@ -24,6 +24,9 @@
 | MyBatis Mapper XML | 类使用全路径免除配置 typeAliasesPackage，避免 IDEA 报错，方便提示。删除 parameterType 属性。 | 100% |  |
 | Java 代码结构 | 添加 Lombok，修改所有实体类，LoggerFactory.getLogger 替换为 @Slf4j。调整注解顺序：@RequestMapping < @ResponseBody < @Tranactional < @RequiresPermissions < @Log，@NotNull/NotBlank < @Size < …… < @Excel 等等。 | 100% |  |
 | static 目录结构 | 所有第三方依赖全部放到 lib 目录下 | 100% |  |
-| 集成 MyBatis Plus | 替换 Mapper XML 中的单表操作方法。替换分页插件。替换动态数据源。 | 90% | [MyBatis-Plus](https://mp.baomidou.com/) |
-| 阿里编码规约及代码优化 | 使用 Alibaba Java Coding Guidelines 扫描并解决。 | 剩余 83 |  |
+| 集成 MyBatis Plus | 替换 Mapper XML 中的单表操作方法。替换分页插件。替换动态数据源。 | 100% | [MyBatis-Plus](https://mp.baomidou.com/) |
+| 阿里编码规约及代码优化 | 使用 Alibaba Java Coding Guidelines 扫描并解决。 | 剩余 59 - 13 |  |
+| 前端新增页面和编辑页面合一 | 前端的新增页面合并到编辑页面中，避免重复修改。 | 0% |  |
+| 接口修改为 RESTful 规范 | …… | 0% |  |
+| 修改代码生成模板 | …… | 0% |  |
 | …… |  |  |  |

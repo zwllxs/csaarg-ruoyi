@@ -13,9 +13,22 @@ import java.util.List;
  * @author ruoyi
  */
 public interface SysUserMapper extends BaseMapper<SysUser> {
-
+  /**
+   * 分页列出用户
+   *
+   * @param page 分页对象
+   * @param user 用户
+   * @return
+   */
   List<SysUser> page(Page<SysUser> page, @Param("user") SysUser user);
 
+  /**
+   * 分页列出已分配角色用户
+   *
+   * @param page 分页对象
+   * @param user 用户
+   * @return
+   */
   List<SysUser> pageByAllocated(Page<SysUser> page, @Param("user") SysUser user);
 
   /**

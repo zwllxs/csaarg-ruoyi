@@ -13,7 +13,13 @@ import java.util.List;
  * @author ruoyi
  */
 public interface SysRoleMapper extends BaseMapper<SysRole> {
-
+  /**
+   * 分页列出角色
+   *
+   * @param page 分页对象
+   * @param role 角色
+   * @return
+   */
   List<SysRole> page(Page<SysRole> page, @Param("role") SysRole role);
 
   /**

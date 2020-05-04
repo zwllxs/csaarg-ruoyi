@@ -54,7 +54,7 @@ public class SysJobController extends BaseController {
   @PostMapping("/export")
   @ResponseBody
   public Result export(SysJob job) {
-    List<SysJob> list = jobService.selectJobList(job);
+    List<SysJob> list = jobService.list(job);
     ExcelUtil<SysJob> util = new ExcelUtil<>(SysJob.class);
     return util.exportExcel(list, "定时任务");
   }
@@ -72,7 +72,7 @@ public class SysJobController extends BaseController {
   @GetMapping("/detail/{jobId}")
   public String detail(@PathVariable("jobId") Long jobId, ModelMap mmap) {
     mmap.put("name", "job");
-    mmap.put("job", jobService.selectJobById(jobId));
+    mmap.put("job", jobService.getById(jobId));
     return PREFIX + "/detail";
   }
 
@@ -84,7 +84,7 @@ public class SysJobController extends BaseController {
   @PostMapping("/changeStatus")
   @ResponseBody
   public Result changeStatus(SysJob job) throws SchedulerException {
-    SysJob newJob = jobService.selectJobById(job.getJobId());
+    SysJob newJob = jobService.getById(job.getJobId());
     newJob.setStatus(job.getStatus());
     return custom(jobService.changeStatus(newJob));
   }
@@ -125,7 +125,7 @@ public class SysJobController extends BaseController {
    */
   @GetMapping("/edit/{jobId}")
   public String edit(@PathVariable("jobId") Long jobId, ModelMap mmap) {
-    mmap.put("job", jobService.selectJobById(jobId));
+    mmap.put("job", jobService.getById(jobId));
     return PREFIX + "/edit";
   }
 

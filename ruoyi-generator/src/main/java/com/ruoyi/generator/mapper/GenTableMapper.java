@@ -14,25 +14,23 @@ import java.util.List;
  */
 public interface GenTableMapper extends BaseMapper<GenTable> {
 
+  /**
+   * 分页查询业务列表
+   *
+   * @param page 分页对象
+   * @param genTable 业务信息
+   * @return
+   */
   List<GenTable> page(Page<GenTable> page, @Param("genTable") GenTable genTable);
 
   /**
-   * 查询业务列表
+   * 分页查询据库列表
    *
-   * @param genTable 业务信息
-   * @return 业务集合
+   * @param page 分页对象
+   * @param genTable 数据库表集合
+   * @return
    */
-  List<GenTable> selectGenTableList(GenTable genTable);
-
-  List<GenTable> pageByDbTable(Page<GenTable> page, @Param("genTable") GenTable genTable);
-
-  /**
-   * 查询据库列表
-   *
-   * @param genTable 业务信息
-   * @return 数据库表集合
-   */
-  List<GenTable> selectDbTableList(GenTable genTable);
+  List<GenTable> pageDbTable(Page<GenTable> page, @Param("genTable") GenTable genTable);
 
   /**
    * 查询据库列表
@@ -40,7 +38,7 @@ public interface GenTableMapper extends BaseMapper<GenTable> {
    * @param tableNames 表名称组
    * @return 数据库表集合
    */
-  List<GenTable> selectDbTableListByNames(String[] tableNames);
+  List<GenTable> listByNames(String[] tableNames);
 
   /**
    * 查询表ID业务信息
@@ -48,7 +46,7 @@ public interface GenTableMapper extends BaseMapper<GenTable> {
    * @param id 业务ID
    * @return 业务信息
    */
-  GenTable selectGenTableById(Long id);
+  GenTable getById(Long id);
 
   /**
    * 查询表名称业务信息
@@ -56,29 +54,5 @@ public interface GenTableMapper extends BaseMapper<GenTable> {
    * @param tableName 表名称
    * @return 业务信息
    */
-  GenTable selectGenTableByName(String tableName);
-
-  /**
-   * 新增业务
-   *
-   * @param genTable 业务信息
-   * @return 结果
-   */
-  int insertGenTable(GenTable genTable);
-
-  /**
-   * 修改业务
-   *
-   * @param genTable 业务信息
-   * @return 结果
-   */
-  int updateGenTable(GenTable genTable);
-
-  /**
-   * 批量删除业务
-   *
-   * @param ids 需要删除的数据ID
-   * @return 结果
-   */
-  int deleteGenTableByIds(String[] ids);
+  GenTable getByName(String tableName);
 }

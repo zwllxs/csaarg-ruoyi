@@ -19,6 +19,13 @@ public interface ISysConfigService extends IService<SysConfig> {
    */
   String getValueByKey(String configKey);
 
+  /**
+   * 分页列出配置
+   *
+   * @param page   分页对象
+   * @param config 配置
+   * @return
+   */
   IPage<SysConfig> page(Page<SysConfig> page, SysConfig config);
 
   /**

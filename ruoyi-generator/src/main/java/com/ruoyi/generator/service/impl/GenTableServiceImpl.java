@@ -11,6 +11,7 @@ import com.ruoyi.generator.domain.GenTable;
 import com.ruoyi.generator.domain.GenTableColumn;
 import com.ruoyi.generator.mapper.GenTableColumnMapper;
 import com.ruoyi.generator.mapper.GenTableMapper;
+import com.ruoyi.generator.service.IGenTableColumnService;
 import com.ruoyi.generator.service.IGenTableService;
 import com.ruoyi.generator.util.GenUtils;
 import com.ruoyi.generator.util.VelocityInitializer;
@@ -29,6 +30,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,6 +53,9 @@ public class GenTableServiceImpl extends ServiceImpl<GenTableMapper, GenTable> i
   @Autowired
   private GenTableColumnMapper genTableColumnMapper;
 
+  @Autowired
+  private IGenTableColumnService genTableColumnService;
+
   /**
    * 查询业务信息
    *
@@ -58,8 +63,8 @@ public class GenTableServiceImpl extends ServiceImpl<GenTableMapper, GenTable> i
    * @return 业务信息
    */
   @Override
-  public GenTable selectGenTableById(Long id) {
-    GenTable genTable = genTableMapper.selectGenTableById(id);
+  public GenTable getById(Long id) {
+    GenTable genTable = genTableMapper.getById(id);
     setTableFromOptions(genTable);
     return genTable;
   }
@@ -76,13 +81,13 @@ public class GenTableServiceImpl extends ServiceImpl<GenTableMapper, GenTable> i
    * @return 业务集合
    */
   @Override
-  public List<GenTable> selectGenTableList(GenTable genTable) {
-    return genTableMapper.selectGenTableList(genTable);
+  public List<GenTable> list(GenTable genTable) {
+    return genTableMapper.page(null, genTable);
   }
 
   @Override
-  public IPage<GenTable> pageByDbTable(Page<GenTable> page, GenTable genTable) {
-    return page.setRecords(genTableMapper.pageByDbTable(page, genTable));
+  public IPage<GenTable> pageDbTable(Page<GenTable> page, GenTable genTable) {
+    return page.setRecords(genTableMapper.pageDbTable(page, genTable));
   }
 
   /**
@@ -92,8 +97,8 @@ public class GenTableServiceImpl extends ServiceImpl<GenTableMapper, GenTable> i
    * @return 数据库表集合
    */
   @Override
-  public List<GenTable> selectDbTableList(GenTable genTable) {
-    return genTableMapper.selectDbTableList(genTable);
+  public List<GenTable> listDbTable(GenTable genTable) {
+    return genTableMapper.pageDbTable(null, genTable);
   }
 
   /**
@@ -103,8 +108,8 @@ public class GenTableServiceImpl extends ServiceImpl<GenTableMapper, GenTable> i
    * @return 数据库表集合
    */
   @Override
-  public List<GenTable> selectDbTableListByNames(String[] tableNames) {
-    return genTableMapper.selectDbTableListByNames(tableNames);
+  public List<GenTable> listDbTableByNames(String[] tableNames) {
+    return genTableMapper.listByNames(tableNames);
   }
 
   /**
@@ -118,11 +123,8 @@ public class GenTableServiceImpl extends ServiceImpl<GenTableMapper, GenTable> i
   public void updateGenTable(GenTable genTable) {
     String options = JSON.toJSONString(genTable.getParams());
     genTable.setOptions(options);
-    int row = genTableMapper.updateGenTable(genTable);
-    if (row > 0) {
-      for (GenTableColumn cenTableColumn : genTable.getColumns()) {
-        genTableColumnMapper.updateGenTableColumn(cenTableColumn);
-      }
+    if (super.updateById(genTable)) {
+      genTableColumnService.updateBatchById(genTable.getColumns());
     }
   }
 
@@ -134,9 +136,9 @@ public class GenTableServiceImpl extends ServiceImpl<GenTableMapper, GenTable> i
    */
   @Transactional
   @Override
-  public void deleteGenTableByIds(String ids) {
-    genTableMapper.deleteGenTableByIds(StringUtils.split(ids, ","));
-    genTableColumnMapper.deleteGenTableColumnByIds(StringUtils.split(ids, ","));
+  public void removeByIds(String ids) {
+    super.removeByIds(Arrays.asList(StringUtils.split(ids, ",")));
+    genTableColumnService.removeByIds(Arrays.asList(StringUtils.split(ids, ",")));
   }
 
   /**
@@ -152,13 +154,12 @@ public class GenTableServiceImpl extends ServiceImpl<GenTableMapper, GenTable> i
       try {
         String tableName = table.getTableName();
         GenUtils.initTable(table, operName);
-        int row = genTableMapper.insertGenTable(table);
-        if (row > 0) {
+        if (super.save(table)) {
           // 保存列信息
-          List<GenTableColumn> genTableColumns = genTableColumnMapper.selectDbTableColumnsByName(tableName);
+          List<GenTableColumn> genTableColumns = genTableColumnMapper.listByName(tableName);
           for (GenTableColumn column : genTableColumns) {
             GenUtils.initColumnField(column, table);
-            genTableColumnMapper.insertGenTableColumn(column);
+            genTableColumnMapper.insert(column);
           }
         }
       } catch (Exception e) {
@@ -177,7 +178,7 @@ public class GenTableServiceImpl extends ServiceImpl<GenTableMapper, GenTable> i
   public Map<String, String> previewCode(Long tableId) {
     Map<String, String> dataMap = new LinkedHashMap<>();
     // 查询表信息
-    GenTable table = genTableMapper.selectGenTableById(tableId);
+    GenTable table = genTableMapper.getById(tableId);
     // 查询列信息
     List<GenTableColumn> columns = table.getColumns();
     setPkColumn(table, columns);
@@ -234,7 +235,7 @@ public class GenTableServiceImpl extends ServiceImpl<GenTableMapper, GenTable> i
    */
   private void generatorCode(String tableName, ZipOutputStream zip) {
     // 查询表信息
-    GenTable table = genTableMapper.selectGenTableByName(tableName);
+    GenTable table = genTableMapper.getByName(tableName);
     // 查询列信息
     List<GenTableColumn> columns = table.getColumns();
     setPkColumn(table, columns);

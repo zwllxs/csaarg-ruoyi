@@ -13,7 +13,13 @@ import java.util.List;
  * @author ruoyi
  */
 public interface SysOperLogMapper extends BaseMapper<SysOperLog> {
-
+  /**
+   * 分页列出操作日志
+   *
+   * @param page    分页对象
+   * @param operLog 操作日志
+   * @return
+   */
   List<SysOperLog> page(Page<SysOperLog> page, @Param("operLog") SysOperLog operLog);
 
   /**

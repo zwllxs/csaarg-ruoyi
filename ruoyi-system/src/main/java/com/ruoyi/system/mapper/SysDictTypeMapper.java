@@ -13,6 +13,12 @@ import java.util.List;
  * @author ruoyi
  */
 public interface SysDictTypeMapper extends BaseMapper<SysDictType> {
-
+  /**
+   * 分页列出字典类型
+   *
+   * @param page     分页对象
+   * @param dictType 字典类型
+   * @return
+   */
   List<SysDictType> page(Page<SysDictType> page, @Param("dictType") SysDictType dictType);
 }

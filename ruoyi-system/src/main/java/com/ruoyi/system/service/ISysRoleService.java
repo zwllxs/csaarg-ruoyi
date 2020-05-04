@@ -14,7 +14,13 @@ import java.util.Set;
  * @author ruoyi
  */
 public interface ISysRoleService extends IService<SysRole> {
-
+  /**
+   * 分页列出角色
+   *
+   * @param page 分页对象
+   * @param role 角色
+   * @return
+   */
   IPage<SysRole> page(Page<SysRole> page, SysRole role);
 
   /**

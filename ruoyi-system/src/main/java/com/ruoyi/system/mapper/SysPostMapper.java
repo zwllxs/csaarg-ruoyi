@@ -13,7 +13,13 @@ import java.util.List;
  * @author ruoyi
  */
 public interface SysPostMapper extends BaseMapper<SysPost> {
-
+  /**
+   * 分页列出岗位
+   *
+   * @param page 分页对象
+   * @param post 岗位
+   * @return
+   */
   List<SysPost> page(Page<SysPost> page, @Param("post") SysPost post);
 
   /**

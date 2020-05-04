@@ -13,7 +13,13 @@ import java.util.List;
  * @author ruoyi
  */
 public interface SysLogininforMapper extends BaseMapper<SysLogininfor> {
-
+  /**
+   * 分页列出访问日志
+   *
+   * @param page       分页对象
+   * @param logininfor 访问日志
+   * @return
+   */
   List<SysLogininfor> page(Page<SysLogininfor> page, @Param("logininfor") SysLogininfor logininfor);
 
   /**

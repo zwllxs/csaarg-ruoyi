@@ -12,6 +12,12 @@ import org.apache.ibatis.annotations.Param;
  * @author ruoyi
  */
 public interface SysConfigMapper extends BaseMapper<SysConfig> {
-
+  /**
+   * 分页列出配置
+   *
+   * @param page   分页对象
+   * @param config 配置
+   * @return
+   */
   IPage<SysConfig> page(Page<SysConfig> page, @Param("config") SysConfig config);
 }

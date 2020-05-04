@@ -58,7 +58,7 @@ public class EscapeUtil {
    * @return 清除标签后的文本
    */
   public static String clean(String content) {
-    return new HTMLFilter().filter(content);
+    return new HtmlFilter().filter(content);
   }
 
   /**

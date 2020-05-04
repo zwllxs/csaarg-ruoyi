@@ -14,7 +14,13 @@ import java.util.List;
  * @author ruoyi
  */
 public interface ISysDictTypeService extends IService<SysDictType> {
-
+  /**
+   * 分页列出字典
+   *
+   * @param page     分页对象
+   * @param dictType 字典
+   * @return
+   */
   IPage<SysDictType> page(Page<SysDictType> page, SysDictType dictType);
 
   /**
